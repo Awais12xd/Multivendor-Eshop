@@ -1,37 +1,37 @@
-import cors from "cors"
-import dotenv from "dotenv"
-import express from "express"
-import cookieParser from "cookie-parser"
 import { connectDb } from "./config/db.js";
+import { app } from "./app.js";
+import dotenv from "dotenv";
 
 
-const app = express();
-
-dotenv.config({
+if(process.env.NODE_ENV !== "PRODUCTION"){
+  dotenv.config({
     path:"./.env",
 })
-
-const corsOptions = {
-    origin: process.env.CLIENT_URL || "*",
-    methods:["GET","PUT","DELETE","UPDATE"],
-    allowHeaders:[" Content-Type","Authorization"]
 }
 
-
-//Middlewears
-app.use(cors(corsOptions));
-app.use(cookieParser());
-app.use(express.json());
+process.on("uncaughtException" , err => {
+  console.log(`Error :` , err.message);
+  console.log("Shutting down the server due to the uncaughtExceptions");
+})
 
 const PORT = process.env.PORT || 4000;
 
-
 connectDb()
   .then(() => {
-    app.listen(PORT, () => {
-      console.log(`Server is running on http://locslhost:${PORT}`);
+    const server = app.listen(PORT, () => {
+      console.log(`Server is running on http://localhost:${PORT}`);
+    });
+
+    process.on("unhandledRejection", err => {
+      console.log(`Error :`, err.message);
+      console.log("Shutting down the server due to the unhandledRejection");
+
+      server.close(() => {
+        process.exit(1);
+      });
     });
   })
   .catch((error) => {
     console.log("error during using connectDb :", error);
   });
+
