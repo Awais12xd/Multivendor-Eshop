@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { FaRegEyeSlash, FaRegEye } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import { FaRegUserCircle } from "react-icons/fa";
+import axios from "axios"
+
 const SignUp = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -12,7 +14,30 @@ const SignUp = () => {
 const handleFileChange = (e) => {
     setFile(e.target.files[0]);
 };
+ 
+const handleSubmit = async(e) => {
 
+  e.preventDefault();
+  const formData = new FormData();
+  formData.append("email", email);
+  formData.append("password", password);
+  formData.append("username", username);
+  formData.append("file" , file)
+
+  try {
+    const res = await axios.post("http://localhost:8000/api/auth/sign-up", formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      }
+    });
+  } catch (err) {
+    if (err.response) {
+      console.log("Error response:", err.response.data);
+    } else {
+      console.log("Error:", err.message);
+    }
+  }
+}
   // const handleChange = (e) => {
   //     setEmail(e.target.value)
   // }
@@ -25,7 +50,7 @@ const handleFileChange = (e) => {
       </div>
       <div className="sm:w-full md:max-w-md sm:mx-auto mt-6">
         <div className="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10 ">
-          <form className="space-y-6">
+          <form onSubmit={handleSubmit} className="space-y-6">
             <div className="">
               <label
                 htmlFor="email"

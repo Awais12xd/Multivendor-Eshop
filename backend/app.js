@@ -2,8 +2,8 @@ import cors from "cors"
 import dotenv from "dotenv"
 import express from "express"
 import cookieParser from "cookie-parser"
-import { errorHandler } from "./utils/errorHandler.js";
-import fileUpload from "express-fileupload";
+import { errorHandler } from "./utils/errorHandler.js"
+import authRoutes from "./routes/auth.routes.js"
 
 
 
@@ -17,22 +17,21 @@ if(process.env.NODE_ENV !== "PRODUCTION"){
 }
 
 //cors config
-const corsOptions = {
-    origin: process.env.CLIENT_URL || "*",
-    methods:["GET","PUT","DELETE","UPDATE"],
-    allowHeaders:[" Content-Type","Authorization"]
-}
+// const corsOptions = {
+//     origin: process.env.CLIENT_URL || "*",
+//     methods:["GET","PUT","DELETE","UPDATE"],
+//     allowHeaders:[" Content-Type","Authorization"]
+// }
 
 //Middlewears
-app.use(cors(corsOptions));
+app.use(cors());
 app.use(cookieParser());
 app.use(express.json());
 app.use(express.urlencoded({extended:true}));
-app.use(fileUpload({useTempFiles : true}));
-
+app.use("/" , express.static("uploads"))
 
 //Routes
-
+app.use("/api/auth", authRoutes);
 
 
 //error handling
