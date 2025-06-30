@@ -1,7 +1,7 @@
 import { useState } from "react";
 import "./App.css";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import { LoginPage, SignUpPage } from "./routes/allPagesLocalRoutes.js";
+import { LoginPage, SignUpPage,ActivationPage } from "./routes/allPagesLocalRoutes.js";
 
 function App() {
   return (
@@ -10,6 +10,7 @@ function App() {
         <Routes>
           <Route path="/login" element={<LoginPage />} />
           <Route path="/sign-up" element={<SignUpPage />} />
+          <Route path="/activation/:url" element={<ActivationPage />} />
         </Routes>
       </Router> 
        </>

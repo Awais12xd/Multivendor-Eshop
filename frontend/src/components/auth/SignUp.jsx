@@ -25,7 +25,8 @@ const handleSubmit = async(e) => {
   formData.append("file" , file)
 
   try {
-    const res = await axios.post("http://localhost:8000/api/auth/sign-up", formData, {
+    
+    await axios.post(`http://localhost:8000/api/auth/sign-up`, formData, {
       headers: {
         "Content-Type": "multipart/form-data",
       }

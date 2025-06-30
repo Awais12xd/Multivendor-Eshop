@@ -3,6 +3,16 @@ import { User } from "../models/user.model.js";
 import { errorHandler } from "../utils/errorHandler.js";
 import path from "path";
 import { apiResponse } from "../utils/apiResponse.js";
+import jwt from "jsonwebtoken";
+import { sendMail } from "../utils/sendMail.js";
+import { asyncHandler } from "../middlewares/catchAsyncError.js";
+import { sendToken } from "../utils/sendToken.js";
+
+const generateActivationToken = (user) => {
+  return jwt.sign(user, process.env.ACTIVATION_TOKEN_SECRET, {
+    expiresIn: "1m",
+  });
+};
 
 const createUser = async (req, res, next) => {
   const { username, email, password } = req.body;
@@ -25,26 +35,86 @@ const createUser = async (req, res, next) => {
       } else {
         return next(new errorHandler("User already exists", 400));
       }
-      return; 
+      return;
     }
     const filename = req.file.filename;
     const findUrl = path.join(filename);
-    const user = await User.create({
+    const user = {
       name: username,
       email,
       password,
       avatar: { public_id: 123, url: findUrl },
-    });
-    if (!user) {
-      return next(new errorHandler("Failed to create user", 400));
-    }
+    };
+    // if (!user) {
+    //   return next(new errorHandler("Failed to create user", 400));
+    // }
 
-    res
-      .status(201)
-      .json(new apiResponse(201, "User created successfully", user));
+    // res
+    //   .status(201)
+    //   .json(new apiResponse(201, "User created successfully", user));
+
+    const activationToken = generateActivationToken(user);
+    const activationUrl = `http://localhost:5173/activation/${activationToken}`;
+
+    try {
+      await sendMail({
+        to: user.email,
+        subject: "Please activate your account",
+        message: `Hello ${user.name} , please activate your account by clicking on this link ${activationUrl}`,
+      });
+      res
+        .status(201)
+        .json(
+          new apiResponse(
+            201,
+            "Please check you email to activate your account",
+            null
+          )
+        );
+    } catch (error) {
+      return next(
+        new errorHandler(`Error sending email and ${error.message}`, 500)
+      );
+    }
   } catch (error) {
     return next(new errorHandler("Error creating user", 500));
   }
 };
 
-export { createUser };
+//Activate the user
+const activateUser = async (req, res, next) => {
+  const { activation_token } = req.body;
+  if (!activation_token) {
+    return next(new errorHandler("No activation token provided", 400));
+  }
+  try {
+    const newUser = jwt.verify(
+      activation_token,
+      process.env.ACTIVATION_TOKEN_SECRET
+    );
+
+    if (!newUser) {
+      return next(new errorHandler("Invalid activation token", 400));
+    }
+
+    const { name, email, password, avatar } = newUser;
+    const userYes = await User.findOne({ email });
+
+    if (userYes) {
+      return next(new errorHandler("User already activated", 400));
+    }
+
+    const user = await User.create({
+      name,
+      email,
+      password,
+      avatar,
+    });
+
+    sendToken(user, 200, res);
+  } catch (error) {
+    return next(new errorHandler("Error activating user", 500));
+  }
+};
+
+export { createUser, generateActivationToken, activateUser };

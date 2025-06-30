@@ -2,8 +2,8 @@ import cors from "cors"
 import dotenv from "dotenv"
 import express from "express"
 import cookieParser from "cookie-parser"
-import { errorHandler } from "./utils/errorHandler.js"
 import authRoutes from "./routes/auth.routes.js"
+import { errorMiddle } from "./middlewares/error.middleware.js"
 
 
 
@@ -34,7 +34,8 @@ app.use("/" , express.static("uploads"))
 app.use("/api/auth", authRoutes);
 
 
+
 //error handling
-app.use(errorHandler);
+app.use(errorMiddle);
 
 export {app}
