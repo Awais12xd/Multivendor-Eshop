@@ -3,6 +3,7 @@ import { FaRegEyeSlash, FaRegEye } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import { FaRegUserCircle } from "react-icons/fa";
 import axios from "axios"
+import { toast } from "react-toastify";
 
 const SignUp = () => {
   const [email, setEmail] = useState("");
@@ -26,16 +27,25 @@ const handleSubmit = async(e) => {
 
   try {
     
-    await axios.post(`http://localhost:8000/api/auth/sign-up`, formData, {
+    const res = await axios.post(`http://localhost:8000/api/auth/sign-up`, formData, {
       headers: {
         "Content-Type": "multipart/form-data",
       }
     });
+    toast.success(res.data.message);
+    setEmail("")
+    setPassword("")
+    setUserName("")
+    setFile(null)
+
   } catch (err) {
     if (err.response) {
       console.log("Error response:", err.response.data);
+      toast.error(err.response.data.message)
     } else {
       console.log("Error:", err.message);
+      toast.error(err.message)
+
     }
   }
 }
@@ -154,7 +164,7 @@ const handleSubmit = async(e) => {
             <div className="mt-1">
               <button
                 type="submit"
-                className="w-full h-10 bg-blue-600 cursor-pointer hover:bg-blue-500 disabled:cursor-no-drop disabled:bg-blue-200 text-white rounded-lg flex items-center text-center justify-center "
+                className="w-full h-10 bg-blue-600 cursor-pointer hover:bg-blue-500 disabled:cursor-no-drop disabled:bg-blue-200 text-white rounded-lg flex items-center text-center justify-center"
               >
                 Submit
               </button>

@@ -1,13 +1,37 @@
+import axios from "axios";
 import React, { useState } from "react";
 import { FaRegEyeSlash , FaRegEye } from 'react-icons/fa';
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+
 
 const Login = () => {
+  const navigate = useNavigate()
     const [email , setEmail] = useState("");
     const [password , setPassword] = useState("");
     const [visible , setVisible] = useState(false);
-    console.log(visible)
-
+    
+    const handleSubmit = async(e) => {
+      e.preventDefault();
+      try {
+        await axios.post(`${import.meta.env.VITE_SERVER_URL}/auth/login` , {
+          email,
+          password
+        },{withCredentials: true}
+      ).then((res) => {
+        console.log(res);
+        toast.success("Login Successfull!")
+        navigate("/")
+      }).catch((err) => {
+        console.log("ERROR :",err);
+        toast.error(err.response.data.message)
+      })
+        
+      } catch (err) {
+        console.log("ERROR CATCH :",err);
+        toast.error(err.message)
+      }
+    }
     // const handleChange = (e) => {
     //     setEmail(e.target.value)
     // }
@@ -20,7 +44,7 @@ const Login = () => {
       </div>
       <div className="sm:w-full md:max-w-md sm:mx-auto mt-6">
         <div className="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10 ">
-          <form className="space-y-6">
+          <form onSubmit={handleSubmit} className="space-y-6">
             <div className="">
               <label
                 htmlFor="email"

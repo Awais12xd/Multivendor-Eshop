@@ -1,11 +1,13 @@
 import express from "express"
-import { createUser , activateUser } from "../controllers/auth.controller.js";
+import { createUser , activateUser , loginUser } from "../controllers/auth.controller.js";
 import { upload } from "../utils/multer.js";
-
+import {catchAsyncError} from "../middlewares/catchAsyncError.js"
 const router = express.Router();
 
 router.post("/sign-up", upload.single("file"), createUser);
-router.post("/activation" , activateUser);
+router.post("/activation" , catchAsyncError(activateUser));
+router.post("/login" , loginUser);
+
 
 // router.stack.forEach((layer) => {
 //   if (layer.route) {
