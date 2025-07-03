@@ -9,7 +9,7 @@ const Hero = () => {
         backgroundImage:"url(https://themes.rslahmed.dev/rafcart/assets/images/banner-2.jpg)"
     }}
     >
-      <div className="w-[90%] md:w-[60%] flex flex-col ">
+        <div className="w-[90%] md:w-[60%] flex flex-col ">
         <h1 className='text-3xl leading-[1.2]  md:text-6xl text-[#3d3a3a] capitalize'>
              Best Collection for <br /> home Decoration
         </h1>
