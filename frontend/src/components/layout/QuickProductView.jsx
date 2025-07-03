@@ -61,7 +61,7 @@ const QuickProductView = ({ setOpen, data }) => {
                 <h1 className={`${styles.productTitle} text-lg`}>
                   {data.name}
                 </h1>
-                <p className="text-lg mt-2">{data.description}</p>
+                <p className="text-md mt-2">{data.description}</p>
                 <div className="flex pt-3">
                   <h4 className={`${styles.productDiscountPrice}`}>
                     {data.discount_price}$

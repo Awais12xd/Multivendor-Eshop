@@ -3,6 +3,8 @@ import Header from '../../components/layout/Header.jsx'
 import Hero from '../../components/layout/Hero.jsx'
 import Categories from '../../components/layout/Categories.jsx'
 import BestDeals from '../../components/layout/BestDeals.jsx'
+import FeaturedProducts from '../../components/layout/FeaturedProducts.jsx'
+import Events from '../../components/layout/Events.jsx'
 
 const HomePage = () => {
   return (
@@ -11,6 +13,8 @@ const HomePage = () => {
       <Hero />
       <Categories/>
       <BestDeals />
+      <Events />
+      <FeaturedProducts />
     </div>
   )
 }
