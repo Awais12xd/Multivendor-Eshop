@@ -5,6 +5,8 @@ import Categories from '../../components/layout/Categories.jsx'
 import BestDeals from '../../components/layout/BestDeals.jsx'
 import FeaturedProducts from '../../components/layout/FeaturedProducts.jsx'
 import Events from '../../components/layout/Events.jsx'
+import Sponsored from '../../components/layout/Sponsored.jsx'
+import Footer from '../../components/layout/Footer.jsx'
 
 const HomePage = () => {
   return (
@@ -15,6 +17,8 @@ const HomePage = () => {
       <BestDeals />
       <Events />
       <FeaturedProducts />
+      <Sponsored/>
+      <Footer />
     </div>
   )
 }
