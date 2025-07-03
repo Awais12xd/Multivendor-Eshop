@@ -5,6 +5,7 @@ import {
   LoginPage,
   SignUpPage,
   ActivationPage,
+  HomePage,
 } from "./routes/allPagesLocalRoutes.js";
 import { Bounce, ToastContainer, toast } from 'react-toastify';
 import axios from "axios";
@@ -22,6 +23,7 @@ function App() {
     <>
       <Router>
         <Routes>
+          <Route path="/" element={<HomePage />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/sign-up" element={<SignUpPage />} />
           <Route path="/activation/:url" element={<ActivationPage />} />
