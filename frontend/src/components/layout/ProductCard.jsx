@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
 import styles from '../../style/style';
 import { AiFillHeart, AiFillStar, AiOutlineEye, AiOutlineHeart, AiOutlineShoppingCart, AiOutlineStar } from 'react-icons/ai';
+import QuickProductView from './QuickProductView.jsx';
 
 const ProductCard = ({product}) => {
   const [click , setClick] = useState(false);
@@ -84,6 +85,11 @@ const ProductCard = ({product}) => {
             className='cursor-pointer absolute right-2 top-22 text-gray-800'
             title='Add to cart'
             />
+            {
+              open ? (
+                <QuickProductView setOpen={setOpen} data={product} />
+              ) : null
+            }
       </div>
     </div>
   )
