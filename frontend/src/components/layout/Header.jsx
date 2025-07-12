@@ -2,20 +2,30 @@ import React, { useState } from "react";
 import styles from "../../style/style.js";
 import { Link, Links } from "react-router-dom";
 import { productData, categoriesData } from "../../static/data.jsx";
-import { AiOutlineHeart, AiOutlineSearch, AiOutlineShoppingCart } from "react-icons/ai";
+import {
+  AiOutlineHeart,
+  AiOutlineSearch,
+  AiOutlineShoppingCart,
+} from "react-icons/ai";
 import { IoIosArrowDown, IoIosArrowForward } from "react-icons/io";
 import { BiMenuAltLeft } from "react-icons/bi";
-import {CgProfile} from "react-icons/cg"
+import { CgProfile } from "react-icons/cg";
 import DropDown from "./DropDown.jsx";
 import Navbar from "./Navbar.jsx";
+import { useSelector } from "react-redux";
+import Cart from "./Cart.jsx";
+import WishList from "./WishList.jsx";
 
 const imageUrl = "https://shopo.quomodothemes.website/assets/images/logo.svg";
 
-const Header = ({activeHeading}) => {
+const Header = ({ activeHeading }) => {
+  const { isAuth, user } = useSelector((state) => state.user);
   const [searchText, setSearchText] = useState("");
   const [searchData, setSearchData] = useState(null);
   const [active, setActive] = useState(false);
   const [dropDown, setDropDown] = useState(false);
+  const [openCart, setOpenCart] = useState(false);
+  const [openWish, setOpenWish] = useState(false);
 
   const handleOnChangeSearch = async (e) => {
     const term = e.target.value;
@@ -119,38 +129,55 @@ const Header = ({activeHeading}) => {
               />
             ) : null}
           </div>
-         
-        <div className="flex items-center">
-           <Navbar activeHeading={activeHeading} />
-        </div>
-        <div className="flex items-center">
-          <div className="relative cursor-pointer mr-[15px]">
-            <AiOutlineHeart 
-            size={30}
-            className="text-white"
-            />
-            <span
-            className="w-4 h-4 absolute  bottom-4 right-0 p-0 m-0 rounded-full bg-green-400 text-white text-sm leading-tight text-center"
-            >0</span>
+
+          <div className="flex items-center">
+            <Navbar activeHeading={activeHeading} />
           </div>
-          <div className="relative cursor-pointer mr-[15px]">
-            <AiOutlineShoppingCart 
-            size={30}
-            className="text-white"
-            />
-            <span
-            className="w-4 h-4 absolute bottom-4 right-0 p-0 m-0 rounded-full bg-green-400 text-white text-sm leading-tight text-center"
-            >1</span>
-          </div>
-          <div className="relative cursor-pointer mr-[15px]">
-           <Link to={"/login"}>
-            <CgProfile 
-            size={30}
-            className="text-white"
-            /></Link>
+          <div className="flex items-center">
+            <div
+              onClick={() => setOpenWish(true)}
+              className="relative cursor-pointer mr-[15px]"
+            >
+              <AiOutlineHeart size={30} className="text-white" />
+              <span className="w-4 h-4 absolute  bottom-4 right-0 p-0 m-0 rounded-full bg-green-400 text-white text-sm leading-tight text-center">
+                0
+              </span>
+            </div>
+            <div
+              onClick={() => setOpenCart(true)}
+              className="relative cursor-pointer mr-[15px]"
+            >
+              <AiOutlineShoppingCart size={30} className="text-white" />
+              <span className="w-4 h-4 absolute bottom-4 right-0 p-0 m-0 rounded-full bg-green-400 text-white text-sm leading-tight text-center">
+                1
+              </span>
+            </div>
+            <div className="relative cursor-pointer mr-[15px]">
+              {isAuth ? (
+                <Link
+                  to={"/profile"}
+                  className="overflow-hidden rounded-full w-10 h-10"
+                >
+                  <img
+                    src={`${import.meta.env.VITE_BACKEND_URL}/${
+                      user.avatar.url
+                    }`}
+                    alt="Profile"
+                    className="w-10 h-10 rounded-full object-cover "
+                  />
+                </Link>
+              ) : (
+                <Link to={"/login"}>
+                  <CgProfile size={30} className="text-white" />
+                </Link>
+              )}
+            </div>
           </div>
         </div>
-        </div>
+        {/* Cart */}
+        {openCart && <Cart setOpenCart={setOpenCart} />}
+        {/* Wishlist */}
+        {openWish && <WishList setOpenWish={setOpenWish} />}
       </div>
     </>
   );

@@ -6,6 +6,11 @@ import {
   SignUpPage,
   ActivationPage,
   HomePage,
+  ProductsPage,
+  BestSelling,
+  EventsPage,
+  FAQPage,
+  ProductDetailPage,
 } from "./routes/allPagesLocalRoutes.js";
 import { Bounce, ToastContainer, toast } from 'react-toastify';
 import axios from "axios";
@@ -15,17 +20,25 @@ import { useDispatch, useSelector } from "react-redux";
 
 
 function App() {
+  const {loading} = useSelector((state) => state.user)
   const dispatch = useDispatch();
   useEffect(() => {
       userLoad(dispatch);
   } , [])
   return (
     <>
-      <Router>
+      {
+        loading ? <p className="flex justify-center items-center h-[50vh] w-full text-xl">Loading...</p> : (
+          <Router>
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/sign-up" element={<SignUpPage />} />
+          <Route path="/products" element={<ProductsPage />} />
+          <Route path="/best-selling" element={<BestSelling />} />
+          <Route path="/events" element={<EventsPage />} />
+          <Route path="/faq" element={<FAQPage />} />
+          <Route path="/product/:name" element={<ProductDetailPage />} />
           <Route path="/activation/:url" element={<ActivationPage />} />
         </Routes>
         <ToastContainer
@@ -42,6 +55,8 @@ function App() {
           transition={Bounce}
         />
       </Router>
+        )
+      }
     </>
   );
 }

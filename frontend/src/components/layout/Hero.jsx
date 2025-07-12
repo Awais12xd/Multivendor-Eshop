@@ -17,7 +17,7 @@ const Hero = () => {
           assumenda? Quisquam itaque <br /> exercitationem labore vel, dolore
           quidem asperiores, laudantium temporibus soluta optio consequatur{" "}
           <br /> aliquam deserunt officia. Dolorum saepe nulla provident.</p>
-          <Link to={"/products"} className='inline-block'>
+          <Link to={"/products"} className='inline-block self-start'>
           <div className={`${styles.button} mt-5`}>
             <span className=' text-white text-lg'>Shop Now</span>
           </div>
