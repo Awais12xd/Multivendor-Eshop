@@ -27,8 +27,8 @@ const StaticData = [
 
 const Cart = ({setOpenCart}) => {
   return (
-    <div  className='absolute z-10 top-0 left-0 w-full h-screen bg-[#0000005f]'>
-       <div className="fixed top-0 right-0 flex flex-col justify-between  shadow-sm bg-white h-full w-[25%] ">
+    <div  className='absolute z-10 top-0 left-0 w-full h-screen bg-[#0000005f] overflow-y-auto'>
+       <div className="fixed top-0 right-0 flex flex-col justify-between  shadow-sm bg-white h-full md:w-[25%] w-[60%] overflow-y-scroll">
         <div className="flex flex-col justify-between h-full">
          <div className="">
                <div className="flex justify-end w-full pt-5 pr-5 ">
@@ -53,7 +53,7 @@ const Cart = ({setOpenCart}) => {
                  }
             </div>
          </div>
-        <div className={` w-full text-white px-4 mb-3 flex`}>
+        <div className={` w-full text-white px-4 mb-3 mt-3 flex`}>
                 <Link to={"/checkout"} className='h-12 bg-orange-600 w-full flex items-center justify-center rounded-md cursor-pointer hover:opacity-85 uppercase font-[500]'>
                     CheckOut Now (USD$1022)
                 </Link>

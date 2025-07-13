@@ -140,6 +140,20 @@ const loginUser = async(req,res,next) => {
     }
 }
 
+const logout = async(req,res,next) => {
+  try {
+     const options = {
+        expires: new Date(Date.now() + 90 * 24 * 60 * 60 * 1000),
+        httpOnly: true,
+    }
+    res
+    .status(201)
+    .cookie('token', null, options)
+    .json(new apiResponse(201, 'Logout Successfully'))
+  } catch (error) {
+      return next(new errorHandler(` error catch ${error.message}`, 500));
+  }
+}
 
 
-export { createUser, generateActivationToken, activateUser , loginUser };
+export { createUser, generateActivationToken, activateUser , loginUser , logout };

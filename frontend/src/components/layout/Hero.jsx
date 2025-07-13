@@ -4,7 +4,7 @@ import styles from '../../style/style'
 
 const Hero = () => {
   return (
-    <div className='relative min-h-[70vh] md:min-h-[80vh] w-full bg-no-repeat flex items-center justify-center'
+    <div className='relative min-h-[80vh] w-full bg-no-repeat flex items-center justify-center'
     style={{
         backgroundImage:"url(https://themes.rslahmed.dev/rafcart/assets/images/banner-2.jpg)"
     }}
@@ -24,6 +24,7 @@ const Hero = () => {
           </Link>
       </div>
     </div>
+    
   )
 }
 

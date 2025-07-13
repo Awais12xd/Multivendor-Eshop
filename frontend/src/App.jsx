@@ -11,11 +11,14 @@ import {
   EventsPage,
   FAQPage,
   ProductDetailPage,
+  ProfilePage,
+  CreateShopPage,
 } from "./routes/allPagesLocalRoutes.js";
 import { Bounce, ToastContainer, toast } from 'react-toastify';
 import axios from "axios";
 import { userLoad } from "./redux/actions/userLoad.js";
 import { useDispatch, useSelector } from "react-redux";
+import ProtectedRoute from "./routes/PrivateRoutes.jsx";
 
 
 
@@ -38,6 +41,12 @@ function App() {
           <Route path="/best-selling" element={<BestSelling />} />
           <Route path="/events" element={<EventsPage />} />
           <Route path="/faq" element={<FAQPage />} />
+          <Route path="/create-shop" element={<CreateShopPage />} />
+          <Route path="/profile" element={
+            <ProtectedRoute >
+                <ProfilePage  />
+            </ProtectedRoute>
+          } />
           <Route path="/product/:name" element={<ProductDetailPage />} />
           <Route path="/activation/:url" element={<ActivationPage />} />
         </Routes>

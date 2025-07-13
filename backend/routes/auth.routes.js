@@ -1,12 +1,14 @@
 import express from "express"
-import { createUser , activateUser , loginUser } from "../controllers/auth.controller.js";
+import { createUser , activateUser , loginUser, logout } from "../controllers/auth.controller.js";
 import { upload } from "../utils/multer.js";
+import { verifyToken } from "../middlewares/auth.middleware.js";
 import {catchAsyncError} from "../middlewares/catchAsyncError.js"
 const router = express.Router();
 
 router.post("/sign-up", upload.single("file"), createUser);
 router.post("/activation" , catchAsyncError(activateUser));
 router.post("/login" , loginUser);
+router.get("/logout" , verifyToken , logout);
 
 
 // router.stack.forEach((layer) => {
