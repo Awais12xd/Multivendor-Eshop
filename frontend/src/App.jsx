@@ -13,6 +13,7 @@ import {
   ProductDetailPage,
   ProfilePage,
   CreateShopPage,
+  SellerActivation,
 } from "./routes/allPagesLocalRoutes.js";
 import { Bounce, ToastContainer, toast } from 'react-toastify';
 import axios from "axios";
@@ -49,6 +50,7 @@ function App() {
           } />
           <Route path="/product/:name" element={<ProductDetailPage />} />
           <Route path="/activation/:url" element={<ActivationPage />} />
+          <Route path="/shop/seller/activation/:url" element={<SellerActivation />} />
         </Routes>
         <ToastContainer
           position="bottom-center"

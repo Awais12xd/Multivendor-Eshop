@@ -4,6 +4,7 @@ import express from "express"
 import cookieParser from "cookie-parser"
 import authRoutes from "./routes/auth.routes.js"
 import userRoutes from "./routes/user.routes.js"
+import shopRoutes from "./routes/shop.routes.js"
 import { errorMiddle } from "./middlewares/error.middleware.js"
 
 
@@ -35,6 +36,7 @@ app.use("/" , express.static("uploads"))
 //Routes
 app.use("/api/auth", authRoutes);
 app.use("/api/user", userRoutes);
+app.use("/api/shop", shopRoutes);
 
 
 
