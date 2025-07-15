@@ -13,26 +13,31 @@ import {
   ProductDetailPage,
   ProfilePage,
   CreateShopPage,
+  
   SellerActivation,
+  LoginShopPage,
+  DashboardPage,
 } from "./routes/allPagesLocalRoutes.js";
 import { Bounce, ToastContainer, toast } from 'react-toastify';
 import axios from "axios";
 import { userLoad } from "./redux/actions/userLoad.js";
 import { useDispatch, useSelector } from "react-redux";
 import ProtectedRoute from "./routes/PrivateRoutes.jsx";
-
+import { sellerLoad } from "./redux/actions/sellerLoad.js";
+import SellerProtectedRoutes from "./routes/SellerProtectedRoutes.jsx";
+import ShopPage from "./pages/shop/ShopPage.jsx";
 
 
 function App() {
-  const {loading} = useSelector((state) => state.user)
+
+
   const dispatch = useDispatch();
   useEffect(() => {
       userLoad(dispatch);
+      sellerLoad(dispatch);
   } , [])
   return (
     <>
-      {
-        loading ? <p className="flex justify-center items-center h-[50vh] w-full text-xl">Loading...</p> : (
           <Router>
         <Routes>
           <Route path="/" element={<HomePage />} />
@@ -42,7 +47,6 @@ function App() {
           <Route path="/best-selling" element={<BestSelling />} />
           <Route path="/events" element={<EventsPage />} />
           <Route path="/faq" element={<FAQPage />} />
-          <Route path="/create-shop" element={<CreateShopPage />} />
           <Route path="/profile" element={
             <ProtectedRoute >
                 <ProfilePage  />
@@ -50,7 +54,20 @@ function App() {
           } />
           <Route path="/product/:name" element={<ProductDetailPage />} />
           <Route path="/activation/:url" element={<ActivationPage />} />
+
           <Route path="/shop/seller/activation/:url" element={<SellerActivation />} />
+          <Route path="/create-shop" element={<CreateShopPage />} />
+          <Route path="/shop-login" element={<LoginShopPage />} />
+          <Route path="/shop/:id" element={
+            <SellerProtectedRoutes >
+              <ShopPage/>
+            </SellerProtectedRoutes>
+          } />
+          <Route path="/dashboard" element={
+            <SellerProtectedRoutes>
+              <DashboardPage/>
+            </SellerProtectedRoutes>
+          } />
         </Routes>
         <ToastContainer
           position="bottom-center"
@@ -66,8 +83,6 @@ function App() {
           transition={Bounce}
         />
       </Router>
-        )
-      }
     </>
   );
 }

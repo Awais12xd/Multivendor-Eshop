@@ -5,14 +5,15 @@ import { useSelector } from 'react-redux';
 
 const LoginPage = () => {
   const navigate = useNavigate();
-  const {isAuth} = useSelector((state) => state.user);
+  const {isAuth , loading} = useSelector((state) => state.user);
 
   useEffect(() => {
     console.log(isAuth)
     if(isAuth){
       navigate("/");
+      window.location.reload(true);
     }
-  } ,[])
+  } ,[loading , isAuth])
   return (
     <div>
       <Login /> 

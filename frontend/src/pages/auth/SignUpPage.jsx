@@ -10,8 +10,9 @@ const SignUpPage = () => {
   useEffect(() => {
     if(isAuth){
       navigate("/");
+      window.location.reload(true);
     }
-  } ,[])
+  } ,[loading , isAuth])
   return (
     <div>
       <SignUp />

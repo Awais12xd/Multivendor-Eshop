@@ -6,6 +6,7 @@ import jwt from "jsonwebtoken";
 import { sendMail } from "../utils/sendMail.js";
 import { sendToken } from "../utils/sendToken.js";
 import { Shop } from "../models/shop.model.js";
+import { sendSellerToken } from "../utils/sendSellerToken.js";
 
 const generateActivationToken = (shop) => {
   return jwt.sign(shop, process.env.ACTIVATION_TOKEN_SECRET, {
@@ -106,12 +107,12 @@ const activateSeller = async (req, res, next) => {
     }
 
     const { name, email, password, phoneNumber, zipCode, address, avatar } =
-      newUser;
+      newUser;  
     console.log("ACTIVATION HIT — 1", Date.now());
     let shop = await Shop.findOne({ email });
     console.log("ACTIVATION HIT — 2", Date.now());
-     if (shop) {
-        return next(new errorHandler("User already exists", 400));
+     if (shop && shop.activated) {
+        return next(new errorHandler("User already activated", 400));
       }
     console.log("ACTIVATION HIT — 3", Date.now());
     shop = await Shop.create({
@@ -125,22 +126,26 @@ const activateSeller = async (req, res, next) => {
     });
     console.log("ACTIVATION HIT — 4", Date.now());
 
-    sendToken(shop, 200, res);
+    sendSellerToken(shop, 200, res);
   } catch (error) {
     console.error("Activation error:", error);
+     if (error.code === 11000) { // Duplicate key error
+    // Optionally: Check if the user is already activated
+    return res.status(409).json({ message: "Account already activated or duplicate request." });
+  }
     return next(
       new errorHandler(`Error activating seller: ${error.message}`, 500)
     );
   }
 };
 
-const loginUser = async (req, res, next) => {
+const loginSeller = async (req, res, next) => {
   try {
     const { email, password } = req.body;
     if (!email || !password) {
       return next(new errorHandler("Please provide email and password", 400));
     }
-    const user = await User.findOne({ email }).select("+password");
+    const user = await Shop.findOne({ email }).select("+password");
     if (!user) {
       return next(new errorHandler("Invalid email! User does not exist.", 400));
     }
@@ -148,12 +153,32 @@ const loginUser = async (req, res, next) => {
     if (!isMatch) {
       return next(new errorHandler("Invalid password!", 400));
     }
-    console.log("passowrd match success");
-    sendToken(user, 200, res);
+    // sendToken(user, 200, res);
+    sendSellerToken(user, 200, res);
   } catch (error) {
     return next(new errorHandler(` error catch${error.message}`, 500));
   }
 };
+
+const getSeller = async(req , res , next) => {
+    console.log("req is hitting")
+    try {
+        const userId = req.seller.id;
+        console.log(userId , "id is coming")
+        const seller = await Shop.findById(userId);
+        if (!seller) {
+            return next(new errorHandler("User not found while verifying token", 404));
+            }
+            console.log("user found" , seller)
+
+            res.
+            status(200).
+            json(new apiResponse(true , "User found" , seller));
+        
+    } catch (error) {
+        
+    }
+}
 
 const logout = async (req, res, next) => {
   try {
@@ -174,6 +199,7 @@ export {
   createShop,
   generateActivationToken,
   activateSeller,
-  loginUser,
+  loginSeller,
+  getSeller,
   logout,
 };
