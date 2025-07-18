@@ -19,6 +19,7 @@ import {
   DashboardPage,
   ShopHomePage,
   DashboardCreateProductPage,
+  DashboardAllProductPage,
 } from "./routes/allPagesLocalRoutes.js";
 import { Bounce, ToastContainer, toast } from 'react-toastify';
 import axios from "axios";
@@ -72,6 +73,11 @@ function App() {
           <Route path="/dashboard/create-product" element={
             <SellerProtectedRoutes>
               <DashboardCreateProductPage/>
+            </SellerProtectedRoutes>
+          } />
+          <Route path="/dashboard/products" element={
+            <SellerProtectedRoutes>
+              <DashboardAllProductPage/>
             </SellerProtectedRoutes>
           } />
         </Routes>

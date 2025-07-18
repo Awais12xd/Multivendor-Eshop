@@ -3,11 +3,15 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { categoriesData } from "../../static/data";
 import { AiOutlinePlusCircle } from "react-icons/ai";
+import axios from "axios";
+import { toast } from "react-toastify";
 
 const DashboardCreateProduct = () => {
   const { seller } = useSelector((state) => state.seller);
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(false);
 
   const [images, setImages] = useState([]);
   const [name, setName] = useState("");
@@ -22,12 +26,71 @@ const DashboardCreateProduct = () => {
     e.preventDefault();
     const files = Array.from(e.target.files);
     //Tode Check File Size
-    setImages(prev => [...prev , ...files]);
+    setImages((prev) => [...prev, ...files]);
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-  }
+    if (
+      !name ||
+      !description ||
+      !category ||
+      !tags ||
+      !originalPrice ||
+      !discountPrice ||
+      !stock ||
+      images.length === 0
+    ) {
+      toast.error("Please fill all the fields");
+      return;
+    }
+    const formData = new FormData();
+    images.forEach((image) => {
+      formData.append("images", image);
+    });
+
+    formData.append("name", name);
+    formData.append("description", description);
+    formData.append("category", category);
+    formData.append("tags", tags);
+    formData.append("originalPrice", originalPrice);
+    formData.append("discountPrice", discountPrice);
+    formData.append("stock", stock);
+    formData.append("shopId", seller?._id);
+
+    setLoading(true);
+    setError(null);
+    try {
+      const res = await axios.post(
+        `${import.meta.env.VITE_SERVER_URL}/product/create-product`,
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+      if (res.data.success) {
+        setLoading(false);
+        toast.success(res.data.message);
+        navigate("/dashboard");
+      }
+      if (res.data.success === false) {
+        setLoading(false);
+        setError(res.data.message);
+        toast.error(res.data.message);
+      }
+    } catch (err) {
+      setLoading(false);
+      if (err.response) {
+        console.log("Error response:", err.response.data);
+        toast.error(err.response.data.message);
+      } else {
+        console.log("Error:", err.message);
+        toast.error(err.message);
+      }
+    }
+  };
 
   return (
     <div className="flex justify-center w-full py-9 ">
@@ -56,14 +119,16 @@ const DashboardCreateProduct = () => {
             <label className="pb-2">
               Description <span className="text-red-500">*</span>
             </label>
-            <input
+            <textarea
+              cols={30}
+              rows={6}
               type="text"
               name="description"
               value={description}
               onChange={(e) => setDescription(e.target.value)}
-              className="w-full mt-2 appearance-none block h-9 border border-gray-300 rounded-[3px] placeholder:text-gray-500 outline-none focus:ring-blue-500 sm:text-sm focus:border-blue-500 px-3"
+              className="w-full mt-2 appearance-none block  border border-gray-300 rounded-[3px] placeholder:text-gray-500 outline-none focus:ring-blue-500 sm:text-sm focus:border-blue-500 px-3 pt-2"
               placeholder="Enter product description..."
-            />
+            ></textarea>
           </div>
           <br />
           <div className="">
@@ -148,30 +213,35 @@ const DashboardCreateProduct = () => {
             </label>
             <input
               type="file"
-              name=""
+              name="upload"
               id="upload"
               accept="image/*"
               onChange={handleFileChange}
               className="hidden"
               multiple
             />
-          <div className="flex w-full items-center flex-wrap gap-3 mt-2">
+            <div className="flex w-full items-center flex-wrap gap-3 mt-2">
               <label htmlFor="upload" className="cursor-pointer">
-              <AiOutlinePlusCircle size={30} className="m-3" color="#555" />
-            </label>
-            {images.length > 0 &&
-              images.map((image, index) => (
-                <img
-                  src={URL.createObjectURL(image)}
-                  alt="Product"
-                  key={index}
-                  className="w-28 h-28 object-cover rounded-md  "
-                />
-              ))}
-          </div>
+                <AiOutlinePlusCircle size={30} className="m-3" color="#555" />
+              </label>
+              {images.length > 0 &&
+                images.map((image, index) => (
+                  <img
+                    src={URL.createObjectURL(image)}
+                    alt="Product"
+                    key={index}
+                    className="w-28 h-28 object-cover rounded-md  "
+                  />
+                ))}
+            </div>
           </div>
           <br />
-          <input type="submit" className="w-full mt-2 appearance-none block h-12 border border-gray-300 rounded-[3px] placeholder:text-gray-500 outline-none  focus:ring-blue-500 sm:text-sm focus:border-blue-500 px-3 cursor-pointer" name="" id="" />
+          <button
+            type="submit"
+            className="w-full mt-2 appearance-none block h-12 border border-gray-300 rounded-[3px] placeholder:text-gray-500 outline-none  focus:ring-blue-500 sm:text-sm focus:border-blue-500 px-3 cursor-pointer"
+          >
+            {loading ? "Creating Product..." : "Create"}
+          </button>
         </form>
       </div>
     </div>

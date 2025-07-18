@@ -161,15 +161,12 @@ const loginSeller = async (req, res, next) => {
 };
 
 const getSeller = async(req , res , next) => {
-    console.log("req is hitting")
     try {
         const userId = req.seller.id;
-        console.log(userId , "id is coming")
         const seller = await Shop.findById(userId);
         if (!seller) {
             return next(new errorHandler("User not found while verifying token", 404));
             }
-            console.log("user found" , seller)
 
             res.
             status(200).

@@ -18,6 +18,7 @@ import ShopHomePage from "../pages/shop/ShopHomePage.jsx"
 //Dashboard routes
 import DashboardPage from "../pages/Seller_Dashboard/DashboardPage.jsx"
 import DashboardCreateProductPage from "../pages/Seller_Dashboard/DashboardCreateProductPage.jsx"
+import DashboardAllProductPage from "../pages/Seller_Dashboard/DashboardAllProductPage.jsx"
 
 export {
     LoginPage,
@@ -35,7 +36,8 @@ export {
     SellerActivation,
     LoginShopPage,
     ShopHomePage,
-    
+
     DashboardPage,
-    DashboardCreateProductPage
+    DashboardCreateProductPage,
+    DashboardAllProductPage
 }
