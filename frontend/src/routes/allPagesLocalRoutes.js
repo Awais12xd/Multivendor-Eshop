@@ -13,8 +13,11 @@ import ProfilePage from "../pages/layout/ProfilePage.jsx"
 import CreateShopPage from "../pages/layout/CreateShopPage.jsx"
 import SellerActivation from "../pages/layout/SellerActivation.jsx"
 import LoginShopPage from "../pages/layout/LoginShopPage.jsx"
-import DashboardPage from "../pages/shop/DashboardPage.jsx"
 import ShopHomePage from "../pages/shop/ShopHomePage.jsx"
+
+//Dashboard routes
+import DashboardPage from "../pages/Seller_Dashboard/DashboardPage.jsx"
+import DashboardCreateProductPage from "../pages/Seller_Dashboard/DashboardCreateProductPage.jsx"
 
 export {
     LoginPage,
@@ -31,6 +34,8 @@ export {
     CreateShopPage,
     SellerActivation,
     LoginShopPage,
+    ShopHomePage,
+    
     DashboardPage,
-    ShopHomePage
+    DashboardCreateProductPage
 }
