@@ -1,5 +1,5 @@
 import React from 'react'
-import LoginShop from '../../components/Shop/LoginShop.jsx'
+import LoginShop from '../../components/ShopAuth/LoginShop.jsx'
 import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { useEffect } from 'react';

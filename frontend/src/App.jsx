@@ -13,10 +13,11 @@ import {
   ProductDetailPage,
   ProfilePage,
   CreateShopPage,
-  
+
   SellerActivation,
   LoginShopPage,
   DashboardPage,
+  ShopHomePage,
 } from "./routes/allPagesLocalRoutes.js";
 import { Bounce, ToastContainer, toast } from 'react-toastify';
 import axios from "axios";
@@ -25,7 +26,6 @@ import { useDispatch, useSelector } from "react-redux";
 import ProtectedRoute from "./routes/PrivateRoutes.jsx";
 import { sellerLoad } from "./redux/actions/sellerLoad.js";
 import SellerProtectedRoutes from "./routes/SellerProtectedRoutes.jsx";
-import ShopPage from "./pages/shop/ShopPage.jsx";
 
 
 function App() {
@@ -60,7 +60,7 @@ function App() {
           <Route path="/shop-login" element={<LoginShopPage />} />
           <Route path="/shop/:id" element={
             <SellerProtectedRoutes >
-              <ShopPage/>
+              <ShopHomePage/>
             </SellerProtectedRoutes>
           } />
           <Route path="/dashboard" element={

@@ -1,5 +1,5 @@
 import React from 'react'
-import CreateShop from '../../components/Shop/CreateShop.jsx'
+import CreateShop from '../../components/ShopAuth/CreateShop.jsx'
 import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { useEffect } from 'react';
