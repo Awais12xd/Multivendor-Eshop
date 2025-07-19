@@ -49,18 +49,17 @@ const createProduct = async (req , res , next) => {
 }
 
 const getAllProducts = async(req , res , next) => {
-    console.log("Id in product" ,req.params.id)
     try {
-        console.log("now starting to check id exist or not")
         if(!req.params.id){
             return next(new errorHandler("Please provide the shop Id" , 400));
         }
-
-       
         const products = await Product.find({shopId : req.params.id});
         if(!products || products.length === 0){
             return next(new errorHandler("No Products found for this shop" , 404));
         }
+        res.
+        status(200)
+        .json(new apiResponse(true , "Products Found" , products))
         
     } catch (error) {
         console.log("Error while fetching products" , error)
@@ -69,7 +68,27 @@ const getAllProducts = async(req , res , next) => {
     }
 }
 
+const deleteProduct = async(req,res,next) => {
+    try {
+        const productId = req.params.id;
+        if(!productId){
+            return next(new errorHandler("Please provide the product Id" , 400))
+        }
+        const product = await Product.findByIdAndDelete(productId);
+        if(!product){
+            return next(new errorHandler("Product not found" , 404))
+        }
+        res.
+        status(200)
+        .json(new apiResponse(true , "Product Deleted Successfully"))
+    } catch (error) {
+        console.log("Error while deleting the product" , error);
+        return next(new errorHandler(error.message , 500))
+    }
+}
+
 export {
     createProduct,
-    getAllProducts
+    getAllProducts,
+    deleteProduct
 }

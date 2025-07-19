@@ -4,6 +4,7 @@ import { verifySeller, verifyToken } from "../middlewares/auth.middleware.js";
 import { catchAsyncError } from "../middlewares/catchAsyncError.js";
 import {
   createProduct,
+  deleteProduct,
   getAllProducts,
 } from "../controllers/product.controller.js";
 
@@ -15,6 +16,7 @@ router.post(
   catchAsyncError(createProduct)
 );
 router.get("/get-all-products/:id", catchAsyncError(getAllProducts));
+router.delete("/delete-product/:id" , verifySeller , catchAsyncError(deleteProduct));
 // router.post("/seller/activation" , catchAsyncError(activateSeller));
 // router.post("/shop-login" , catchAsyncError(loginSeller));
 // router.get("/getSeller" , verifySeller , getSeller);

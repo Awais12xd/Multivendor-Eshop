@@ -16,11 +16,11 @@ const DashboardCreateProduct = () => {
   const [images, setImages] = useState([]);
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
-  const [originalPrice, setOriginalPrice] = useState(0);
-  const [discountPrice, setDiscountPrice] = useState(0);
+  const [originalPrice, setOriginalPrice] = useState();
+  const [discountPrice, setDiscountPrice] = useState();
   const [category, setCategory] = useState("");
   const [tags, setTags] = useState("");
-  const [stock, setStock] = useState(0);
+  const [stock, setStock] = useState();
 
   const handleFileChange = (e) => {
     e.preventDefault();
@@ -73,7 +73,7 @@ const DashboardCreateProduct = () => {
       if (res.data.success) {
         setLoading(false);
         toast.success(res.data.message);
-        navigate("/dashboard");
+        navigate("/dashboard/products");
       }
       if (res.data.success === false) {
         setLoading(false);

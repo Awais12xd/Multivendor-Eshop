@@ -24,11 +24,23 @@ export const productsreducer = createSlice({
       state.error = action.payload;
       state.products=null;
     },
+    //Delete Product
+    deleteStart: (state) => {
+      state.isloading = true;
+    },
+    deleteSuccess: (state, action) => {
+      state.isloading = false;
+      state.error = null;
+    },
+    deleteFail: (state, action) => {
+      state.isloading = false;
+      state.error = action.payload;
+    },
   },
 
 })
 
 
-export const { loadProductsFail, loadProductsStart , loadProductsSuccess } = productsreducer.actions;
+export const { loadProductsFail, loadProductsStart , loadProductsSuccess , deleteStart , deleteFail , deleteSuccess } = productsreducer.actions;
 
 export const productsReducer = productsreducer.reducer;

@@ -1,6 +1,6 @@
 import axios from "axios";
 import { toast } from "react-toastify";
-import { loadProductsFail, loadProductsStart, loadProductsSuccess } from "../reducers/products.reducer.js";
+import { deleteFail, deleteStart, deleteSuccess, loadProductsFail, loadProductsStart, loadProductsSuccess } from "../reducers/products.reducer.js";
 import { useSelector } from "react-redux";
 
 const productsLoad = async(dispatch,id) => {
@@ -22,5 +22,24 @@ const productsLoad = async(dispatch,id) => {
     }
 
 }
+const productDelete = async(dispatch,id) => {
 
-export {productsLoad}
+    try {
+      dispatch(deleteStart());
+      await axios.delete(`${import.meta.env.VITE_SERVER_URL}/product/delete-product/${id}` , {
+        withCredentials:true
+      }).then((res) => {
+        dispatch(deleteSuccess(res.data.data));
+        console.log("Product Delete Successfully!" , res)
+      }).catch(err => {
+        dispatch(deleteFail(err.response.data))
+        console.log("Error while deleting the product" , err)
+      })
+    } catch (error) {
+     dispatch(deleteFail(error))
+     console.log("Error while deleting the product" , error)
+    }
+
+}
+
+export {productsLoad , productDelete}

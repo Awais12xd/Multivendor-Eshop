@@ -6,9 +6,10 @@ import { productsLoad } from '../../redux/actions/productsLoad';
 import DashboardAllProduct from '../../components/Dashboard/DashboardAllProduct';
 
 const DashboardAllProductPage = () => {
+    const [active , setActive] = useState(0);
   
   return (
-    <div>
+    <div className='w-full'>
       <DashboardHeader />
         <div className={` bg-[#f5f5f5] flex `}>
         <div className="w-[80px] md:w-[335px] ">
