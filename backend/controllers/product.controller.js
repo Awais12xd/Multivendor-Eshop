@@ -2,7 +2,7 @@ import { errorHandler } from "../utils/errorHandler.js";
 import { apiResponse } from "../utils/apiResponse.js";
 import { Product } from "../models/product.model.js";
 import { Shop } from "../models/shop.model.js";
-
+import fs from "fs";
 const createProduct = async (req , res , next) => {
      try {
         const shopId = req.body.shopId;
@@ -74,10 +74,22 @@ const deleteProduct = async(req,res,next) => {
         if(!productId){
             return next(new errorHandler("Please provide the product Id" , 400))
         }
-        const product = await Product.findByIdAndDelete(productId);
-        if(!product){
-            return next(new errorHandler("Product not found" , 404))
-        }
+        const productData = await Product.findById(productId);
+              if(!productData){
+                  return next(new errorHandler("Product not found" , 404))
+              }
+              productData.images.forEach((image) => {
+                  const path = `uploads/${image}`;
+                  fs.unlinkSync(path , (err) => {
+                      if(err){
+                          console.log(err, "Error while deleting the image")
+                      }
+                  })
+              })
+              const product = await Product.findByIdAndDelete(productId);
+              if(!product){
+                  return next(new errorHandler("Product not found" , 404))
+              }
         res.
         status(200)
         .json(new apiResponse(true , "Product Deleted Successfully"))

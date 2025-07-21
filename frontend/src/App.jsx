@@ -20,6 +20,8 @@ import {
   ShopHomePage,
   DashboardCreateProductPage,
   DashboardAllProductPage,
+  DashboardAllEventsPage,
+  DashboardCreateEventPage,
 } from "./routes/allPagesLocalRoutes.js";
 import { Bounce, ToastContainer, toast } from 'react-toastify';
 import axios from "axios";
@@ -65,6 +67,7 @@ function App() {
               <ShopHomePage/>
             </SellerProtectedRoutes>
           } />
+
           <Route path="/dashboard" element={
             <SellerProtectedRoutes>
               <DashboardPage/>
@@ -78,6 +81,16 @@ function App() {
           <Route path="/dashboard/products" element={
             <SellerProtectedRoutes>
               <DashboardAllProductPage/>
+            </SellerProtectedRoutes>
+          } />
+          <Route path="/dashboard/create-event" element={
+            <SellerProtectedRoutes>
+              <DashboardCreateEventPage/>
+            </SellerProtectedRoutes>
+          } />
+          <Route path="/dashboard/all-events" element={
+            <SellerProtectedRoutes>
+              <DashboardAllEventsPage/>
             </SellerProtectedRoutes>
           } />
         </Routes>

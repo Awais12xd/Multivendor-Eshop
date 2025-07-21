@@ -6,6 +6,7 @@ import authRoutes from "./routes/auth.routes.js"
 import userRoutes from "./routes/user.routes.js"
 import shopRoutes from "./routes/shop.routes.js"
 import productRoutes from "./routes/product.routes.js"
+import eventRoutes from "./routes/event.routes.js"
 import { errorMiddle } from "./middlewares/error.middleware.js"
 
 
@@ -39,6 +40,7 @@ app.use("/api/auth", authRoutes);
 app.use("/api/user", userRoutes);
 app.use("/api/shop", shopRoutes);
 app.use("/api/product", productRoutes);
+app.use("/api/event" , eventRoutes);
 
 
 

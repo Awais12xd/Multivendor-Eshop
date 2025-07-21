@@ -19,6 +19,8 @@ import ShopHomePage from "../pages/shop/ShopHomePage.jsx"
 import DashboardPage from "../pages/Seller_Dashboard/DashboardPage.jsx"
 import DashboardCreateProductPage from "../pages/Seller_Dashboard/DashboardCreateProductPage.jsx"
 import DashboardAllProductPage from "../pages/Seller_Dashboard/DashboardAllProductPage.jsx"
+import DashboardCreateEventPage from "../pages/Seller_Dashboard/DashboardCreateEventPage.jsx"
+import DashboardAllEventsPage from "../pages/Seller_Dashboard/DashboardAllEventsPage.jsx"
 
 export {
     LoginPage,
@@ -36,8 +38,10 @@ export {
     SellerActivation,
     LoginShopPage,
     ShopHomePage,
-
+    //Dashboard Seller Routes
     DashboardPage,
     DashboardCreateProductPage,
-    DashboardAllProductPage
+    DashboardAllProductPage,
+    DashboardCreateEventPage,
+    DashboardAllEventsPage,
 }
