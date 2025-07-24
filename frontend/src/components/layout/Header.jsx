@@ -32,7 +32,8 @@ const Header = ({ activeHeading }) => {
   const [openSearch, setOpenSearch] = useState(false);
   const { allProducts } = useSelector((state) => state.allProducts);
 
-  const {cart} = useSelector((state) => state.cart)
+  const {cart} = useSelector((state) => state.cart);
+  const {wishlist} = useSelector((state) => state.wishlist)
 
   const handleOnChangeSearch = async (e) => {
     const term = e.target.value;
@@ -90,7 +91,7 @@ const Header = ({ activeHeading }) => {
                     const name = data.name;
                     const product_name = name.replace(/\s+/g, "-");
                     return (
-                      <Link to={`/product/${product_name}`} key={index}>
+                      <Link to={`/product/${data._id}`} key={index}>
                         <div className="w-full flex items-center py-3 ">
                           <img
                             loading="lazy"
@@ -153,7 +154,7 @@ const Header = ({ activeHeading }) => {
             >
               <AiOutlineHeart size={30} className="text-white" />
               <span className="w-4 h-4 absolute  bottom-4 right-0 p-0 m-0 rounded-full bg-green-400 text-white text-sm leading-tight text-center">
-                0
+                {wishlist && wishlist.length}
               </span>
             </div>
             <div
@@ -238,7 +239,7 @@ const Header = ({ activeHeading }) => {
                               return (
                                 <Link
                                   onClick={() => setOpenSearch(false)}
-                                  to={`/product/${product_name}`}
+                                  to={`/product/${data._id}`}
                                 >
                                   <div className="w-full flex items-center py-3 ">
                                     <img

@@ -3,13 +3,7 @@ import { FaShoppingBag } from "react-icons/fa";
 import { RxCross1 } from "react-icons/rx";
 import { Link } from "react-router-dom";
 import "../../App.css";
-import styles from "../../style/style";
-import { BiMinus } from "react-icons/bi";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  addToCart,
-  removeFromCart,
-} from "../../redux/reducers/cart.reducer.js";
 import { toast } from "react-toastify";
 import {
   addToCartAction,

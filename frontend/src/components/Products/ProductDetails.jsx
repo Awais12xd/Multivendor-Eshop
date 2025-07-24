@@ -7,28 +7,42 @@ import {
   AiOutlineShoppingCart,
 } from "react-icons/ai";
 import { Link, useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  addToWishlistAction,
+  removeFromWishlistAction,
+} from "../../redux/actions/wishlist.js";
+import { toast } from "react-toastify";
+import { addToCartAction } from "../../redux/actions/cart.js";
 
 const ProductDetails = ({ product }) => {
   const navigate = useNavigate();
   const [click, setClick] = useState(false);
+  const dispatch = useDispatch();
   const [select, setSelect] = useState(0);
   const [count, setCount] = useState(0);
-  console.log(product);
-  const [info , setInfo] = useState(null)
-  const  {allProducts} = useSelector((state) => state.allProducts)
-   useEffect(() => {
-       const fetchProductDetails = () => {
-         if (allProducts && allProducts.length > 0) {
-           const products = allProducts.filter(
-             (i) => i.shop._id === product.shopId
-           );
-           setInfo(products || null);
-         }
-       };
-   
-       fetchProductDetails();
-     }, [allProducts, product]); 
+  const [info, setInfo] = useState(null);
+  const { allProducts } = useSelector((state) => state.allProducts);
+  const { cart } = useSelector((state) => state.cart);
+  const { wishlist } = useSelector((state) => state.wishlist);
+  useEffect(() => {
+    const fetchProductDetails = () => {
+      if (allProducts && allProducts.length > 0) {
+        const products = allProducts.filter(
+          (i) => i.shop._id === product.shopId
+        );
+        setInfo(products || null);
+      }
+    };
+
+    fetchProductDetails();
+    const existed = wishlist && wishlist.find((i) => i._id === product._id);
+    if (existed) {
+      setClick(true);
+    } else {
+      setClick(false);
+    }
+  }, [allProducts, product, wishlist]);
 
   const increamentCount = () => {
     setCount(count + 1);
@@ -39,9 +53,32 @@ const ProductDetails = ({ product }) => {
     }
   };
 
+  const handleAddToWishlist = (data) => {
+    setClick(true);
+    dispatch(addToWishlistAction(data));
+  };
+  const handleRemoveFromWishlist = (data) => {
+    setClick(false);
+    dispatch(removeFromWishlistAction(data));
+  };
+
   const handleMessageClick = () => {
     navigate("/inbox?conversation=HelloHowareyou");
   };
+
+   const addToCartHandler = (id) => {
+      const existed = cart && cart.find((i) => i._id == id);
+      if(product.stock < count){
+        return toast.error("Stock is limited")
+      }
+      if (existed) {
+        toast.error("Product already added in the cart!");
+      } else {
+        const cartData = { ...product, qty: count };
+        dispatch(addToCartAction(cartData));
+        toast.success("Product added to cart successfully!");
+      }
+    };
 
   return (
     <div className="bg-white pb-6">
@@ -110,24 +147,25 @@ const ProductDetails = ({ product }) => {
                   </div>
                   {click ? (
                     <AiFillHeart
-                      size={25}
+                      size={22}
                       className="cursor-pointer"
                       color="red"
                       title="Remove from wishlist"
-                      onClick={() => setClick(!click)}
+                      onClick={() => handleRemoveFromWishlist(product)}
                     />
                   ) : (
                     <AiOutlineHeart
-                      size={25}
+                      size={22}
                       className="cursor-pointer"
                       color="red"
                       title="Add to wishlist"
-                      onClick={() => setClick(!click)}
+                      onClick={() => handleAddToWishlist(product)}
                     />
                   )}
                 </div>
                 <div
                   className={`${styles.button} bg-black mt-5 rounded-[4px] h-11`}
+                  onClick={() => addToCartHandler(product._id)}
                 >
                   <span className="flex text-white items-center rounded-[4px]">
                     Add to cart{" "}
@@ -170,7 +208,7 @@ const ProductDetails = ({ product }) => {
   );
 };
 
-const ProductDetailInfo = ({ product , info }) => {
+const ProductDetailInfo = ({ product, info }) => {
   const [active, setActive] = useState(1);
   // Helper to safely get the length of info array
   const length = (arr) => (Array.isArray(arr) ? arr.length : 0);
@@ -263,7 +301,8 @@ const ProductDetailInfo = ({ product , info }) => {
             </div>
             <div className="text-left">
               <p className="font-semibold whitespace-nowrap">
-                Total Products : <span className="font-[500]">{length(info)}</span>
+                Total Products :{" "}
+                <span className="font-[500]">{length(info)}</span>
               </p>
             </div>
             <div className="text-left">
@@ -275,9 +314,7 @@ const ProductDetailInfo = ({ product , info }) => {
               to={`/shop/${product.shopId}`}
               className={`${styles.button} mt-4 rounded-[4px] h-11 hover:opacity-85`}
             >
-              <div
-                className="flex text-white items-center rounded-[4px]"
-              >
+              <div className="flex text-white items-center rounded-[4px]">
                 Visit Shop
               </div>
             </Link>

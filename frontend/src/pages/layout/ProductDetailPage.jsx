@@ -8,24 +8,21 @@ import { useSelector } from "react-redux";
 import Loader from "../../components/Animations/Loader.jsx";
 
 const ProductDetailPage = () => {
-  const { name } = useParams();
+  const { id } = useParams();
   const [data, setData] = useState(null);
 
-  const productName = name.replace(/-/g, " ");
   const { allProducts, isLoading } = useSelector((state) => state.allProducts);
 
   useEffect(() => {
     const fetchProductDetails = () => {
       if (allProducts && allProducts.length > 0) {
-        const product = allProducts.find(
-          (product) => product.name.toLowerCase() === productName.toLowerCase()
-        );
+        const product = allProducts.find((product) => product._id === id);
         setData(product || null);
       }
     };
-    window.scrollTo(0, 0)
+    window.scrollTo(0, 0);
     fetchProductDetails();
-  }, [allProducts, productName]);
+  }, [allProducts,id]);
 
   return (
     <div>

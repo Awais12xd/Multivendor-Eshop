@@ -61,7 +61,7 @@ function App() {
                 <ProfilePage  />
             </ProtectedRoute>
           } />
-          <Route path="/product/:name" element={<ProductDetailPage />} />
+          <Route path="/product/:id" element={<ProductDetailPage />} />
           <Route path="/activation/:url" element={<ActivationPage />} />
 
           <Route path="/shop/seller/activation/:url" element={<SellerActivation />} />

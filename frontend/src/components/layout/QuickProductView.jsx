@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { RxCross1 } from "react-icons/rx";
 import styles from "../../style/style";
 import {
@@ -10,7 +10,11 @@ import {
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
-import { addToCartAction } from "../../redux/actions/cart";
+import { addToCartAction } from "../../redux/actions/cart.js";
+import {
+  addToWishlistAction,
+  removeFromWishlistAction,
+} from "../../redux/actions/wishlist.js";
 
 const QuickProductView = ({ setOpen, data }) => {
   const { cart } = useSelector((state) => state.cart);
@@ -18,6 +22,26 @@ const QuickProductView = ({ setOpen, data }) => {
   const [click, setClick] = useState(false);
   const [select, setSelect] = useState(false);
   const dispatch = useDispatch();
+
+  const { wishlist } = useSelector((state) => state.wishlist);
+
+  useEffect(() => {
+    const existed = wishlist && wishlist.find((i) => i._id === data._id);
+    if (existed) {
+      setClick(true);
+    } else {
+      setClick(false);
+    }
+  }, [wishlist]);
+
+  const handleAddToWishlist = (data) => {
+    setClick(true);
+    dispatch(addToWishlistAction(data));
+  };
+  const handleRemoveFromWishlist = (data) => {
+    setClick(false);
+    dispatch(removeFromWishlistAction(data));
+  };
 
   const handleMessageClick = () => {};
 
@@ -119,7 +143,7 @@ const QuickProductView = ({ setOpen, data }) => {
                       className="cursor-pointer"
                       color="red"
                       title="Remove from wishlist"
-                      onClick={() => setClick(!click)}
+                      onClick={() => handleRemoveFromWishlist(data)}
                     />
                   ) : (
                     <AiOutlineHeart
@@ -127,7 +151,7 @@ const QuickProductView = ({ setOpen, data }) => {
                       className="cursor-pointer"
                       color="red"
                       title="Add to wishlist"
-                      onClick={() => setClick(!click)}
+                      onClick={() => handleAddToWishlist(data)}
                     />
                   )}
                 </div>
