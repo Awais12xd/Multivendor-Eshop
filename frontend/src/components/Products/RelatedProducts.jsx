@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from 'react'
-import { productData } from '../../static/data';
 import styles from '../../style/style';
 import ProductCard from '../layout/ProductCard';
+import { useSelector } from 'react-redux';
 
 const RelatedProducts = ({data}) => {
     const [products , setProducts] = useState([]);
+    const {allProducts} =  useSelector((state) => state.allProducts);
     useEffect(() => {
-        const relateProducts = productData && productData.filter((product) => product.category === data.category);
+        const relateProducts = allProducts && allProducts.filter((product) => product.category === data.category);
         setProducts(relateProducts);
-        console.log(products);
     } , [])
   return (
     <div className='py-4'>

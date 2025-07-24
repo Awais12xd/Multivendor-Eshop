@@ -135,7 +135,7 @@ const DashboardSideBar = ({ active, setActive }) => {
         </Link>
       </div>
       <div className="flex items-center w-full p-4">
-        <Link to={"/dashboard/coupons"} className="w-full flex items-center">
+        <Link to={"/dashboard/coupon-codes"} className="w-full flex items-center">
           <AiOutlineGift
             size={30}
             className={active === 9 ? "text-red-500" : "text-gray-700"}

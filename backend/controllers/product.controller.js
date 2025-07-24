@@ -3,6 +3,7 @@ import { apiResponse } from "../utils/apiResponse.js";
 import { Product } from "../models/product.model.js";
 import { Shop } from "../models/shop.model.js";
 import fs from "fs";
+
 const createProduct = async (req , res , next) => {
      try {
         const shopId = req.body.shopId;
@@ -67,6 +68,22 @@ const getAllProducts = async(req , res , next) => {
         
     }
 }
+const getEveryProduct = async(req , res , next) => {
+    try {
+        const products = await Product.find().sort({ createdAt: -1 });
+        if(!products || products.length === 0){
+            return next(new errorHandler("No Products found." , 404));
+        }
+        res.
+        status(200)
+        .json(new apiResponse(true , "Products Found" , products))
+        
+    } catch (error) {
+        console.log("Error while fetching products" , error)
+        return next(new errorHandler(error.message, 500));
+        
+    }
+}
 
 const deleteProduct = async(req,res,next) => {
     try {
@@ -102,5 +119,6 @@ const deleteProduct = async(req,res,next) => {
 export {
     createProduct,
     getAllProducts,
+    getEveryProduct,
     deleteProduct
 }

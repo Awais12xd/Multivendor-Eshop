@@ -74,6 +74,24 @@ const getAllEvents = async(req , res , next) => {
     }
 }
 
+const getEveryEvent = async(req , res , next) => {
+    try {
+      
+        const events = await Event.find();
+        if(!events || events.length === 0){
+            return next(new errorHandler("No events found " , 404));
+        }
+        res.
+        status(200)
+        .json(new apiResponse(true , "All Events Found" , events))
+        
+    } catch (error) {
+        console.log("Error while fetching events" , error)
+        return next(new errorHandler(error.message, 500));
+        
+    }
+}
+
 const deleteEvent= async(req,res,next) => {
     try {
         const eventId = req.params.id;
@@ -108,5 +126,6 @@ const deleteEvent= async(req,res,next) => {
 export {
     createEvent,
     getAllEvents,
-    deleteEvent
+    deleteEvent,
+    getEveryEvent,
 }

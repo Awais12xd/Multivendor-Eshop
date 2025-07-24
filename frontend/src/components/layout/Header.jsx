@@ -29,7 +29,8 @@ const Header = ({ activeHeading }) => {
   const [dropDown, setDropDown] = useState(false);
   const [openCart, setOpenCart] = useState(false);
   const [openWish, setOpenWish] = useState(false);
-  const [openSearch, setOpenSearch] = useState(false);
+  const [openSearch, setOpenSearch] = useState(false)
+  const {allProducts} = useSelector((state) => state.allProducts)
 
   const handleOnChangeSearch = async (e) => {
     const term = e.target.value;
@@ -37,7 +38,7 @@ const Header = ({ activeHeading }) => {
 
     if (term.trim() !== "") {
       const filteredData =
-        productData?.filter((product) =>
+        allProducts && allProducts?.filter((product) =>
           product.name.toLowerCase().includes(term.toLowerCase())
         ) || [];
 
@@ -79,17 +80,17 @@ const Header = ({ activeHeading }) => {
               className="absolute right-2 top-[6px] cursor-pointer font-light text-gray-600 "
             />
             {searchData && searchData.length !== 0 ? (
-              <div className="absolute  min-h-[30vh] p-4 shadow-sm-2 bg-slate-50 z-[9]">
+              <div className="absolute  min-h-[30vh] p-4 shadow-sm-2 bg-slate-50 z-[9] w-full">
                 {searchData &&
                   searchData.map((data, index) => {
                     const name = data.name;
                     const product_name = name.replace(/\s+/g, "-");
                     return (
-                      <Link to={`/product/${product_name}`}>
+                      <Link to={`/product/${product_name}`} key={index}>
                         <div className="w-full flex items-center py-3 ">
                           <img
                             loading="lazy"
-                            src={data.image_Url[0].url}
+                            src={`${import.meta.env.VITE_BACKEND_URL}/${data?.images[0]}`}
                             alt="product"
                             className="w-[40px] object-cover h-[40] mr-[10px]"
                           />

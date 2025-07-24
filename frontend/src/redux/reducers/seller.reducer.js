@@ -1,12 +1,11 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-
 const initialState = {
-    isSeller : false,
-    isloading:false,
-    error:null,
-    seller:null
-}
+  isSeller: false,
+  isloading: false,
+  error: null,
+  seller: null,
+};
 
 export const sellerreducer = createSlice({
   name: "seller",
@@ -16,7 +15,7 @@ export const sellerreducer = createSlice({
       state.isloading = true;
     },
     loadSellerSuccess: (state, action) => {
-        state.isSeller=true;
+      state.isSeller = true;
       state.seller = action.payload;
       state.isloading = false;
       state.error = null;
@@ -25,13 +24,12 @@ export const sellerreducer = createSlice({
       state.isloading = false;
       state.error = action.payload;
       state.isSeller = false;
-      state.seller=null;
+      state.seller = null;
     },
   },
+});
 
-})
-
-
-export const { loadSellerFail, loadSellerStart , loadSellerSuccess } = sellerreducer.actions;
+export const { loadSellerFail, loadSellerStart, loadSellerSuccess } =
+  sellerreducer.actions;
 
 export const sellerReducer = sellerreducer.reducer;

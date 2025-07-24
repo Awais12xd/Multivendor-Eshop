@@ -4,7 +4,8 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
     isloading:false,
     error:null,
-    products:null
+    products:null,
+    allProducts : null
 }
 
 export const productsreducer = createSlice({
@@ -36,6 +37,7 @@ export const productsreducer = createSlice({
       state.isloading = false;
       state.error = action.payload;
     },
+    
   },
 
 })

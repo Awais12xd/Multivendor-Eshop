@@ -20,10 +20,6 @@ const couponCodeSchema = new Schema({
         type: Object,
         required: [true, "Please add the shop details"],
     },
-    expiryDate : {
-        type : Date , 
-        required : [true , "Please enter the coupon expiry date"]
-    },
 },
 {
     timestamps: true,

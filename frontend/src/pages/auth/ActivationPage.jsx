@@ -1,10 +1,11 @@
 import axios from 'axios';
 import react,{useEffect,useState} from 'react'
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 
 const ActivationPage = () => {
     const  {url}= useParams();
     const [error , setError] = useState(false)
+    const navigate = useNavigate();
 
     useEffect(()=> {
         if(url){
@@ -23,7 +24,7 @@ const ActivationPage = () => {
               setError(true)
           }
           if(data){
-            console.log(data)
+            navigate("/login");
           }
         } catch (error) {
             console.log(error.message , error)

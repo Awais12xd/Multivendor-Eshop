@@ -1,7 +1,7 @@
 import React from 'react'
 import styles from '../../style/style'
 import { brandingData, categoriesData } from '../../static/data.jsx'
-import { useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 
 const Categories = () => {
     const navigate = useNavigate();
@@ -31,16 +31,13 @@ const Categories = () => {
         <div className="grid grid-cols-1 gap-[5px] md:grid-cols-2 md:gap-[10px] lg:grid-cols-4 lg:gap-[20px] xl:grid-cols-5 xl:gap-[30px]">
              {
                 categoriesData && categoriesData.map((data,index) => {
-                  const handleSubmit = (data) => {
-                    navigate(`/products?category=${data.title}`)
-                  }  
+                 
                   return(
-                  <div className="flex items-center w-full h-[100px]  justify-between cursor-pointer overflow-hidden" key={index}
-                  onClick={() => handleSubmit(data)}
+                  <Link to={`/products?category=${data.title}`}  className="flex items-center w-full h-[100px]  justify-between cursor-pointer overflow-hidden" key={index}
                   >
                        <h5 className='text=[18px]'>{data.title}</h5>
                        <img src={data.image_Url} className='w-[120px] object-contain' alt="" />
-                </div>
+                </Link>
                   )
 })
              }

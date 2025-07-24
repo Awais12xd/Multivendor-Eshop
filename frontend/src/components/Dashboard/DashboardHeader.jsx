@@ -15,7 +15,7 @@ const DashboardHeader = () => {
   return (
     <div className='w-full h-[80px] bg-white shadow sticky top-o left-0  px-4 flex items-center justify-between z-40 py-  '>
       <div className="">
-        <Link to={"/dashboard"}>
+        <Link to={"/"}>
         <img src={imageUrl} alt="logo" />
         </Link>
         </div> 

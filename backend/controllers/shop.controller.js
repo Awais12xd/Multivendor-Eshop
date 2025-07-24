@@ -176,6 +176,22 @@ const getSeller = async(req , res , next) => {
         
     }
 }
+const getSellerInfo = async(req , res , next) => {
+    try {
+        const userId = req.params.id;
+        const seller = await Shop.findById(userId);
+        if (!seller) {
+            return next(new errorHandler("Seller not found.", 404));
+            }
+
+            res.
+            status(200).
+            json(new apiResponse(true , "Seller found" , seller));
+        
+    } catch (error) {
+        return next(new errorHandler("Error while getting seller info." , 500))
+    }
+}
 
 const logout = async (req, res, next) => {
   try {
@@ -197,6 +213,7 @@ export {
   generateActivationToken,
   activateSeller,
   loginSeller,
+  getSellerInfo,
   getSeller,
   logout,
 };

@@ -3,11 +3,12 @@ import { Link } from 'react-router-dom'
 import styles from '../../style/style';
 import { AiFillHeart, AiFillStar, AiOutlineEye, AiOutlineHeart, AiOutlineShoppingCart, AiOutlineStar } from 'react-icons/ai';
 import QuickProductView from './QuickProductView.jsx';
+import { productData } from '../../static/data.jsx';
 
 const ProductCard = ({product}) => {
   const [click , setClick] = useState(false);
   const [open , setOpen] = useState(false)
-
+  console.log(product)
   const name = product.name;
   // Doing this below to add - instead of space so can use it in the url
   const product_name = name.replace(/\s+/g, "-");
@@ -18,12 +19,12 @@ const ProductCard = ({product}) => {
         <div>
           <Link to={`/product/${product_name}`}>
             <img
-              src={product.image_Url[0].url}
-              alt=""
+              src={`${import.meta.env.VITE_BACKEND_URL}/${product?.images[0]}`}
+              alt="Product"
               className='h-[170px] object-contain w-full'
             />
           </Link>
-          <Link className={`${styles.shop_name}`} to={"/"}>
+          <Link className={`${styles.shop_name}`} to={`/shop/${product.shopId}`}>
             {product.shop.name}
           </Link>
         </div>
@@ -45,14 +46,14 @@ const ProductCard = ({product}) => {
       <div className="flex py-2 justify-between items-center mt-2">
         <div className="flex">
           <h5 className={`${styles.productDiscountPrice}`}>
-            {product.price === 0 ? product.price : product.discount_price}$
+            {product.discountPrice}$
           </h5>
           <h4 className={`${styles.price}`}>
-            {product.price ? product.price + "$" : null}
+            {product.originalPrice + "$"}
           </h4>
         </div>
         <p className='text-green-400 font-[500]'>
-          {product.total_sell} Sold
+          {product.sold_out} Sold
         </p>
       </div>
       <div className="">

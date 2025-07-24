@@ -5,7 +5,7 @@ import { useSelector } from 'react-redux';
 
 const SignUpPage = () => {
   const navigate = useNavigate();
-  const {isAuth} = useSelector((state) => state.user);
+  const {isAuth , loading} = useSelector((state) => state.user);
 
   useEffect(() => {
     if(isAuth){

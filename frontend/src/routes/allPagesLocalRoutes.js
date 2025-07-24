@@ -21,6 +21,7 @@ import DashboardCreateProductPage from "../pages/Seller_Dashboard/DashboardCreat
 import DashboardAllProductPage from "../pages/Seller_Dashboard/DashboardAllProductPage.jsx"
 import DashboardCreateEventPage from "../pages/Seller_Dashboard/DashboardCreateEventPage.jsx"
 import DashboardAllEventsPage from "../pages/Seller_Dashboard/DashboardAllEventsPage.jsx"
+import DashboardAllCouponsPage from "../pages/Seller_Dashboard/DashboardAllCouponsPage.jsx"
 
 export {
     LoginPage,
@@ -44,4 +45,5 @@ export {
     DashboardAllProductPage,
     DashboardCreateEventPage,
     DashboardAllEventsPage,
+    DashboardAllCouponsPage,
 }

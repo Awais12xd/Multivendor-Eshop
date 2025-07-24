@@ -6,25 +6,6 @@ import "../../App.css"
 import styles from '../../style/style'
 import { BiMinus } from 'react-icons/bi'
 
-const StaticData = [
-    {
-        name:"iphone",
-        description:"Anything here",
-        price:299
-    },
-    {
-        name:"iphone",
-        description:"Anything here",
-        price:299
-    },
-    {
-        name:"iphone",
-        description:"Anything here",
-        price:299
-    },
-    
-]
-
 const Cart = ({setOpenCart}) => {
   return (
     <div  className='absolute z-10 top-0 left-0 w-full h-screen bg-[#0000005f] overflow-y-auto'>

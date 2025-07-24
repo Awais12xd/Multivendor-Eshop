@@ -6,6 +6,7 @@ import {
   createProduct,
   deleteProduct,
   getAllProducts,
+  getEveryProduct,
 } from "../controllers/product.controller.js";
 
 const router = express.Router();
@@ -16,6 +17,7 @@ router.post(
   catchAsyncError(createProduct)
 );
 router.get("/get-all-products/:id", catchAsyncError(getAllProducts));
+router.get("/get-every-product", catchAsyncError(getEveryProduct));
 router.delete("/delete-product/:id" , verifySeller , catchAsyncError(deleteProduct));
 // router.post("/seller/activation" , catchAsyncError(activateSeller));
 // router.post("/shop-login" , catchAsyncError(loginSeller));

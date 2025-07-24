@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import { FaRegUserCircle } from "react-icons/fa";
 import axios from "axios"
 import { toast } from "react-toastify";
+import { useSelector } from "react-redux";
 
 const SignUp = () => {
   const [email, setEmail] = useState("");
@@ -11,6 +12,7 @@ const SignUp = () => {
   const [visible, setVisible] = useState(false);
   const [username, setUserName] = useState("");
   const [file, setFile] = useState(null);
+  const {loading} = useSelector((state) => state.user)
 
 const handleFileChange = (e) => {
     setFile(e.target.files[0]);
@@ -166,7 +168,9 @@ const handleSubmit = async(e) => {
                 type="submit"
                 className="w-full h-10 bg-blue-600 cursor-pointer hover:bg-blue-500 disabled:cursor-no-drop disabled:bg-blue-200 text-white rounded-lg flex items-center text-center justify-center"
               >
-                Submit
+              {
+                loading ? "Processing..." : "Submit"
+              }
               </button>
             </div>
             <div className="mt-1 flex font-normal">

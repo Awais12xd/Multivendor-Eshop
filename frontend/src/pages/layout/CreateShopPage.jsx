@@ -11,7 +11,6 @@ const CreateShopPage = () => {
     useEffect(() => {
       if(isSeller){
         navigate(`/dashboard`)
-
       }
     } ,[isSeller ,isloading ])
   return (

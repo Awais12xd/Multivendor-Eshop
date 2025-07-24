@@ -1,11 +1,10 @@
-import { useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 
 const DropDown = ({categoriesData , setDropDown}) => {
     const navigate = useNavigate();
     const handleSubmit = (data) => {
         navigate(`/products?category=${data.title}`)
         setDropDown(false)
-        window.location.reload()
     }
   return (
     <div className='pb-4 w-[270px] bg-white absolute z-30 rounded-b-md shadow-sm' >

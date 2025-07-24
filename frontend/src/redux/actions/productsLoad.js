@@ -42,4 +42,5 @@ const productDelete = async(dispatch,id) => {
 
 }
 
-export {productsLoad , productDelete}
+
+export {productsLoad , productDelete }

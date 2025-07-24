@@ -22,6 +22,7 @@ import {
   DashboardAllProductPage,
   DashboardAllEventsPage,
   DashboardCreateEventPage,
+  DashboardAllCouponsPage,
 } from "./routes/allPagesLocalRoutes.js";
 import { Bounce, ToastContainer, toast } from 'react-toastify';
 import axios from "axios";
@@ -30,6 +31,8 @@ import { useDispatch, useSelector } from "react-redux";
 import ProtectedRoute from "./routes/PrivateRoutes.jsx";
 import { sellerLoad } from "./redux/actions/sellerLoad.js";
 import SellerProtectedRoutes from "./routes/SellerProtectedRoutes.jsx";
+import { allProductsLoad } from "./redux/actions/allProductslaod.js";
+import { allEventsLoad } from "./redux/actions/allEventsLoad.js";
 
 
 function App() {
@@ -39,6 +42,8 @@ function App() {
   useEffect(() => {
       userLoad(dispatch);
       sellerLoad(dispatch);
+      allProductsLoad(dispatch);
+      allEventsLoad(dispatch);
   } , [])
   return (
     <>
@@ -63,10 +68,9 @@ function App() {
           <Route path="/create-shop" element={<CreateShopPage />} />
           <Route path="/shop-login" element={<LoginShopPage />} />
           <Route path="/shop/:id" element={
-            <SellerProtectedRoutes >
               <ShopHomePage/>
-            </SellerProtectedRoutes>
           } />
+          
 
           <Route path="/dashboard" element={
             <SellerProtectedRoutes>
@@ -93,6 +97,13 @@ function App() {
               <DashboardAllEventsPage/>
             </SellerProtectedRoutes>
           } />
+          <Route path="/dashboard/coupon-codes" element={
+            <SellerProtectedRoutes>
+              <DashboardAllCouponsPage/>
+            </SellerProtectedRoutes>
+          } />
+
+
         </Routes>
         <ToastContainer
           position="bottom-center"
