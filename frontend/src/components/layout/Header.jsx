@@ -29,8 +29,10 @@ const Header = ({ activeHeading }) => {
   const [dropDown, setDropDown] = useState(false);
   const [openCart, setOpenCart] = useState(false);
   const [openWish, setOpenWish] = useState(false);
-  const [openSearch, setOpenSearch] = useState(false)
-  const {allProducts} = useSelector((state) => state.allProducts)
+  const [openSearch, setOpenSearch] = useState(false);
+  const { allProducts } = useSelector((state) => state.allProducts);
+
+  const {cart} = useSelector((state) => state.cart)
 
   const handleOnChangeSearch = async (e) => {
     const term = e.target.value;
@@ -38,9 +40,11 @@ const Header = ({ activeHeading }) => {
 
     if (term.trim() !== "") {
       const filteredData =
-        allProducts && allProducts?.filter((product) =>
-          product.name.toLowerCase().includes(term.toLowerCase())
-        ) || [];
+        (allProducts &&
+          allProducts?.filter((product) =>
+            product.name.toLowerCase().includes(term.toLowerCase())
+          )) ||
+        [];
 
       setSearchData(filteredData);
     } else {
@@ -90,7 +94,9 @@ const Header = ({ activeHeading }) => {
                         <div className="w-full flex items-center py-3 ">
                           <img
                             loading="lazy"
-                            src={`${import.meta.env.VITE_BACKEND_URL}/${data?.images[0]}`}
+                            src={`${import.meta.env.VITE_BACKEND_URL}/${
+                              data?.images[0]
+                            }`}
                             alt="product"
                             className="w-[40px] object-cover h-[40] mr-[10px]"
                           />
@@ -156,7 +162,7 @@ const Header = ({ activeHeading }) => {
             >
               <AiOutlineShoppingCart size={30} className="text-white" />
               <span className="w-4 h-4 absolute bottom-4 right-0 p-0 m-0 rounded-full bg-green-400 text-white text-sm leading-tight text-center">
-                1
+                {cart && cart.length}
               </span>
             </div>
             <div className="relative cursor-pointer mr-[15px]">
@@ -306,7 +312,8 @@ const Header = ({ activeHeading }) => {
           >
             <AiOutlineShoppingCart size={30} className="ite" />
             <span className="w-4 h-4 absolute bottom-4 right-0 p-0 m-0 rounded-full bg-green-400 text-white text-sm leading-tight text-center">
-              1
+                {cart && cart.length}
+              
             </span>
           </div>
           {openCart && <Cart setOpenCart={setOpenCart} />}

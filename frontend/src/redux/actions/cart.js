@@ -1,6 +1,7 @@
 import { addToCart, removeFromCart } from "../reducers/cart.reducer.js"
 
 const addToCartAction = (data) => async(dispatch , getState) => {
+    
      
      dispatch(addToCart(data));
      localStorage.setItem("cartItems" , JSON.stringify(getState().cart.cart));
