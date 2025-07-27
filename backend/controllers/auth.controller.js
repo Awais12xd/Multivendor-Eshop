@@ -131,7 +131,6 @@ const loginUser = async(req,res,next) => {
       if(!isMatch){
         return next(new errorHandler("Invalid password!",400));
       }
-       console.log('passowrd match success') 
       sendToken(user,200,res);
 
       

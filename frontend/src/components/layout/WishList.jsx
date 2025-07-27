@@ -85,7 +85,7 @@ const SingleWishBox = ({ wish , handleRemoveFromCart , addToCartHandler   }) => 
   return (
     <>
       <div className="border-b border-slate-300 p-4">
-        <div className="w-full flex items-center gap-2">
+        <div className="w-full flex items-center gap-2 justify-between">
           <div className="cancel flex items-center">
             <RxCross1 className="cursor-pointer"
             onClick={() => handleRemoveFromCart(wish)}

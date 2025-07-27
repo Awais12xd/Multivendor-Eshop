@@ -109,7 +109,7 @@ const SingleCartBox = ({
   return (
     <>
       <div className="border-b border-slate-300 p-4">
-        <div className="w-full flex items-center gap-2">
+        <div className="w-full flex items-center gap-2 justify-between">
           <div className="for-value-changes flex flex-col justify-center items-center  ">
             <div
               className="bg-orange-600 text-white p-3 rounded-full w-6 h-6 cursor-pointer flex justify-center items-center"
@@ -128,7 +128,7 @@ const SingleCartBox = ({
           <div className="image w-[160px] h-min ">
             <img
               src={`${import.meta.env.VITE_BACKEND_URL}/${data.images[0]}`}
-              className="w-[160px] h-min object-contain "
+              className="w-[160px]  h-min object-contain "
               alt="product"
             />
           </div>
