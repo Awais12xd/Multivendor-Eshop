@@ -27,7 +27,7 @@ export const userreducer = createSlice({
       state.isAuth = false;
       state.user = null;
     },
-    //Update the user
+    //Update the user data
     updateUserStart: (state) => {
       state.loading = true;
     },
@@ -37,6 +37,30 @@ export const userreducer = createSlice({
       state.error = null;
     },
     updateUserFail: (state, action) => {
+      state.loading = false;
+      state.error = action.payload;
+    },
+    //update user address
+    updateUserAddressStart: (state) => {
+    },
+    updateUserAddressSuccess: (state, action) => {
+      state.user = action.payload;
+      state.loading = false;
+      state.error = null;
+    },
+    updateUserAddressFail: (state, action) => {
+      state.loading = false;
+      state.error = action.payload;
+    },
+     //delete user address
+    deleteUserAddressStart: (state) => {
+    },
+    deleteUserAddressSuccess: (state, action) => {
+      state.user = action.payload;
+      state.loading = false;
+      state.error = null;
+    },
+    deleteUserAddressFail: (state, action) => {
       state.loading = false;
       state.error = action.payload;
     },
@@ -50,6 +74,12 @@ export const {
   updateUserFail,
   updateUserStart,
   updateUserSuccess,
+  updateUserAddressStart,
+  updateUserAddressSuccess,
+  updateUserAddressFail,
+  deleteUserAddressStart,
+  deleteUserAddressSuccess,
+  deleteUserAddressFail,
 } = userreducer.actions;
 
 export const userReducer = userreducer.reducer;

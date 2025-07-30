@@ -90,4 +90,106 @@ const changeAvatar = async (req, res, next) => {
   }
 };
 
-export { getUser, updateUser, changeAvatar };
+const addNewAddress = async (req, res, next) => {
+  try {
+    console.log(req.body)
+    console.log("Req is hitting in adding address")
+    const user = await User.findById(req.user.id);
+    if (!user) {
+      return next(new errorHandler("User not found", 404));
+    }
+        console.log("user found")
+
+    const sameTypeAddress = user.addresses.find(
+      (address) => address.addressType === req.body.addressType
+    );
+    if (sameTypeAddress) {
+      return next(
+        new errorHandler(`${req.body.addressType} address already exist`, 400)
+      );
+    }
+     console.log("Address not find")
+    const existingAddress = user.addresses.find(
+      (address) => address._id === req.body._id
+    );
+    if (existingAddress) {
+      Object.assign(existingAddress, req.body);
+           console.log("Address not hzdghgsafgafind")
+
+    } else {
+      user.addresses.push(req.body);
+           console.log("Address not find hjzdhcjsdhjca")
+
+    }
+    console.log("trying to save ")
+    await user.save();
+    console.log("Yes save ")
+
+    res
+      .status(200)
+      .json(new apiResponse(200, "New address added successfully!", user));
+  } catch (error) {
+    return next(new errorHandler("Error while adding new address", 500));
+  }
+};
+
+const deleteAddress = async (req, res, next) => {
+  try {
+    const addressId = req.params.id;
+    const userId = req.user.id;
+
+    await User.updateOne(
+      {
+        _id: userId,
+      },
+      {
+        $pull: { addresses: { _id: addressId } },
+      }
+    );
+    const user = await User.findById(userId);
+
+    res
+      .status(200)
+      .json(new apiResponse(200, "Address deleted successfully!", user));
+  } catch (error) {
+    return next(new errorHandler("Error while deleting user address", 500));
+  }
+};
+const changePassword = async (req, res, next) => {
+  try {
+    const userId = req.user.id;
+
+    const user = await User.findById(userId).select("+password");
+    const isPasswordMatch = await user.comparePassword(req.body.oldPassword);
+    if (!isPasswordMatch) {
+      return next(new errorHandler("The old password is incorrect", 400));
+    }
+
+    if (req.body.newPassword !== req.body.confirmPassword) {
+      return next(
+        new errorHandler(
+          "The new password does not match with confirm password!",
+          400
+        )
+      );
+    }
+
+    user.password = req.body.newPassword;
+    await user.save();
+
+    res
+      .status(200)
+      .json(new apiResponse(200, "Password Changed successfully!"));
+  } catch (error) {
+    return next(new errorHandler("Error while changing the password", 500));
+  }
+};
+
+export {
+  getUser,
+  updateUser,
+  changeAvatar,
+  addNewAddress,
+  deleteAddress,
+  changePassword,
+};

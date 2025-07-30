@@ -7,6 +7,7 @@ import { CouponCode } from "../models/couponCode.model.js";
 
 
 const createCouponCode = async (req , res , next) => {
+    console.log(req.body)
      try {
          const data = req.body;
          console.log(data)
@@ -39,16 +40,16 @@ const getAllCouponCodes = async(req , res , next) => {
         if(!req.params.id){
             return next(new errorHandler("Please provide the shop Id" , 400));
         }
-        const events = await Event.find({shopId : req.params.id});
-        if(!events || events.length === 0){
-            return next(new errorHandler("No events found for this shop" , 404));
+        const coupons = await CouponCode.find({shopId : req.params.id});
+        if(!coupons || coupons.length === 0){
+            return next(new errorHandler("No coupons found for this shop" , 404));
         }
         res.
         status(200)
-        .json(new apiResponse(true , "events Found" , events))
+        .json(new apiResponse(true , "coupons Found" , coupons))
         
     } catch (error) {
-        console.log("Error while fetching events" , error)
+        console.log("Error while fetching coupons" , error)
         return next(new errorHandler(error.message, 500));
         
     }
@@ -56,31 +57,38 @@ const getAllCouponCodes = async(req , res , next) => {
 
 const deleteCouponCode= async(req,res,next) => {
     try {
-        const eventId = req.params.id;
-        if(!eventId){
-            return next(new errorHandler("Please provide the event Id" , 400))
+        const couponsId = req.params.id;
+        if(!couponsId){
+            return next(new errorHandler("Please provide the coupons id" , 400))
         }
-        const eventData = await Event.findById(eventId);
-        if(!eventData){
-            return next(new errorHandler("Event not found" , 404))
+        const coupons = await CouponCode.findById(couponsId);
+        if(!coupons){
+            return next(new errorHandler("coupon not found" , 404))
         }
-        eventData.images.forEach((image) => {
-            const path = `uploads/${image}`;
-            fs.unlinkSync(path , (err) => {
-                if(err){
-                    console.log(err, "Error while deleting the image")
-                }
-            })
-        })
-        const event = await Event.findByIdAndDelete(eventId);
-        if(!event){
-            return next(new errorHandler("Event not found" , 404))
+      
+        const coupon = await CouponCode.findByIdAndDelete(couponsId);
+        if(!coupon){
+            return next(new errorHandler("Error while deleting the Coupon" , 500))
         }
         res.
         status(200)
-        .json(new apiResponse(true , "Event Deleted Successfully"))
+        .json(new apiResponse(true , "Coupon Deleted Successfully"))
     } catch (error) {
-        console.log("Error while deleting the Event" , error);
+        console.log("Error while deleting the Coupon" , error);
+        return next(new errorHandler(error.message , 500))
+    }
+}
+const getCouponValue= async(req,res,next) => {
+    try {
+        const couponCode = await CouponCode.findOne({name:req.params.name});
+        if(!couponCode){
+            return next(new errorHandler("Coupon Code does not exit!" , 404))
+        }
+        res.
+        status(200)
+        .json(new apiResponse(true , "Coupon Get Successfully",couponCode))
+    } catch (error) {
+        console.log("Error while getting the Coupon value" , error);
         return next(new errorHandler(error.message , 500))
     }
 }
@@ -88,5 +96,6 @@ const deleteCouponCode= async(req,res,next) => {
 export {
     createCouponCode,
     getAllCouponCodes,
-    deleteCouponCode
+    deleteCouponCode,
+    getCouponValue,
 }

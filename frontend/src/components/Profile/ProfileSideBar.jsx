@@ -2,10 +2,11 @@ import React from 'react'
 import { AiOutlineInbox, AiOutlineShopping } from 'react-icons/ai'
 import { BiLogOut, BiPackage, BiUser } from 'react-icons/bi'
 import { useNavigate } from 'react-router-dom'
-import {MdOutlineTrackChanges, MdPayment} from "react-icons/md"
-import { FaAddressBook } from 'react-icons/fa'
+import {MdOutlinePassword, MdOutlineTrackChanges, MdPassword, MdPayment} from "react-icons/md"
+import { FaAddressBook, FaPassport } from 'react-icons/fa'
 import axios from 'axios'
 import { toast } from 'react-toastify'
+import { CgPassword } from 'react-icons/cg'
 
 const ProfileSideBar = ({active , setActive}) => {
     const navigate = useNavigate();
@@ -83,11 +84,11 @@ const ProfileSideBar = ({active , setActive}) => {
        <div
        onClick={() => setActive(6)}
        className="flex  cursor-pointer w-full mb-8">
-          <MdPayment size={25} color={active === 6 ? "red" : ""} /> 
+          <MdOutlinePassword size={25} color={active === 6 ? "red" : ""} /> 
           <span
           className={`${active === 6 ? "text-red-500" : ""} pl-4 text-lg hidden md:block`}
           >
-            Payment Methods
+            Change Password
           </span>
        </div> 
        <div

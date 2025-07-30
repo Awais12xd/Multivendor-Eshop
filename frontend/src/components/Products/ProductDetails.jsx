@@ -74,7 +74,7 @@ const ProductDetails = ({ product }) => {
       if (existed) {
         toast.error("Product already added in the cart!");
       } else {
-        const cartData = { ...product, qty: count };
+        const cartData = { ...product, qty: count === 0 ? 1 : count };
         dispatch(addToCartAction(cartData));
         toast.success("Product added to cart successfully!");
       }

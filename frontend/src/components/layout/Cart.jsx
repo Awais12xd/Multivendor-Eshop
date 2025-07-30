@@ -70,10 +70,11 @@ const Cart = ({ setOpenCart }) => {
                     ))}
                 </div>
               </div>
-              <div className={` w-full text-white px-4 mb-3 mt-3 flex`}>
+              <div className={` w-full text-white px-4 mb-3 mt-3 flex items-center justify-center `}>
                 <Link
                   to={"/checkout"}
-                  className="h-12 bg-orange-600 w-full flex items-center justify-center rounded-md cursor-pointer hover:opacity-85 uppercase font-[500]"
+                  onClick={() => setOpenCart(false)}
+                  className="h-12 bg-orange-600 w-full flex items-center border justify-center rounded-md cursor-pointer hover:opacity-85 uppercase font-[500] whitespace-nowrap"
                 >
                   CheckOut Now (USD${totalPrice})
                 </Link>

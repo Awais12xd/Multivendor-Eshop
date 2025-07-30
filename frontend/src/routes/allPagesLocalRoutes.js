@@ -8,6 +8,8 @@ import EventsPage from "../pages/layout/EventsPage.jsx"
 import FAQPage from "../pages/layout/FAQPage.jsx"
 import ProductDetailPage from "../pages/layout/ProductDetailPage.jsx"
 import ProfilePage from "../pages/layout/ProfilePage.jsx"
+import CheckOutPage from "../pages/checkout/CheckOutPage.jsx"
+import PaymentPage from "../pages/payment/PaymentPage.jsx"
 
 //Shop routes
 import CreateShopPage from "../pages/layout/CreateShopPage.jsx"
@@ -34,6 +36,8 @@ export {
     FAQPage,
     ProductDetailPage,
     ProfilePage,
+    CheckOutPage,
+    PaymentPage,
     //Shop Routes
     CreateShopPage,
     SellerActivation,

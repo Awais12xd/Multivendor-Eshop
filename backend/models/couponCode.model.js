@@ -16,9 +16,12 @@ const couponCodeSchema = new Schema({
     maxAmount: {
         type: Number,
     },
-    shop: {
-        type: Object,
-        required: [true, "Please add the shop details"],
+   shopId:{
+     type: String,
+     required: true,
+    },
+    selectedProduct:{
+     type: String,
     },
 },
 {
