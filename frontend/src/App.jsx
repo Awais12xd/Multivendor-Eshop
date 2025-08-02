@@ -34,7 +34,6 @@ import { sellerLoad } from "./redux/actions/sellerLoad.js";
 import SellerProtectedRoutes from "./routes/SellerProtectedRoutes.jsx";
 import { allProductsLoad } from "./redux/actions/allProductslaod.js";
 import { allEventsLoad } from "./redux/actions/allEventsLoad.js";
-
 function App() {
   const [stripeApiKey, setStripeApiKey] = useState("");
   const fetchStripeApiKey = async () => {
@@ -59,11 +58,7 @@ function App() {
   return (
     <>
       <Router>
-        {
-          stripeApiKey && (
-            
-          )
-        }
+     
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/login" element={<LoginPage />} />
