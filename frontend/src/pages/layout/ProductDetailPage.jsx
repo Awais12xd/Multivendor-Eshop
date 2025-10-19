@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import Header from "../../components/layout/Header.jsx";
 import Footer from "../../components/layout/Footer.jsx";
 import ProductDetails from "../../components/Products/ProductDetails.jsx";
-import { useParams } from "react-router-dom";
+import { useParams, useSearchParams } from "react-router-dom";
 import RelatedProducts from "../../components/Products/RelatedProducts.jsx";
 import { useSelector } from "react-redux";
 import Loader from "../../components/Animations/Loader.jsx";
@@ -10,19 +10,26 @@ import Loader from "../../components/Animations/Loader.jsx";
 const ProductDetailPage = () => {
   const { id } = useParams();
   const [data, setData] = useState(null);
+  const [seacrhParams] = useSearchParams();
+  const eventData = seacrhParams.get("eventData");
 
   const { allProducts, isLoading } = useSelector((state) => state.allProducts);
+  const { allEvents } = useSelector((state) => state.allEvents);
 
   useEffect(() => {
-    const fetchProductDetails = () => {
+    if (eventData !== null) {
+      if (allEvents && allEvents.length > 0) {
+        const event = allEvents.find((product) => product._id === id);
+        setData(event || null);
+      }
+    } else {
       if (allProducts && allProducts.length > 0) {
         const product = allProducts.find((product) => product._id === id);
         setData(product || null);
       }
-    };
+    }
     window.scrollTo(0, 0);
-    fetchProductDetails();
-  }, [allProducts,id]);
+  }, [allProducts, id, allEvents]);
 
   return (
     <div>
@@ -32,7 +39,7 @@ const ProductDetailPage = () => {
       ) : (
         <>
           <ProductDetails product={data} />
-          {data && <RelatedProducts data={data} />}
+          {!eventData && <>{data && <RelatedProducts data={data} />}</>}
         </>
       )}
       <Footer />

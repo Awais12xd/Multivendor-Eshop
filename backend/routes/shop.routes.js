@@ -11,9 +11,6 @@ router.post("/shop-login" , catchAsyncError(loginSeller));
 router.get("/getSeller" , verifySeller , getSeller);
 router.get("/getSellerInfo/:id" , getSellerInfo);
 
-// router.post("/login" , loginUser);
-// router.get("/logout" , verifyToken , logout);
-
 
 
 

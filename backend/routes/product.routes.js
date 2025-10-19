@@ -19,11 +19,5 @@ router.post(
 router.get("/get-all-products/:id", catchAsyncError(getAllProducts));
 router.get("/get-every-product", catchAsyncError(getEveryProduct));
 router.delete("/delete-product/:id" , verifySeller , catchAsyncError(deleteProduct));
-// router.post("/seller/activation" , catchAsyncError(activateSeller));
-// router.post("/shop-login" , catchAsyncError(loginSeller));
-// router.get("/getSeller" , verifySeller , getSeller);
-
-// router.post("/login" , loginUser);
-// router.get("/logout" , verifyToken , logout);
 
 export default router;

@@ -24,6 +24,7 @@ import {
   DashboardAllCouponsPage,
   CheckOutPage,
   PaymentPage,
+  CheckoutSuccessPage,
 } from "./routes/allPagesLocalRoutes.js";
 import { Bounce, ToastContainer, toast } from "react-toastify";
 import axios from "axios";
@@ -34,6 +35,9 @@ import { sellerLoad } from "./redux/actions/sellerLoad.js";
 import SellerProtectedRoutes from "./routes/SellerProtectedRoutes.jsx";
 import { allProductsLoad } from "./redux/actions/allProductslaod.js";
 import { allEventsLoad } from "./redux/actions/allEventsLoad.js";
+import { Elements } from "@stripe/react-stripe-js";
+import { loadStripe } from "@stripe/stripe-js";
+
 function App() {
   const [stripeApiKey, setStripeApiKey] = useState("");
   const fetchStripeApiKey = async () => {
@@ -58,7 +62,20 @@ function App() {
   return (
     <>
       <Router>
-     
+        {stripeApiKey && (
+          <Elements stripe={loadStripe(stripeApiKey)}>
+            <Routes>
+              <Route
+                path="/payment"
+                element={
+                  <ProtectedRoute>
+                    <PaymentPage />
+                  </ProtectedRoute>
+                }
+              />
+            </Routes>
+          </Elements>
+        )}
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/login" element={<LoginPage />} />
@@ -94,10 +111,10 @@ function App() {
             }
           />
           <Route
-            path="/payment"
+            path="/payment/success"
             element={
               <ProtectedRoute>
-                <PaymentPage />
+                <CheckoutSuccessPage />
               </ProtectedRoute>
             }
           />

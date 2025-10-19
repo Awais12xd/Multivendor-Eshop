@@ -12,13 +12,4 @@ router.put("/add-address",verifyToken,  addNewAddress );
 router.delete("/delete-address/:id",verifyToken,  deleteAddress );
 router.put("/change-password",verifyToken,  changePassword );
 
-
-// router.stack.forEach((layer) => {
-//   if (layer.route) {
-//     const path = layer.route.path;
-//     const method = Object.keys(layer.route.methods)[0].toUpperCase();
-//     console.log(`[AUTH ROUTES] ${method} ${path}`);
-//   }
-// });
-
 export default router;

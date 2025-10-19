@@ -10,6 +10,7 @@ import ProductDetailPage from "../pages/layout/ProductDetailPage.jsx"
 import ProfilePage from "../pages/layout/ProfilePage.jsx"
 import CheckOutPage from "../pages/checkout/CheckOutPage.jsx"
 import PaymentPage from "../pages/payment/PaymentPage.jsx"
+import CheckoutSuccessPage from "../pages/checkout/CheckoutSuccessPage.jsx"
 
 //Shop routes
 import CreateShopPage from "../pages/layout/CreateShopPage.jsx"
@@ -38,8 +39,9 @@ export {
     ProfilePage,
     CheckOutPage,
     PaymentPage,
-    //Shop Routes
+    CheckoutSuccessPage,
     CreateShopPage,
+    //Shop Routes
     SellerActivation,
     LoginShopPage,
     ShopHomePage,
