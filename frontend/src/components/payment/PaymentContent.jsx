@@ -13,6 +13,7 @@ import {
   useElements,
   useStripe,
 } from "@stripe/react-stripe-js";
+import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
 
 const PaymentContent = () => {
   const [orderData, setOrderData] = useState([]);
@@ -28,23 +29,79 @@ const PaymentContent = () => {
   }, []);
 
   const createOrder = (data, action) => {
-    //
+    return action.order
+      .create({
+        purchase_units: [
+          {
+            description: "Sunflower",
+            amount: {
+              currency_code: "USD",
+              value: orderData?.totalPrice,
+            },
+          },
+        ],
+        application_context: {
+          shipping_preference: "NO_SHIPPING",
+        },
+      })
+      .then((orderId) => {
+        return orderId;
+      });
   };
   const onApprove = async (data, actions) => {
-    console.log("sjdhjs");
+    return actions.order.capture().then((details) => {
+      const { payer } = details;
+      let paymentInfo = payer;
+      if (paymentInfo !== undefined) {
+        payPalPaymentHandler(paymentInfo);
+      }
+    });
   };
-  const payPalPaymentHandler = async () => {
-    //
-  };
-  
+
   const paymentData = {
     amount: Math.round(orderData?.totalPrice * 100),
   };
+
   const order = {
     cart: orderData?.cart,
     user: user && user,
     totalPrice: orderData?.totalPrice,
     shippingAddress: orderData?.shippingAddress,
+  };
+
+  const payPalPaymentHandler = async (paymentInfo) => {
+    try {
+      const config = {
+        headers: {
+          "Content-type": "application/json",
+        },
+        withCredentials: true,
+      };
+      order.paymentInfo = {
+        id: paymentInfo.id,
+        status: "Succeeded",
+        type: "Paypal",
+      };
+      await axios
+        .post(
+          `${import.meta.env.VITE_SERVER_URL}/order/create-order`,
+          order,
+          config
+        )
+        .then((res) => {
+          setOpen(false);
+          navigate("/payment/success");
+          localStorage.setItem("cartItems", JSON.stringify([]));
+          localStorage.setItem("latestOrder", JSON.stringify([]));
+          console.log("Using Paypal method", res);
+          window.location.reload(true);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const stripePaymentHandler = async (e) => {
@@ -54,13 +111,13 @@ const PaymentContent = () => {
         headers: {
           "Content-type": "application/json",
         },
-         withCredentials: true,     
+        withCredentials: true,
       };
       await axios
         .post(
           `${import.meta.env.VITE_SERVER_URL}/payment/process`,
           paymentData,
-          config,
+          config
         )
         .then(async (res) => {
           const data = res.data.data;
@@ -86,15 +143,14 @@ const PaymentContent = () => {
                 .post(
                   `${import.meta.env.VITE_SERVER_URL}/order/create-order`,
                   order,
-                  config,
+                  config
                 )
                 .then((res) => {
                   setOpen(false);
                   navigate("/payment/success");
-                  localStorage.setItem("cartItems" , JSON.stringify([]));
-                  localStorage.setItem("latestOrder" , JSON.stringify([]));
+                  localStorage.setItem("cartItems", JSON.stringify([]));
+                  localStorage.setItem("latestOrder", JSON.stringify([]));
                   window.location.reload(true);
-
                 })
                 .catch((err) => {
                   console.log(err);
@@ -109,8 +165,38 @@ const PaymentContent = () => {
       console.log(error);
     }
   };
-  const cashOnDeliveryHandler = async () => {
-    //
+  const cashOnDeliveryHandler = async (e) => {
+    e.preventDefault();
+      try {
+      const config = {
+        headers: {
+          "Content-type": "application/json",
+        },
+        withCredentials: true,
+      };
+      order.paymentInfo = {
+        type: "Cash On Delievry",
+      };
+      await axios
+        .post(
+          `${import.meta.env.VITE_SERVER_URL}/order/create-order`,
+          order,
+          config
+        )
+        .then((res) => {
+          setOpen(false);
+          navigate("/payment/success");
+          localStorage.setItem("cartItems", JSON.stringify([]));
+          localStorage.setItem("latestOrder", JSON.stringify([]));
+          console.log("Using COD method", res);
+          window.location.reload(true);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    } catch (error) {
+      console.log(error);
+    }
   };
   return (
     <div className="w-full flex flex-col items-center py-8">
@@ -271,7 +357,7 @@ const PaymentInfo = ({
           </h4>
         </div>
 
-        {/* pay with payement */}
+        {/* pay with paypal */}
         {select === 2 ? (
           <div className="w-full flex border-b">
             <div
@@ -290,18 +376,17 @@ const PaymentInfo = ({
                       onClick={() => setOpen(false)}
                     />
                   </div>
-                  {/* <PayPalScriptProvider
-                      options={{
-                        "client-id":
-                          "Aczac4Ry9_QA1t4c7TKH9UusH3RTe6onyICPoCToHG10kjlNdI-qwobbW9JAHzaRQwFMn2-k660853jn",
-                      }}
-                    >
-                      <PayPalButtons
-                        style={{ layout: "vertical" }}
-                        onApprove={onApprove}
-                        createOrder={createOrder}
-                      />
-                    </PayPalScriptProvider> */}
+                  <PayPalScriptProvider
+                    options={{
+                      "client-id": `${import.meta.env.VITE_PAYPAL_CLIENT_ID}`,
+                    }}
+                  >
+                    <PayPalButtons
+                      style={{ layout: "vertical" }}
+                      onApprove={onApprove}
+                      createOrder={createOrder}
+                    />
+                  </PayPalScriptProvider>
                 </div>
               </div>
             )}
@@ -331,7 +416,7 @@ const PaymentInfo = ({
           <div className="w-full flex">
             <form
               className="w-full"
-              //  onSubmit={cashOnDeliveryHandler}
+               onSubmit={cashOnDeliveryHandler}
             >
               <input
                 type="submit"

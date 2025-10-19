@@ -7,6 +7,7 @@ import { allProductsreducer } from "./reducers/allProducts.reducer.js";
 import { allEventsReducer } from "./reducers/allEvents.reducer.js";
 import { cartReducer } from "./reducers/cart.reducer.js";
 import { wishlistReducer } from "./reducers/wishlist.reducer.js";
+import { ordersReducer } from "./reducers/order.reducer.js";
 
 
 const Store = configureStore({
@@ -18,7 +19,8 @@ const Store = configureStore({
          allProducts : allProductsreducer,
          allEvents : allEventsReducer,
          cart:cartReducer,
-         wishlist:wishlistReducer
+         wishlist:wishlistReducer,
+         orders : ordersReducer
     }
 })
 

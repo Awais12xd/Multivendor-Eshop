@@ -25,6 +25,9 @@ import {
   CheckOutPage,
   PaymentPage,
   CheckoutSuccessPage,
+  DashboardAllOrdersPage,
+  OrderDetailPage,
+  UserOrderDetailPage,
 } from "./routes/allPagesLocalRoutes.js";
 import { Bounce, ToastContainer, toast } from "react-toastify";
 import axios from "axios";
@@ -118,6 +121,15 @@ function App() {
               </ProtectedRoute>
             }
           />
+           <Route
+            path="/user/order/:id"
+            element={
+              <ProtectedRoute>
+                <UserOrderDetailPage />
+              </ProtectedRoute>
+            }
+          />
+
 
           <Route
             path="/dashboard"
@@ -164,6 +176,22 @@ function App() {
             element={
               <SellerProtectedRoutes>
                 <DashboardAllCouponsPage />
+              </SellerProtectedRoutes>
+            }
+          />
+          <Route
+            path="/dashboard/orders"
+            element={
+              <SellerProtectedRoutes>
+                <DashboardAllOrdersPage />
+              </SellerProtectedRoutes>
+            }
+          />
+          <Route
+            path="/order/:id"
+            element={
+              <SellerProtectedRoutes>
+                <OrderDetailPage />
               </SellerProtectedRoutes>
             }
           />

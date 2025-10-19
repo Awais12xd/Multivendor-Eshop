@@ -20,6 +20,8 @@ import {
 import axios from "axios";
 import { RxCross1 } from "react-icons/rx";
 import { Country, State } from "country-state-city";
+import { allOrdersLoad } from "../../redux/actions/allOrdersLoad.js";
+import Loader from "../Animations/Loader.jsx";
 
 const ProfileContent = ({ active }) => {
   const { user, error } = useSelector((state) => state.user);
@@ -212,79 +214,88 @@ const ProfileContent = ({ active }) => {
 };
 
 const OrderGrid = () => {
-  const orders = [
-    {
-      _id: "ORD-10001",
-      orderItems: [{ name: "iPhone 15 Pro Max" }, { name: "AirPods Pro 2" }],
-      totalPrice: 1699,
-      orderStatus: "Delivered",
-    },
-    {
-      _id: "ORD-10002",
-      orderItems: [{ name: "MacBook Pro 14-inch" }],
-      totalPrice: 2499,
-      orderStatus: "Processing",
-    },
-    {
-      _id: "ORD-10003",
-      orderItems: [
-        { name: "Apple Watch Ultra" },
-        { name: "iPhone 14" },
-        { name: "MagSafe Charger" },
-      ],
-      totalPrice: 1899,
-      orderStatus: "Shipped",
-    },
-    {
-      _id: "ORD-10004",
-      orderItems: [{ name: "Samsung Galaxy S24 Ultra" }],
-      totalPrice: 1399,
-      orderStatus: "Cancelled",
-    },
-    {
-      _id: "ORD-10005",
-      orderItems: [{ name: "Google Pixel 8 Pro" }, { name: "Pixel Buds Pro" }],
-      totalPrice: 1249,
-      orderStatus: "Delivered",
-    },
-    {
-      _id: "ORD-10006",
-      orderItems: [
-        { name: "Dell XPS 13" },
-        { name: "Logitech MX Master 3S Mouse" },
-      ],
-      totalPrice: 1690,
-      orderStatus: "Processing",
-    },
-    {
-      _id: "ORD-10007",
-      orderItems: [{ name: "Sony WH-1000XM5 Headphones" }],
-      totalPrice: 399,
-      orderStatus: "Shipped",
-    },
-    {
-      _id: "ORD-10008",
-      orderItems: [{ name: "iPad Pro 12.9-inch" }, { name: "Apple Pencil 2" }],
-      totalPrice: 1449,
-      orderStatus: "Delivered",
-    },
-    {
-      _id: "ORD-10009",
-      orderItems: [
-        { name: "ASUS ROG Gaming Laptop" },
-        { name: "Mechanical Keyboard" },
-        { name: "Gaming Mouse" },
-      ],
-      totalPrice: 2099,
-      orderStatus: "Processing",
-    },
-    {
-      _id: "ORD-10010",
-      orderItems: [{ name: "OnePlus 12" }],
-      totalPrice: 899,
-      orderStatus: "Delivered",
-    },
-  ];
+  // const orders = [
+  //   {
+  //     _id: "ORD-10001",
+  //     orderItems: [{ name: "iPhone 15 Pro Max" }, { name: "AirPods Pro 2" }],
+  //     totalPrice: 1699,
+  //     orderStatus: "Delivered",
+  //   },
+  //   {
+  //     _id: "ORD-10002",
+  //     orderItems: [{ name: "MacBook Pro 14-inch" }],
+  //     totalPrice: 2499,
+  //     orderStatus: "Processing",
+  //   },
+  //   {
+  //     _id: "ORD-10003",
+  //     orderItems: [
+  //       { name: "Apple Watch Ultra" },
+  //       { name: "iPhone 14" },
+  //       { name: "MagSafe Charger" },
+  //     ],
+  //     totalPrice: 1899,
+  //     orderStatus: "Shipped",
+  //   },
+  //   {
+  //     _id: "ORD-10004",
+  //     orderItems: [{ name: "Samsung Galaxy S24 Ultra" }],
+  //     totalPrice: 1399,
+  //     orderStatus: "Cancelled",
+  //   },
+  //   {
+  //     _id: "ORD-10005",
+  //     orderItems: [{ name: "Google Pixel 8 Pro" }, { name: "Pixel Buds Pro" }],
+  //     totalPrice: 1249,
+  //     orderStatus: "Delivered",
+  //   },
+  //   {
+  //     _id: "ORD-10006",
+  //     orderItems: [
+  //       { name: "Dell XPS 13" },
+  //       { name: "Logitech MX Master 3S Mouse" },
+  //     ],
+  //     totalPrice: 1690,
+  //     orderStatus: "Processing",
+  //   },
+  //   {
+  //     _id: "ORD-10007",
+  //     orderItems: [{ name: "Sony WH-1000XM5 Headphones" }],
+  //     totalPrice: 399,
+  //     orderStatus: "Shipped",
+  //   },
+  //   {
+  //     _id: "ORD-10008",
+  //     orderItems: [{ name: "iPad Pro 12.9-inch" }, { name: "Apple Pencil 2" }],
+  //     totalPrice: 1449,
+  //     orderStatus: "Delivered",
+  //   },
+  //   {
+  //     _id: "ORD-10009",
+  //     orderItems: [
+  //       { name: "ASUS ROG Gaming Laptop" },
+  //       { name: "Mechanical Keyboard" },
+  //       { name: "Gaming Mouse" },
+  //     ],
+  //     totalPrice: 2099,
+  //     orderStatus: "Processing",
+  //   },
+  //   {
+  //     _id: "ORD-10010",
+  //     orderItems: [{ name: "OnePlus 12" }],
+  //     totalPrice: 899,
+  //     orderStatus: "Delivered",
+  //   },
+  // ];
+  const dispatch = useDispatch();
+  const {orders , isloading} = useSelector((state) => state.orders);
+  const {user} = useSelector((state) => state.user);
+  console.log(orders)
+
+  useEffect(() => {
+    allOrdersLoad(dispatch,user._id);
+  } , [])
+
 
   const columns = [
     { field: "id", headerName: "Order ID", minWidth: 150, flex: 0.7 },
@@ -327,7 +338,7 @@ const OrderGrid = () => {
       renderCell: (params) => {
         return (
           <>
-            <Link to={`/order/${params.id}`}>
+            <Link to={`/user/order/${params.id}`}>
               <Button>
                 <AiOutlineArrowRight size={20} color="black" />
               </Button>
@@ -344,23 +355,29 @@ const OrderGrid = () => {
     orders.forEach((item) => {
       row.push({
         id: item._id,
-        itemsQty: item.orderItems.length,
+        itemsQty: item.cart.length,
         total: "US$ " + item.totalPrice,
-        status: item.orderStatus,
+        status: item.status,
       });
     });
 
   return (
     <>
-      <div className="pl-7 pt-1">
-        <DataGrid
-          rows={row}
-          columns={columns}
-          pageSize={10}
-          disableSelectionOnClick
-          autoHeight:true
-        />
-      </div>
+      {
+        isloading ? (
+            <Loader />
+        ) : (
+            <div className="pl-7 pt-1">
+            <DataGrid
+              rows={row}
+              columns={columns}
+              pageSize={10}
+              disableSelectionOnClick
+              autoHeight:true
+            />
+          </div>
+        )
+     }
     </>
   );
 };

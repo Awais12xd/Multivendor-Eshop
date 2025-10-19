@@ -11,6 +11,7 @@ import ProfilePage from "../pages/layout/ProfilePage.jsx"
 import CheckOutPage from "../pages/checkout/CheckOutPage.jsx"
 import PaymentPage from "../pages/payment/PaymentPage.jsx"
 import CheckoutSuccessPage from "../pages/checkout/CheckoutSuccessPage.jsx"
+import UserOrderDetailPage from "../pages/order/UserOrderDetailPage.jsx"
 
 //Shop routes
 import CreateShopPage from "../pages/layout/CreateShopPage.jsx"
@@ -25,6 +26,8 @@ import DashboardAllProductPage from "../pages/Seller_Dashboard/DashboardAllProdu
 import DashboardCreateEventPage from "../pages/Seller_Dashboard/DashboardCreateEventPage.jsx"
 import DashboardAllEventsPage from "../pages/Seller_Dashboard/DashboardAllEventsPage.jsx"
 import DashboardAllCouponsPage from "../pages/Seller_Dashboard/DashboardAllCouponsPage.jsx"
+import DashboardAllOrdersPage from "../pages/Seller_Dashboard/DashboardAllOrdersPage.jsx"
+import OrderDetailPage from "../pages/order/OrderDetailPage.jsx"
 
 export {
     LoginPage,
@@ -41,6 +44,7 @@ export {
     PaymentPage,
     CheckoutSuccessPage,
     CreateShopPage,
+    UserOrderDetailPage,
     //Shop Routes
     SellerActivation,
     LoginShopPage,
@@ -52,4 +56,6 @@ export {
     DashboardCreateEventPage,
     DashboardAllEventsPage,
     DashboardAllCouponsPage,
+    DashboardAllOrdersPage,
+    OrderDetailPage,
 }
