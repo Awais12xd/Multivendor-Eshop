@@ -11,7 +11,6 @@ import { Link } from "react-router-dom";
 import { VscListOrdered } from "react-icons/vsc";
 import { CgProductHunt } from "react-icons/cg";
 import { useDispatch, useSelector } from "react-redux";
-import { getAllSellersOrder } from "../../../../backend/controllers/order.controller";
 import { productsLoad } from "../../redux/actions/productsLoad";
 import { allSellerOrdersLoad } from "../../redux/actions/allOrdersLoad";
 import Button from "@mui/material/Button";
