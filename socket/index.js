@@ -18,12 +18,21 @@ const io = new Server(server, {
   },
 });
 
+//cors config
+// const corsOptions = {
+//   origin: ["http://localhost:5173", "https://your-frontend-domain.com"],
+//   credentials: true,
+//   methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
+//   allowedHeaders: ["Content-Type", "Authorization"]
+// };
+
 // FIXED EXPRESS CORS
 app.use(
   cors({
-    origin: "http://localhost:5173",
-    credentials: true,
-    allowedHeaders: ["Content-Type", "Authorization"],
+    origin: ["http://localhost:5173", "https://your-frontend-domain.com"],
+  credentials: true,
+  methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
+  allowedHeaders: ["Content-Type", "Authorization"]
   })
 );
 app.use(express.json());

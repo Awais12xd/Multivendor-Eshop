@@ -32,8 +32,8 @@ const WishList = ({ setOpenWish }) => {
         }
       };
   return (
-    <div className="absolute z-10 top-0 left-0 w-full h-screen bg-[#0000005f]">
-      <div className="fixed top-0 right-0 flex flex-col justify-between  shadow-sm bg-white h-full w-[25%] ">
+    <div className="absolute z-1000 top-0 left-0 w-full h-screen bg-[#0000005f]">
+      <div className="fixed top-0 right-0 flex flex-col justify-between w-[70%]  shadow-sm bg-white h-full md:w-[35%] ">
         {wishlist && wishlist.length === 0 ? (
           <>
             <div className="flex justify-end w-full pt-5 pr-5 ">

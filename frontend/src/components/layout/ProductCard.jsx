@@ -57,7 +57,7 @@ const ProductCard = ({ product, eventData }) => {
   };
 
   return (
-    <div className="w-full relative h-[370px] p-3 cursor-pointer rounded-lg shadow-sm bg-white flex flex-col justify-between">
+    <div className="w-full relative h-[410px] md:h-[390px] p-3 cursor-pointer rounded-lg shadow-sm bg-white flex flex-col justify-between">
       <div>
         <div className="flex justify-end"></div>
         <div>
@@ -72,7 +72,7 @@ const ProductCard = ({ product, eventData }) => {
             <img
               src={`${import.meta.env.VITE_BACKEND_URL}/${product?.images[0]}`}
               alt="Product"
-              className="h-[170px] object-contain w-[80%]"
+              className="h-[220px] md:h-[170px] object-contain w-[80%]"
             />
           </Link>
           <Link
@@ -95,6 +95,9 @@ const ProductCard = ({ product, eventData }) => {
             </h4>
             <div className="flex">
               <Ratings rating={product?.ratings} />
+            </div>
+            <div className="mt-2">
+              <p className="line-clamp-2 text-[14px] font-[400]">{product?.description}</p>
             </div>
           </div>
         </Link>

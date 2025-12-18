@@ -118,28 +118,28 @@ const ProductDetails = ({ product }) => {
         <div className={`${styles.section}  md:w-[80%] w-[90%] `}>
           <div className="w-full py-5">
             <div className="flex flex-col  md:flex-row w-full md:gap-4 gap-8">
-              <div className="w-full md:w-[50%]">
+              <div className="w-full md:w-[50%] justify-center">
                 <img
                   src={`${import.meta.env.VITE_BACKEND_URL}/${
                     product.images && product.images[select]
                   }`}
                   alt=""
-                  className="w-[80%] object-contain mb-4"
+                  className="w-[80%] object-contain mb-4 h-70"
                 />
-                <div className="flex w-full flex-wrap">
+                <div className="flex w-full flex-wrap gap-1">
                   {product?.images.map((image, index) => (
                     <div
                       onClick={() => setSelect(index)}
                       key={index}
                       className={`${
                         select === index ? "border" : ""
-                      } border-gray-300 cursor-pointer w-`}
+                      } border-gray-300 cursor-pointer w-[49%]`}
                     >
                       <img
                         src={`${import.meta.env.VITE_BACKEND_URL}/${
                           product.images && product.images[index]
                         }`}
-                        className="w-full object-cover md:w-[200px] h-[180px]"
+                        className=" object-contain w-full h-[180px]"
                         alt=""
                       />
                     </div>
@@ -253,7 +253,7 @@ const ProductDetailInfo = ({ product, info }) => {
       <div className="flex w-full justify-between pt-10 pb-1 border-b border-gray-300">
         <div className="relative">
           <h5
-            className="text-[18px] px-1 leading-5 font-semibold cursor-pointer md:text-[20px] "
+            className="text-[15px] px-1 leading-5 font-semibold cursor-pointer md:text-[20px] "
             onClick={() => setActive(1)}
           >
             Product Details
@@ -264,7 +264,7 @@ const ProductDetailInfo = ({ product, info }) => {
         </div>
         <div className="relative">
           <h5
-            className="text-[18px] px-1 leading-5 font-semibold cursor-pointer md:text-[20px] "
+            className="text-[15px] px-1 leading-5 font-semibold cursor-pointer md:text-[20px] "
             onClick={() => setActive(2)}
           >
             Product Reviews
@@ -275,7 +275,7 @@ const ProductDetailInfo = ({ product, info }) => {
         </div>
         <div className="relative">
           <h5
-            className="text-[18px] px-1 leading-5 font-semibold cursor-pointer md:text-[20px] "
+            className="text-[15px] px-1 leading-5 font-semibold cursor-pointer md:text-[20px] "
             onClick={() => setActive(3)}
           >
             Seller Information
@@ -287,7 +287,7 @@ const ProductDetailInfo = ({ product, info }) => {
       </div>
       {active === 1 ? (
         <div className="py-3">
-          <p className="py-2 text-[18px] leadin-8 pb-5 whitespace-pre-line">
+          <p className="py-2 text-[15px] md:text-[18px] leadin-8 pb-5 whitespace-pre-line">
             {product.description}
           </p>
         </div>
@@ -295,7 +295,7 @@ const ProductDetailInfo = ({ product, info }) => {
       {active === 2 ? (
         <div className="flex flex-col items-center justify-center w-full py-3">
           {product &&
-            product.reviews.map((item) => (
+               product.reviews?.map((item) => (
               <div className="w-full flex my-2">
                 <img
                   className="h-[50px] w-[50px] object-cover rounded-full"
@@ -313,6 +313,11 @@ const ProductDetailInfo = ({ product, info }) => {
                 </div>
               </div>
             ))}
+            {
+               product.reviews?.length === 0 ? (
+                <h1 className="py-3 w-full text-center">No reviews.</h1>
+               ) : null
+            }
         </div>
       ) : null}
       {active === 3 ? (
@@ -320,7 +325,7 @@ const ProductDetailInfo = ({ product, info }) => {
           <div className="w-full md:w-[70%] mb-6 md:mb-0">
             <Link to={`/shop/${product.shopId}`} className="flex">
               <img
-                src={`${import.meta.env.VITE_BACKEND_URL}/1000057564-1752550627673-877278503.png`}
+                src={`${import.meta.env.VITE_BACKEND_URL}/${product?.shop?.avatar?.url}`}
                 
                 // ${
                 //   product?.shop?.avatar?.url
@@ -337,16 +342,8 @@ const ProductDetailInfo = ({ product, info }) => {
                 </h5>
               </div>
             </Link>
-            <p className="mt-2 font-[500]">
-              Lorem ipsum dolor sit amet consectetur, adipisicing elit.
-              Perferendis necessitatibus magni facilis, veritatis neque beatae
-              quae alias exercitationem at est, blanditiis quam deserunt vitae
-              debitis eum. Eos architecto eum dignissimos, dolorem distinctio
-              perferendis porro labore nemo, veniam nisi dicta, blanditiis animi
-              sint. Praesentium cum dolorem vero quasi eum. Quo commodi,
-              molestias cum officiis mollitia possimus inventore eligendi
-              adipisci itaque expedita veniam asperiores fugit tempore iusto
-              sunt ipsa voluptas similique! Quas?
+            <p className="mt-2 text-[14px] md:text-[18px] font-[400]">
+              {product?.shop?.description || "No description"}
             </p>
           </div>
           <div className="w-full md:w-[30%] flex flex-col items-end gap-3 md:mt-4">
@@ -367,7 +364,7 @@ const ProductDetailInfo = ({ product, info }) => {
             <div className="text-left">
               <p className="font-semibold whitespace-nowrap">
                 Total Reviews :{" "}
-                <span className="font-[500]">{product?.reviews.length}</span>
+                <span className="font-[500]">{product?.reviews?.length || 0}</span>
               </p>
             </div>
             <Link

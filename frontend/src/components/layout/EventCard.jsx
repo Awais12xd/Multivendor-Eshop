@@ -25,7 +25,7 @@ const EventCard = ({data}) => {
       {
         data && (
            <div className='w-full block bg-white rounded-lg lg:flex gap-5 p-4 md:p-7'>
-     <div className="lg:w-[50%] w-full m-auto ">
+     <div className="lg:w-[50%] w-full m-auto flex justify-center">
   
         <img src={`${import.meta.env.VITE_BACKEND_URL}/${data.images[0]}`} alt="Product"
         className=''
@@ -33,7 +33,7 @@ const EventCard = ({data}) => {
      </div>
         <div className="w-full lg:w-[50%] flex flex-col justify-center">
         <h2 className={`${styles.productTitle}`}>{data.name}</h2>
-        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Animi ut, perspiciatis iure tempora modi laborum reiciendis ipsam unde omnis cumque. Temporibus, voluptas fuga architecto quod quibusdam pariatur iusto quae ipsa, nulla consequuntur neque voluptatem officiis, odio labore minus maxime non harum incidunt optio nostrum reiciendis asperiores illum? Magnam fugiat magni illo minima adipisci accusantium, dolore atque, rem vel quidem blanditiis vero. Dignissimos eveniet voluptatum aspernatur recusandae voluptatibus, minima ab nam impedit reprehenderit quas accusamus alias sit assumenda rem ut cumque quis delectus. Eius, saepe temporibus molestiae ut assumenda sapiente, obcaecati debitis ducimus rem fuga impedit optio rerum? Est, consequatur ex!</p>
+        <p>{data?.description}</p>
         <div className="flex py-2 justify-between">
           <div className="flex">
             <h5 className="font-[500] text-[18px] text-[#d55b45] pr-3 line-through">

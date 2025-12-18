@@ -105,6 +105,7 @@ const DashboardCreateEvent = () => {
         setLoading(false);
         toast.success(res.data.message);
         navigate("/dashboard/all-events");
+        window.location.reload(true);
       }
       if (res.data.success === false) {
         setLoading(false);
@@ -124,7 +125,7 @@ const DashboardCreateEvent = () => {
   };
 
   return (
-    <div className="flex justify-center w-full py-9 ">
+    <div className="flex justify-center w-full py-4 md:py-9 ">
       <div className="w-[90%] lg:w-[50%] bg-white shadow rounded-sm pb-4 p-3 overflow-y-scroll">
         <h5 className="text-3xl font-semibold text-gray-700 mb-3 text-center">
           Create New Event

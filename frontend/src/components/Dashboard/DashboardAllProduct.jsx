@@ -70,7 +70,7 @@ const DashboardAllProduct = () => {
         const product_name = typeof d === "string" ? d.replace(/\s+/g, "-").toLowerCase() : "";
         return (
           <>
-            <Link to={`/product/${product_name}`}>
+            <Link to={`/product/${params.row.id}`}>
               <Button>
                 <AiOutlineEye size={20} color="black" />
               </Button>

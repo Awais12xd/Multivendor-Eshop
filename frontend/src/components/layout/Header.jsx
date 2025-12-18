@@ -33,8 +33,8 @@ const Header = ({ activeHeading }) => {
   const [openSearch, setOpenSearch] = useState(false);
   const { allProducts } = useSelector((state) => state.allProducts);
 
-  const {cart} = useSelector((state) => state.cart);
-  const {wishlist} = useSelector((state) => state.wishlist)
+  const { cart } = useSelector((state) => state.cart);
+  const { wishlist } = useSelector((state) => state.wishlist);
 
   const handleOnChangeSearch = async (e) => {
     const term = e.target.value;
@@ -113,7 +113,8 @@ const Header = ({ activeHeading }) => {
           <div className={`${styles.button}`}>
             <Link to={"/create-shop"}>
               <h1 className="text-white px-2 flex items-center  w-auto">
-                {isSeller ? "Seller Dashboard" : "Become Seller"} <IoIosArrowForward className="ml-1" />
+                {isSeller ? "Seller Dashboard" : "Become Seller"}{" "}
+                <IoIosArrowForward className="ml-1" />
               </h1>
             </Link>
           </div>
@@ -193,9 +194,15 @@ const Header = ({ activeHeading }) => {
         {openWish && <WishList setOpenWish={setOpenWish} />}
       </div>
       {/* Mobile Responsive Header */}
-      <div className={`w-full h-[60px] bg-white flex items-center md:hidden z-40  ${
+      <div
+        className={`w-full h-[60px] bg-white flex items-center md:hidden z-40  ${
           active ? "shadow-sm fixed top-0 left-0 " : null
-        } `}>
+        } `}
+      >
+
+
+ {openWish && <WishList setOpenWish={setOpenWish} />}
+
         <div className="flex justify-between items-center w-full">
           <div className="">
             <BiMenuAltLeft
@@ -210,10 +217,12 @@ const Header = ({ activeHeading }) => {
                 <div className="fixed top-0 left-0 flex flex-col justify-between  shadow-sm bg-white h-full w-[60%] overflow-y-scroll">
                   <div className="flex flex-col  h-full">
                     <div className="flex justify-between items-center pt-5 px-4">
-                      <div className="flex relative items-center cursor-pointer">
+                      <div className="flex relative items-center cursor-pointer"
+                      onClick={() =>  setOpenWish(true) ||  setOpenSearch(false)}
+                      >
                         <AiOutlineHeart size={25} />
                         <span className="w-4 h-4 absolute bottom-4 left-3 p-0 m-0 rounded-full bg-green-400 text-white text-sm leading-tight text-center">
-                          1
+                          {wishlist && wishlist.length}
                         </span>
                       </div>
                       <div className="flex justify-end w-full  ">
@@ -247,7 +256,9 @@ const Header = ({ activeHeading }) => {
                                   <div className="w-full flex items-center py-3 ">
                                     <img
                                       loading="lazy"
-                                      src={data.image_Url[0].url}
+                                      src={`${
+                                        import.meta.env.VITE_BACKEND_URL
+                                      }/${data?.images[0]}`}
                                       alt="product"
                                       className="w-[40px] object-cover h-[40px] mr-[10px]"
                                     />
@@ -316,8 +327,7 @@ const Header = ({ activeHeading }) => {
           >
             <AiOutlineShoppingCart size={30} className="ite" />
             <span className="w-4 h-4 absolute bottom-4 right-0 p-0 m-0 rounded-full bg-green-400 text-white text-sm leading-tight text-center">
-                {cart && cart.length}
-              
+              {cart && cart.length}
             </span>
           </div>
           {openCart && <Cart setOpenCart={setOpenCart} />}

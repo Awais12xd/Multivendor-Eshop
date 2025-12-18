@@ -78,8 +78,8 @@ const ShopInfo = ({ IsShopOwner }) => {
         .then((res) => {
           console.log(res);
           toast.success("Logout Successfull!");
+          navigate("/shop-login");
           window.location.reload(true);
-          // navigate("/shop-login");
         })
         .catch((err) => {
           console.log("ERROR :", err);
