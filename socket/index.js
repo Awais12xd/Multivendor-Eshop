@@ -13,7 +13,7 @@ const server = http.createServer(app);
 // FIXED SOCKET.IO CORS
 const io = new Server(server, {
   cors: {
-    origin: "http://localhost:5173",
+    origin: "https://multivendor-eshop.vercel.app",
     credentials: true,
   },
 });
@@ -29,7 +29,7 @@ const io = new Server(server, {
 // FIXED EXPRESS CORS
 app.use(
   cors({
-    origin: ["http://localhost:5173", "https://your-frontend-domain.com"],
+    origin: ["http://localhost:5173", "https://multivendor-eshop.vercel.app"],
   credentials: true,
   methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
   allowedHeaders: ["Content-Type", "Authorization"]

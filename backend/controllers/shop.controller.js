@@ -62,7 +62,7 @@ const createShop = async (req, res, next) => {
     //   .json(new apiResponse(201, "User created successfully", user));
 
     const activationToken = generateActivationToken(shop);
-    const activationUrl = `http://localhost:5173/shop/seller/activation/${activationToken}`;
+    const activationUrl = `https://multivendor-eshop.vercel.app/shop/seller/activation/${activationToken}`;
 
     try {
       await sendMail({
