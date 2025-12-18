@@ -193,7 +193,69 @@ const getSellerInfo = async(req , res , next) => {
     }
 }
 
-const logout = async (req, res, next) => {
+const changeShopAvatar = async (req, res, next) => {
+  try {
+
+    const id = req.seller.id;
+
+    const userFound = await Shop.findById(id);
+    if (!userFound) {
+      return next(new errorHandler("Shop not found ", 404));
+    }
+    const filePath = `uploads/${userFound.avatar.url}`;
+    //   const filePath = path.join(process.cwd(), "uploads", userFound.avatar.url);
+    fs.unlink(filePath, (err) => {
+      if (err) {
+        console.log(err);
+      }
+    });
+    const filename = req.file.filename;
+    const fileUrl = path.join(filename);
+    const updatedUser = await Shop.findByIdAndUpdate(
+      req.seller.id,
+      { "avatar.url": fileUrl },
+      { new: true } 
+    );
+
+    res
+      .status(200)
+      .json(new apiResponse(200, "Shop Avatar updated successfully", updatedUser));
+  } catch (error) {
+    return next(new errorHandler("Error while changing the shop avatar ", 500));
+  }
+};
+
+const updateShopInfo = async (req, res, next) => {
+  try {
+    const { name, description, address, phoneNumber , zipCode } = req.body;
+    // console.log(name, description, address, phoneNumber , zipCode)
+
+    // if (!name || !description || !address || !phoneNumber || zipCode) {
+    //   return next(new errorHandler("All fields are required!", 400));
+    // }
+    const shop = await Shop.findById(req.seller._id)
+    if (!shop) {
+      return next(new errorHandler("shop not found", 404));
+    }
+   
+
+    shop.name = name;
+    shop.description = description;
+    shop.address = address;
+    shop.zipCode = zipCode;
+    shop.phoneNumber = phoneNumber;
+
+    await shop.save();
+
+    res
+      .status(200)
+      .json(new apiResponse(200, "Shop Info updated successully", shop));
+  } catch (error) {
+    return next(new errorHandler("Error while updating shop info", 500));
+  }
+};
+
+const logoutSeller = async (req, res, next) => {
   try {
     const options = {
       expires: new Date(Date.now() + 90 * 24 * 60 * 60 * 1000),
@@ -201,7 +263,7 @@ const logout = async (req, res, next) => {
     };
     res
       .status(201)
-      .cookie("token", null, options)
+      .cookie("seller_token", null, options)
       .json(new apiResponse(201, "Logout Successfully"));
   } catch (error) {
     return next(new errorHandler(` error catch ${error.message}`, 500));
@@ -215,5 +277,7 @@ export {
   loginSeller,
   getSellerInfo,
   getSeller,
-  logout,
+  changeShopAvatar,
+  updateShopInfo,
+  logoutSeller,
 };

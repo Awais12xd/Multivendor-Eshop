@@ -12,12 +12,15 @@ import CheckOutPage from "../pages/checkout/CheckOutPage.jsx"
 import PaymentPage from "../pages/payment/PaymentPage.jsx"
 import CheckoutSuccessPage from "../pages/checkout/CheckoutSuccessPage.jsx"
 import UserOrderDetailPage from "../pages/order/UserOrderDetailPage.jsx"
+import TrackOrderPage from "../pages/order/TrackOrderPage.jsx"
+import UserInboxPage from "../pages/user/UserInboxPage.jsx"
 
 //Shop routes
 import CreateShopPage from "../pages/layout/CreateShopPage.jsx"
 import SellerActivation from "../pages/layout/SellerActivation.jsx"
 import LoginShopPage from "../pages/layout/LoginShopPage.jsx"
 import ShopHomePage from "../pages/shop/ShopHomePage.jsx"
+import ShopSettingsPage from "../pages/shop/ShopSettingsPage.jsx"
 
 //Dashboard routes
 import DashboardPage from "../pages/Seller_Dashboard/DashboardPage.jsx"
@@ -28,6 +31,9 @@ import DashboardAllEventsPage from "../pages/Seller_Dashboard/DashboardAllEvents
 import DashboardAllCouponsPage from "../pages/Seller_Dashboard/DashboardAllCouponsPage.jsx"
 import DashboardAllOrdersPage from "../pages/Seller_Dashboard/DashboardAllOrdersPage.jsx"
 import OrderDetailPage from "../pages/order/OrderDetailPage.jsx"
+import DashboardAllRefundOrdersPage from "../pages/Seller_Dashboard/DashboardAllRefundOrdersPage.jsx"
+import DashboardWithdrawMoneyPage from "../pages/Seller_Dashboard/DashboardWithdrawMoneyPage.jsx"
+import DashboardInboxPage from "../pages/Seller_Dashboard/DashboardInboxPage.jsx"
 
 export {
     LoginPage,
@@ -45,6 +51,7 @@ export {
     CheckoutSuccessPage,
     CreateShopPage,
     UserOrderDetailPage,
+    UserInboxPage,
     //Shop Routes
     SellerActivation,
     LoginShopPage,
@@ -58,4 +65,9 @@ export {
     DashboardAllCouponsPage,
     DashboardAllOrdersPage,
     OrderDetailPage,
+    TrackOrderPage,
+    DashboardAllRefundOrdersPage,
+    ShopSettingsPage,
+    DashboardWithdrawMoneyPage,
+    DashboardInboxPage,
 }

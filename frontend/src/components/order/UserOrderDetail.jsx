@@ -6,6 +6,9 @@ import { useDispatch, useSelector } from "react-redux";
 import styles from "../../style/style.js";
 import { allOrdersLoad } from "../../redux/actions/allOrdersLoad.js";
 import { AiFillStar, AiOutlineStar } from "react-icons/ai";
+import { Product } from "../../../../backend/models/product.model.js";
+import axios from "axios";
+import { toast } from "react-toastify";
 
 const UserOrderDetail = () => {
   const { orders } = useSelector((state) => state.orders);
@@ -16,6 +19,7 @@ const UserOrderDetail = () => {
   const [open, setOpen] = useState(false);
   const [selectedItem, setSelectedItem] = useState(null);
   const [rating, setRating] = useState(1);
+  const [comment, setComment] = useState("");
 
   const { id } = useParams();
 
@@ -24,9 +28,37 @@ const UserOrderDetail = () => {
   }, [dispatch]);
 
   const data = orders && orders.find((item) => item._id === id);
-  console.log(data);
-  const submitComment = async() => {
-    
+  const submitComment = async () => {
+    await axios
+      .put(
+        `${import.meta.env.VITE_SERVER_URL}/product/create-review`,
+        { user, rating, comment, productId: selectedItem._id , orderId : id },
+        { withCredentials: true }
+      )
+      .then((res) => {
+        toast.success(res.data.message);
+        setComment("");
+        setRating(1);
+        setOpen(false);
+        allOrdersLoad(dispatch, user?._id);
+      })
+      .catch((error) => {
+        console.log(error.response.data);
+      });
+  };
+
+  const handleRefund = async () => {
+     await axios.put(`${import.meta.env.VITE_SERVER_URL}/order/order-refund/${id}`,
+      {status : "Processing Refund"},
+      {withCredentials : true}
+    ).then((res) => {
+       toast.success(res.data.message);
+    allOrdersLoad(dispatch, user?._id);
+
+       console.log(res.data)
+    }).catch((error) => {
+      console.log(error.response.data)
+    })
   }
 
   return (
@@ -64,7 +96,7 @@ const UserOrderDetail = () => {
                 US${item.discountPrice} x {item.qty}
               </h5>
             </div>
-            {data?.status === "Delivered" && (
+            {data?.status === "Delivered" && !item?.isReviewed && (
               <div
                 className={`${styles.button} text-white`}
                 onClick={() => setOpen(true) || setSelectedItem(item)}
@@ -91,63 +123,71 @@ const UserOrderDetail = () => {
             </h2>
             <br />
             <div className="w-full flex">
-              <img src={`${import.meta.env.VITE_BACKEND_URL}/${selectedItem.images[0]}`} alt="" className="h-[80px] w-[80px] object-cover" />
+              <img
+                src={`${import.meta.env.VITE_BACKEND_URL}/${
+                  selectedItem.images[0]
+                }`}
+                alt=""
+                className="h-[80px] w-[80px] object-cover"
+              />
               <div className="flex flex-col">
                 <div className="text-[20px] pl-3 font-semibold mb-2">
-                {selectedItem.name}
-              </div>
-              <div className="text-[20px] pl-3">
-                $US{selectedItem.discountPrice} * {selectedItem.qty}
-              </div>
+                  {selectedItem.name}
+                </div>
+                <div className="text-[20px] pl-3">
+                  $US{selectedItem.discountPrice} * {selectedItem.qty}
+                </div>
               </div>
             </div>
             <br />
             <br />
-          {/* Ratings */}
-          <div className="text-[20px] pl-3 font-[500]">
-            Give a rating <span className="text-red-500">*</span>
-          <div className="flex">
-              {
-              [1,2,3,4,5].map((i) => (
-                rating >= i ? (
-                  <AiFillStar 
-                   size={25}
-                   color="#fbc219"
-                   onClick={() => setRating(i)}
-                   className="cursor-pointer"
-                  />
-                ) : (
-                   <AiOutlineStar 
-                   size={25}
-                   color="#fbc219"
-                   onClick={() => setRating(i)}
-                   className="cursor-pointer"
-                  />
-                )
-              ))
-            }
-          </div>
-           <div className="mt-4">
-            <label className="pb-2 text-[20px]  font-[500]">
-              Write a comment <span className="text-gray-600 text-[15px]">(optional)</span>
-            </label>
-            <textarea
-              cols={20}
-              rows={5}
-              type="text"
-              name="comment"
-              className="w-[95%] mt-2 appearance-none block  border border-gray-300 rounded-[3px] placeholder:text-gray-500 outline-none focus:ring-blue-500 sm:text-sm focus:border-blue-500 px-3 pt-2"
-              placeholder="Write your experience about the product..."
-            ></textarea>
-          </div>
-          <div className="">
-            <button className={`${styles.button} text-white`}
-            onClick={submitComment}
-            >
-              Submit
-            </button>
-          </div>
-          </div>
+            {/* Ratings */}
+            <div className="text-[20px] pl-3 font-[500]">
+              Give a rating <span className="text-red-500">*</span>
+              <div className="flex">
+                {[1, 2, 3, 4, 5].map((i) =>
+                  rating >= i ? (
+                    <AiFillStar
+                      size={25}
+                      color="#fbc219"
+                      onClick={() => setRating(i)}
+                      className="cursor-pointer"
+                    />
+                  ) : (
+                    <AiOutlineStar
+                      size={25}
+                      color="#fbc219"
+                      onClick={() => setRating(i)}
+                      className="cursor-pointer"
+                    />
+                  )
+                )}
+              </div>
+              <div className="mt-4">
+                <label className="pb-2 text-[20px]  font-[500]">
+                  Write a comment{" "}
+                  <span className="text-gray-600 text-[15px]">(optional)</span>
+                </label>
+                <textarea
+                  cols={20}
+                  rows={5}
+                  type="text"
+                  name="comment"
+                  value={comment}
+                  onChange={(e) => setComment(e.target.value)}
+                  className="w-[95%] mt-2 appearance-none block  border border-gray-300 rounded-[3px] placeholder:text-gray-500 outline-none focus:ring-blue-500 sm:text-sm focus:border-blue-500 px-3 pt-2 font-[400]"
+                  placeholder="Write your experience about the product..."
+                ></textarea>
+              </div>
+              <div className="">
+                <button
+                  className={`${styles.button} text-white`}
+                  onClick={submitComment}
+                >
+                  Submit
+                </button>
+              </div>
+            </div>
           </div>
         </div>
       )}
@@ -172,11 +212,18 @@ const UserOrderDetail = () => {
           <h4 className=" text-[20px]">{data?.user?.phoneNumber}</h4>
         </div>
         <div className="w-full md:w-[40%]">
-          <h4 className="pt-3 text-[20px]">Payment Info:</h4>
+          <h4 className="pt-3 text-[20px] font-semibold">Payment Info:</h4>
           <h4>
             Status:{" "}
             {data?.paymentInfo?.status ? data?.paymentInfo?.status : "Not Paid"}
           </h4>
+          {
+            data?.status === "Delivered" && (
+              <div className={`${styles.button} text-white`}
+              onClick={handleRefund}
+              >Give a Refund</div>
+            )
+          }
         </div>
       </div>
       <br />

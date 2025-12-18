@@ -10,7 +10,6 @@ const sellerLoad = async(dispatch) => {
         withCredentials:true
       }).then((res) => {
         dispatch(loadSellerSuccess(res.data.data));
-        console.log("seller loaded Successfully!" , res)
       }).catch(err => {
         dispatch(loadSellerFail(err.response.data))
         console.log("Error while loading the seller" , err)

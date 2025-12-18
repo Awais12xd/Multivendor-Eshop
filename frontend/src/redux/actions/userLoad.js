@@ -24,7 +24,6 @@ const userLoad = async (dispatch) => {
       })
       .then((res) => {
         dispatch(loadUserSuccess(res.data.data));
-        console.log("User loaded Successfully!");
       })
       .catch((err) => {
         dispatch(loadUserFail(err.response.data));
@@ -53,7 +52,6 @@ const userUpdate = (name, email, password, phoneNumber) => async (dispatch) => {
       )
       .then((res) => {
         dispatch(updateUserSuccess(res.data.data));
-        console.log("User Updated Successfully!");
         toast.success("Data updated successfully");
       })
       .catch((err) => {
@@ -90,7 +88,6 @@ const userAddressUpdate =
         )
         .then((res) => {
           dispatch(updateUserAddressSuccess(res.data.data));
-          console.log("User Address Updated Successfully!");
           toast.success("User Address updated successfully");
         })
         .catch((err) => {
@@ -118,7 +115,6 @@ const userAddressDelete =
         )
         .then((res) => {
           dispatch(deleteUserAddressSuccess(res.data.data));
-          console.log("User Address deleted Successfully!");
           toast.success("User Address deleted successfully");
         })
         .catch((err) => {

@@ -10,7 +10,6 @@ const allProductsLoad = async(dispatch,id) => {
         withCredentials:true
       }).then((res) => {
         dispatch(loadAllProductsSuccess(res.data.data));
-        console.log("All Products loaded Successfully!" , res)
       }).catch(err => {
         dispatch(loadAllProductsFail(err.response.data))
         console.log("Error while loading the all products" , err)

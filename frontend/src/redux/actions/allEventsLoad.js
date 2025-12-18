@@ -10,7 +10,6 @@ const allEventsLoad = async(dispatch) => {
         withCredentials:true
       }).then((res) => {
         dispatch(loadAllEventsSuccess(res.data.data));
-        console.log("All Events loaded Successfully!" , res)
       }).catch(err => {
         dispatch(loadAllEventsFail(err.response.data))
         console.log("Error while loading the all Events" , err)

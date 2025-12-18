@@ -10,6 +10,8 @@ import eventRoutes from "./routes/event.routes.js"
 import couponRoutes from "./routes/coupon.routes.js"
 import paymentRoutes from "./routes/payment.routes.js"
 import orderRoutes from "./routes/order.routes.js"
+import conversationRoutes from "./routes/conversation.routes.js"
+import messageRoutes from "./routes/message.routes.js"
 import { errorMiddle } from "./middlewares/error.middleware.js"
 
 
@@ -47,6 +49,8 @@ app.use("/api/event" , eventRoutes);
 app.use("/api/coupon" , couponRoutes);
 app.use("/api/payment" , paymentRoutes)
 app.use("/api/order" , orderRoutes)
+app.use("/api/conversation" , conversationRoutes)
+app.use("/api/message" , messageRoutes)
 
 
 

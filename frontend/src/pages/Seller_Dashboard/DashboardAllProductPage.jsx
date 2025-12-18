@@ -1,9 +1,7 @@
 import React, { useEffect, useState } from 'react'
-import DashboardHeader from '../../components/Dashboard/DashboardHeader';
-import DashboardSideBar from '../../components/Dashboard/DashboardSideBar';
-import { useDispatch } from 'react-redux';
-import { productsLoad } from '../../redux/actions/productsLoad';
-import DashboardAllProduct from '../../components/Dashboard/DashboardAllProduct';
+import DashboardHeader from '../../components/Dashboard/DashboardHeader.jsx';
+import DashboardSideBar from '../../components/Dashboard/DashboardSideBar.jsx';
+import DashboardAllProduct from '../../components/Dashboard/DashboardAllProduct.jsx';
 
 const DashboardAllProductPage = () => {
     const [active , setActive] = useState(0);

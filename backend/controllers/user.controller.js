@@ -92,13 +92,10 @@ const changeAvatar = async (req, res, next) => {
 
 const addNewAddress = async (req, res, next) => {
   try {
-    console.log(req.body)
-    console.log("Req is hitting in adding address")
     const user = await User.findById(req.user.id);
     if (!user) {
       return next(new errorHandler("User not found", 404));
     }
-        console.log("user found")
 
     const sameTypeAddress = user.addresses.find(
       (address) => address.addressType === req.body.addressType
@@ -108,22 +105,15 @@ const addNewAddress = async (req, res, next) => {
         new errorHandler(`${req.body.addressType} address already exist`, 400)
       );
     }
-     console.log("Address not find")
     const existingAddress = user.addresses.find(
       (address) => address._id === req.body._id
     );
     if (existingAddress) {
       Object.assign(existingAddress, req.body);
-           console.log("Address not hzdghgsafgafind")
-
     } else {
       user.addresses.push(req.body);
-           console.log("Address not find hjzdhcjsdhjca")
-
     }
-    console.log("trying to save ")
     await user.save();
-    console.log("Yes save ")
 
     res
       .status(200)
@@ -184,7 +174,21 @@ const changePassword = async (req, res, next) => {
     return next(new errorHandler("Error while changing the password", 500));
   }
 };
+const getUserInfo = async (req, res, next) => {
 
+  try {
+    const user = await User.findById(req.params.id);
+    if (!user) {
+      return next(
+        new errorHandler("User not found while verifying token", 404)
+      );
+    }
+
+    res.status(200).json(new apiResponse(true, "User found", user));
+  } catch (error) {
+    return next(new errorHandler("Error while getting user info", 500));
+  }
+};
 export {
   getUser,
   updateUser,
@@ -192,4 +196,5 @@ export {
   addNewAddress,
   deleteAddress,
   changePassword,
+  getUserInfo,
 };

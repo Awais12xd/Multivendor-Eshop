@@ -165,7 +165,7 @@ const DashboardSideBar = ({ active, setActive }) => {
         </Link>
       </div>
       <div className="flex items-center w-full p-4">
-        <Link to={"/dashboard/settings"} className="w-full flex items-center">
+        <Link to={"/shop/settings"} className="w-full flex items-center">
           <FiSettings
             size={30}
             className={active === 11 ? "text-red-500" : "text-gray-700"}

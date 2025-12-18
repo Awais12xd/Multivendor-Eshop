@@ -11,7 +11,6 @@ const productsLoad = async(dispatch,id) => {
         withCredentials:true
       }).then((res) => {
         dispatch(loadProductsSuccess(res.data.data));
-        console.log("Products loaded Successfully!" , res)
       }).catch(err => {
         dispatch(loadProductsFail(err.response.data))
         console.log("Error while loading the products" , err)
@@ -30,7 +29,6 @@ const productDelete = async(dispatch,id) => {
         withCredentials:true
       }).then((res) => {
         dispatch(deleteSuccess(res.data.data));
-        console.log("Product Delete Successfully!" , res)
       }).catch(err => {
         dispatch(deleteFail(err.response.data))
         console.log("Error while deleting the product" , err)

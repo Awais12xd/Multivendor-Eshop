@@ -4,6 +4,7 @@ import { verifySeller, verifyToken } from "../middlewares/auth.middleware.js";
 import { catchAsyncError } from "../middlewares/catchAsyncError.js";
 import {
   createProduct,
+  createReview,
   deleteProduct,
   getAllProducts,
   getEveryProduct,
@@ -19,5 +20,6 @@ router.post(
 router.get("/get-all-products/:id", catchAsyncError(getAllProducts));
 router.get("/get-every-product", catchAsyncError(getEveryProduct));
 router.delete("/delete-product/:id" , verifySeller , catchAsyncError(deleteProduct));
+router.put("/create-review" , verifyToken, catchAsyncError(createReview));
 
 export default router;

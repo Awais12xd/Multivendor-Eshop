@@ -1,7 +1,6 @@
 import React, { useState } from 'react'
 import DashboardHeader from '../../components/Dashboard/DashboardHeader.jsx'
 import DashboardSideBar from '../../components/Dashboard/DashboardSideBar.jsx'
-import styles from '../../style/style.js';
 import DashboardContent from '../../components/Dashboard/DashboardContent.jsx';
 
 const DashboardPage = () => {

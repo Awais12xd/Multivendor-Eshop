@@ -7,28 +7,33 @@ import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import { productsLoad } from "../../redux/actions/productsLoad.js";
 import Loader from "../Animations/Loader.jsx";
+import Ratings from "../Products/Ratings.jsx";
 
 const ShopProfileData = ({ IsShopOwner }) => {
   const [productData, setProductData] = useState(null);
   const dispatch = useDispatch();
+    const {allEvents, isloading} = useSelector((state) => state.allEvents);
+  
   const [loading, setLoading] = useState(false);
   const [active, setActive] = useState(1);
-  const {allProducts} = useSelector((state) => state.allProducts )
+  const { allProducts } = useSelector((state) => state.allProducts);
   const { id } = useParams();
   useEffect(() => {
-     const fetchProductDetails = () => {
-       if (allProducts && allProducts.length > 0) {
-         const products = allProducts.filter(
-           (product) => product.shop._id === id
-         );
-         setProductData(products || null);
-       }
-     };
- 
-     fetchProductDetails();
-   }, [allProducts, id]); // ❗ Make sure to depend on updated productName & allProducts
- 
+    const fetchProductDetails = () => {
+      if (allProducts && allProducts.length > 0) {
+        const products = allProducts.filter(
+          (product) => product.shop._id === id
+        );
+        setProductData(products || null);
+      }
+    };
 
+    fetchProductDetails();
+  }, [allProducts, id]); // ❗ Make sure to depend on updated productName & allProducts
+
+  const allReviews =
+    productData && productData.map((product) => product.reviews).flat();
+  console.log(allReviews);
   return (
     <div className="w-full">
       <div className="flex w-full items-center justify-between border-b border-gray-300  mb-8">
@@ -63,21 +68,45 @@ const ShopProfileData = ({ IsShopOwner }) => {
           </Link>
         )}
       </div>
-      {
-        loading && (
-          <Loader />
-        )
-      }
-    {
-      productData && !loading && (
-          <div className="grid grid-cols-1 gap-[20px] md:grid-cols-2 md:gap-[25px] lg:grid-cols-3 lg:gap-[25px] 2xl:grid-cols-4 2xl:gap-[30px]  mb-12 border-0">
-        {productData &&
-          productData.map((data, index) => (
-            <ProductCard product={data} key={index} />
-          ))}
-      </div>
+      {loading && <Loader />}
+      {active === 1 && productData && !loading && (
+        <div className="grid grid-cols-1 gap-[20px] md:grid-cols-2 md:gap-[25px] lg:grid-cols-3 lg:gap-[25px] 2xl:grid-cols-4 2xl:gap-[30px]  mb-12 border-0">
+          {productData &&
+            productData.map((data, index) => (
+              <ProductCard product={data} key={index} />
+            ))}
+        </div>
+      )}
+      {active === 2 && (
+        allEvents  && (
+        <div className="grid grid-cols-1 gap-[20px] md:grid-cols-2 md:gap-[25px] lg:grid-cols-3 lg:gap-[25px] 2xl:grid-cols-4 2xl:gap-[30px]  mb-12 border-0">
+          {allEvents &&
+            allEvents.map((data, index) => (
+              <ProductCard product={data} key={index} eventData={true} />
+            ))}
+        </div>
       )
-    }
+      )}
+      {active === 3 &&
+        allReviews &&
+        allReviews.map((item,index) => (
+          <div key={index} className="w-full flex my-5">
+            <img
+              className="h-[50px] w-[50px] object-cover rounded-full"
+              src={`${import.meta.env.VITE_BACKEND_URL}/${
+                item.user.avatar.url
+              }`}
+              alt=""
+            />
+            <div className="flex flex-col pl-3 space-y-1">
+              <div className="flex space-x-1 items-center">
+                <h2 className="font-[500]">{item.user.name}</h2>
+                <Ratings rating={item.rating} />
+              </div>
+              <p className="text-sm">{item.comment}</p>
+            </div>
+          </div>
+        ))}
     </div>
   );
 };

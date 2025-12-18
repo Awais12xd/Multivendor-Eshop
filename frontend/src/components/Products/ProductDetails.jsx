@@ -14,6 +14,8 @@ import {
 } from "../../redux/actions/wishlist.js";
 import { toast } from "react-toastify";
 import { addToCartAction } from "../../redux/actions/cart.js";
+import Ratings from "./Ratings.jsx";
+import axios from "axios";
 
 const ProductDetails = ({ product }) => {
   const navigate = useNavigate();
@@ -25,6 +27,7 @@ const ProductDetails = ({ product }) => {
   const { allProducts } = useSelector((state) => state.allProducts);
   const { cart } = useSelector((state) => state.cart);
   const { wishlist } = useSelector((state) => state.wishlist);
+  const { user, isAuth } = useSelector((state) => state.user);
   useEffect(() => {
     const fetchProductDetails = () => {
       if (allProducts && allProducts.length > 0) {
@@ -62,23 +65,52 @@ const ProductDetails = ({ product }) => {
     dispatch(removeFromWishlistAction(data));
   };
 
-  const handleMessageClick = () => {
-    navigate("/inbox?conversation=HelloHowareyou");
+  const handleMessageClick = async () => {
+    if (isAuth) {
+      const groupTitle = product._id + user._id;
+      const userId = user._id;
+      const sellerId = product.shop._id;
+
+      try {
+        const res = await axios.post(
+          `${import.meta.env.VITE_SERVER_URL}/conversation/create-conversation`,
+         { groupTitle,userId,sellerId}
+        );
+        if (res.data.success) {
+          navigate(`/user-inbox?${res.data.data._id}`)
+          toast.success(res.data.message);
+        }
+        if (res.data.success === false) {
+          setError(res.data.message);
+          toast.error(res.data.message);
+        }
+      } catch (err) {
+        if (err.response) {
+          console.log("Error response:", err.response.data);
+          toast.error(err.response.data.message);
+        } else {
+          console.log("Error:", err.message);
+          toast.error(err.message);
+        }
+      }
+    } else {
+      toast.error("Login to create a conversation with seller !");
+    }
   };
 
-   const addToCartHandler = (id) => {
-      const existed = cart && cart.find((i) => i._id == id);
-      if(product.stock < count){
-        return toast.error("Stock is limited")
-      }
-      if (existed) {
-        toast.error("Product already added in the cart!");
-      } else {
-        const cartData = { ...product, qty: count === 0 ? 1 : count };
-        dispatch(addToCartAction(cartData));
-        toast.success("Product added to cart successfully!");
-      }
-    };
+  const addToCartHandler = (id) => {
+    const existed = cart && cart.find((i) => i._id == id);
+    if (product.stock < count) {
+      return toast.error("Stock is limited");
+    }
+    if (existed) {
+      toast.error("Product already added in the cart!");
+    } else {
+      const cartData = { ...product, qty: count === 0 ? 1 : count };
+      dispatch(addToCartAction(cartData));
+      toast.success("Product added to cart successfully!");
+    }
+  };
 
   return (
     <div className="bg-white pb-6">
@@ -185,7 +217,9 @@ const ProductDetails = ({ product }) => {
                       <h3 className={`${styles.shop_name}`}>
                         {product.shop.name}
                       </h3>
-                      <h5 className="pb-3 text-[15px]">4/5 Ratings</h5>
+                      <h5 className="pb-3 text-[15px]">
+                        ({product?.ratings || 0}/5) Ratings
+                      </h5>
                     </div>
                   </Link>
                   <div
@@ -212,6 +246,7 @@ const ProductDetailInfo = ({ product, info }) => {
   const [active, setActive] = useState(1);
   // Helper to safely get the length of info array
   const length = (arr) => (Array.isArray(arr) ? arr.length : 0);
+  console.log(product , "product")
 
   return (
     <div className="bg-[#f5f6fb] px-3 lg:px-8 py-2 rounded  ">
@@ -258,8 +293,26 @@ const ProductDetailInfo = ({ product, info }) => {
         </div>
       ) : null}
       {active === 2 ? (
-        <div className="flex items-center justify-center w-full h-[40vh]">
-          <p className="text-center">No Reviews yet</p>
+        <div className="flex flex-col items-center justify-center w-full py-3">
+          {product &&
+            product.reviews.map((item) => (
+              <div className="w-full flex my-2">
+                <img
+                  className="h-[50px] w-[50px] object-cover rounded-full"
+                  src={`${import.meta.env.VITE_BACKEND_URL}/${
+                    item?.user.avatar.url
+                  }`}
+                  alt=""
+                />
+                <div className="flex flex-col pl-3 space-y-1">
+                  <div className="flex space-x-1 items-center">
+                    <h2 className="font-[500]">{item.user.name}</h2>
+                    <Ratings rating={item.rating} />
+                  </div>
+                  <p className="text-sm">{item.comment}</p>
+                </div>
+              </div>
+            ))}
         </div>
       ) : null}
       {active === 3 ? (
@@ -267,15 +320,21 @@ const ProductDetailInfo = ({ product, info }) => {
           <div className="w-full md:w-[70%] mb-6 md:mb-0">
             <Link to={`/shop/${product.shopId}`} className="flex">
               <img
-                src={`${import.meta.env.VITE_BACKEND_URL}/${
-                  product.shop.avatar.url
-                }`}
+                src={`${import.meta.env.VITE_BACKEND_URL}/1000057564-1752550627673-877278503.png`}
+                
+                // ${
+                //   product?.shop?.avatar?.url
+                // }`}
                 className="w-[50px] h-[50px] rounded-full mr-2"
                 alt="Shop"
+                // 000057564-1752550627673-877278503.png"
+
               />
               <div className="">
                 <h3 className={`${styles.shop_name}`}>{product.shop.name}</h3>
-                <h5 className="pb-3 text-[15px]">4/5 Ratings</h5>
+                <h5 className="pb-3 text-[15px]">
+                  ({product?.ratings || 0}/5) Ratings
+                </h5>
               </div>
             </Link>
             <p className="mt-2 font-[500]">
@@ -307,7 +366,8 @@ const ProductDetailInfo = ({ product, info }) => {
             </div>
             <div className="text-left">
               <p className="font-semibold whitespace-nowrap">
-                Total Reviews : <span className="font-[500]">200</span>
+                Total Reviews :{" "}
+                <span className="font-[500]">{product?.reviews.length}</span>
               </p>
             </div>
             <Link

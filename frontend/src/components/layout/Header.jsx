@@ -23,6 +23,7 @@ const imageUrl = "https://shopo.quomodothemes.website/assets/images/logo.svg";
 
 const Header = ({ activeHeading }) => {
   const { isAuth, user } = useSelector((state) => state.user);
+  const { isSeller } = useSelector((state) => state.seller);
   const [searchText, setSearchText] = useState("");
   const [searchData, setSearchData] = useState(null);
   const [active, setActive] = useState(false);
@@ -111,8 +112,8 @@ const Header = ({ activeHeading }) => {
           </div>
           <div className={`${styles.button}`}>
             <Link to={"/create-shop"}>
-              <h1 className="text-white flex items-center">
-                Become Seller <IoIosArrowForward className="ml-1" />
+              <h1 className="text-white px-2 flex items-center  w-auto">
+                {isSeller ? "Seller Dashboard" : "Become Seller"} <IoIosArrowForward className="ml-1" />
               </h1>
             </Link>
           </div>
@@ -192,7 +193,9 @@ const Header = ({ activeHeading }) => {
         {openWish && <WishList setOpenWish={setOpenWish} />}
       </div>
       {/* Mobile Responsive Header */}
-      <div className="w-full h-[60px] bg-white fixed top-0 left-0 flex items-center shadow-sm md:hidden z-40 ">
+      <div className={`w-full h-[60px] bg-white flex items-center md:hidden z-40  ${
+          active ? "shadow-sm fixed top-0 left-0 " : null
+        } `}>
         <div className="flex justify-between items-center w-full">
           <div className="">
             <BiMenuAltLeft

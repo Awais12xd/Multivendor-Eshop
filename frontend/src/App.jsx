@@ -28,6 +28,12 @@ import {
   DashboardAllOrdersPage,
   OrderDetailPage,
   UserOrderDetailPage,
+  TrackOrderPage,
+  DashboardAllRefundOrdersPage,
+  ShopSettingsPage,
+  DashboardWithdrawMoneyPage,
+  DashboardInboxPage,
+  UserInboxPage
 } from "./routes/allPagesLocalRoutes.js";
 import { Bounce, ToastContainer, toast } from "react-toastify";
 import axios from "axios";
@@ -95,6 +101,14 @@ function App() {
               </ProtectedRoute>
             }
           />
+          <Route
+            path="/user-inbox"
+            element={
+              <ProtectedRoute>
+                <UserInboxPage />
+              </ProtectedRoute>
+            }
+          />
           <Route path="/product/:id" element={<ProductDetailPage />} />
           <Route path="/activation/:url" element={<ActivationPage />} />
 
@@ -126,6 +140,14 @@ function App() {
             element={
               <ProtectedRoute>
                 <UserOrderDetailPage />
+              </ProtectedRoute>
+            }
+          />
+           <Route
+            path="/user/track/order/:id"
+            element={
+              <ProtectedRoute>
+                <TrackOrderPage />
               </ProtectedRoute>
             }
           />
@@ -188,10 +210,44 @@ function App() {
             }
           />
           <Route
+            path="/dashboard/refunds"
+            element={
+              <SellerProtectedRoutes>
+                <DashboardAllRefundOrdersPage />
+              </SellerProtectedRoutes>
+            }
+          />
+          <Route
+            path="/dashboard/withdraw"
+            element={
+              <SellerProtectedRoutes>
+                <DashboardWithdrawMoneyPage />
+              </SellerProtectedRoutes>
+            }
+          />
+          <Route
+            path="/dashboard/shop-inbox"
+            element={
+              <SellerProtectedRoutes>
+                <DashboardInboxPage />
+              </SellerProtectedRoutes>
+            }
+          />
+
+
+          <Route
             path="/order/:id"
             element={
               <SellerProtectedRoutes>
                 <OrderDetailPage />
+              </SellerProtectedRoutes>
+            }
+          />
+          <Route
+            path="/shop/settings"
+            element={
+              <SellerProtectedRoutes>
+                <ShopSettingsPage />
               </SellerProtectedRoutes>
             }
           />

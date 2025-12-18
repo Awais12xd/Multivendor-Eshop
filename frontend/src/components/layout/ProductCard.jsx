@@ -17,28 +17,26 @@ import {
 } from "../../redux/actions/wishlist.js";
 import { addToCartAction } from "../../redux/actions/cart.js";
 import { toast } from "react-toastify";
+import Ratings from "../Products/Ratings.jsx";
 
-const ProductCard = ({ product }) => {
+const ProductCard = ({ product, eventData }) => {
   const [click, setClick] = useState(false);
   const dispatch = useDispatch();
   const [open, setOpen] = useState(false);
-  const { wishlist } = useSelector((state) => state.
-  wishlist);
-  const { cart } = useSelector((state) => state.
-  cart);
+  const { wishlist } = useSelector((state) => state.wishlist);
+  const { cart } = useSelector((state) => state.cart);
+
 
   useEffect(() => {
-
     const existed = wishlist && wishlist.find((i) => i._id === product._id);
     if (existed) {
       setClick(true);
     } else {
       setClick(false);
     }
-
   }, [wishlist]);
-  
-   const addToCartHandler = (id) => {
+
+  const addToCartHandler = (id) => {
     const existed = cart && cart.find((i) => i._id == id);
     if (existed) {
       toast.error("Product already added in the cart!");
@@ -58,13 +56,19 @@ const ProductCard = ({ product }) => {
     dispatch(removeFromWishlistAction(data));
   };
 
-  ;
   return (
     <div className="w-full relative h-[370px] p-3 cursor-pointer rounded-lg shadow-sm bg-white flex flex-col justify-between">
       <div>
         <div className="flex justify-end"></div>
-        <div >
-          <Link to={`/product/${product._id}`} className="w-full flex justify-center">
+        <div>
+          <Link
+            to={
+              eventData === true
+                ? `/product/${product._id}?eventData=true`
+                : `/product/${product._id}`
+            }
+            className="w-full flex justify-center"
+          >
             <img
               src={`${import.meta.env.VITE_BACKEND_URL}/${product?.images[0]}`}
               alt="Product"
@@ -78,7 +82,11 @@ const ProductCard = ({ product }) => {
             {product.shop.name}
           </Link>
         </div>
-        <Link to={`/product/${product._id}`}>
+        <Link to={
+              eventData === true
+                ? `/product/${product._id}?eventData=true`
+                : `/product/${product._id}`
+            }>
           <div>
             <h4 className="pb-3 font-[500]">
               {product.name.length > 40
@@ -86,26 +94,7 @@ const ProductCard = ({ product }) => {
                 : product.name}
             </h4>
             <div className="flex">
-              <AiFillStar
-                size={20}
-                className="mr-2 text-yellow-300 cursor-pointer"
-              />
-              <AiFillStar
-                size={20}
-                className="mr-2 text-yellow-300 cursor-pointer"
-              />
-              <AiFillStar
-                size={20}
-                className="mr-2 text-yellow-300 cursor-pointer"
-              />
-              <AiFillStar
-                size={20}
-                className="mr-2 text-yellow-300 cursor-pointer"
-              />
-              <AiOutlineStar
-                size={20}
-                className="mr-2 text-yellow-300 cursor-pointer"
-              />
+              <Ratings rating={product?.ratings} />
             </div>
           </div>
         </Link>

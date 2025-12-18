@@ -11,7 +11,6 @@ const allOrdersLoad = async(dispatch,id) => {
         withCredentials:true
       }).then((res) => {
         dispatch(loadOrdersSuccess(res.data.data));
-        console.log("All orders of the user loaded Successfully!" , res)
       }).catch(err => {
         dispatch(loadOrdersFail(err.response.data))
         console.log("Error while loading the user orders" , err)

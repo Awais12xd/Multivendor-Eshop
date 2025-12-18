@@ -3,6 +3,7 @@ import { errorHandler } from "../utils/errorHandler.js";
 import { apiResponse } from "../utils/apiResponse.js";
 import { Product } from "../models/product.model.js";
 
+
 const createOrder = async (req, res, next) => {
   try {
     const { cart, user, shippingAddress, totalPrice, paymentInfo } = req.body;
@@ -76,6 +77,7 @@ const updateOrderStatus = async (req, res, next) => {
     }
     const updateProduct = async (id, qty) => {
       const product = await Product.findById(id);
+      console.log(product)
       if (!product) {
         return next(
           new errorHandler(
@@ -90,11 +92,11 @@ const updateOrderStatus = async (req, res, next) => {
       await product.save({validateBeforeSave:false})
     };
     if (req.body.status === "Transferred to delivery partner") {
-      order.cart.forEach(async (o) => {
-        await updateProduct(o._id, o.qty);
-      });
+     
+       for (const item of order.cart) {
+        await updateProduct(item._id, item.qty);
+      }
     }
-    console.log("No status" , req.body.status)
     order.status = req.body.status;
     if(req.body.status === "Delivered"){
          order.deliveredAt = Date.now();
@@ -112,4 +114,64 @@ const updateOrderStatus = async (req, res, next) => {
   }
 };
 
-export { createOrder, getAllUsersOrder, getAllSellersOrder, updateOrderStatus };
+//Give a refund --- user
+const orderRefund = async (req, res, next) => {
+  try {
+    const order = await Order.findById(req.params.id);
+    if (!order) {
+      return next(new errorHandler("Order not found with this id", 400));
+    }
+    
+    order.status = req.body.status;
+
+    await order.save({validateBeforeSave : false})
+    
+    res.status(200).json(new apiResponse(200, "Order refund request successfully.", order));
+     
+
+    
+  } catch (error) {
+    return next(new errorHandler("Error while updating the order status in refund.", 500));
+  }
+};
+
+//Update refund order status --- seller
+const orderRefundSuccess = async (req, res, next) => {
+  try {
+    const order = await Order.findById(req.params.id);
+    if (!order) {
+      return next(new errorHandler("Order not found with this id", 400));
+    }
+    const updateProduct = async (id, qty) => {
+      const product = await Product.findById(id);
+      if (!product) {
+        return next(
+          new errorHandler(
+            "Product not found with this id while updating its stock",
+            400
+          )
+        );
+      }
+      product.stock = product.stock + qty ;
+      product.sold_out = product.sold_out - qty ;
+
+      await product.save({validateBeforeSave:false})
+    };
+    if (req.body.status === "Refund Success") {
+       for (const item of order.cart) {
+        await updateProduct(item._id, item.qty);
+      }
+    }
+
+    order.status = req.body.status;
+
+    await order.save({validateBeforeSave : false})
+    
+    res.status(200).json(new apiResponse(200, "Order Refund Successfully", order));
+     
+  } catch (error) {
+    return next(new errorHandler("Error while updating the order refund", 500));
+  }
+};
+
+export { createOrder, getAllUsersOrder, getAllSellersOrder, updateOrderStatus, orderRefund, orderRefundSuccess };

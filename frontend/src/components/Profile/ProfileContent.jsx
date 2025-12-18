@@ -22,6 +22,7 @@ import { RxCross1 } from "react-icons/rx";
 import { Country, State } from "country-state-city";
 import { allOrdersLoad } from "../../redux/actions/allOrdersLoad.js";
 import Loader from "../Animations/Loader.jsx";
+import UserInbox from "../Inbox/UserInbox.jsx";
 
 const ProfileContent = ({ active }) => {
   const { user, error } = useSelector((state) => state.user);
@@ -194,6 +195,11 @@ const ProfileContent = ({ active }) => {
           <RefundOrderGrid />
         </>
       )}
+      {/* {active === 4 && (
+        <>
+          <UserInbox />
+        </>
+      )} */}
       {active === 5 && (
         <>
           <TrackOrderChanges />
@@ -382,57 +388,16 @@ const OrderGrid = () => {
   );
 };
 const RefundOrderGrid = () => {
-  const orders = [
-    {
-      _id: "ORD-10004",
-      orderItems: [{ name: "Samsung Galaxy S24 Ultra" }],
-      totalPrice: 1399,
-      orderStatus: "Cancelled",
-    },
-    {
-      _id: "ORD-10005",
-      orderItems: [{ name: "Google Pixel 8 Pro" }, { name: "Pixel Buds Pro" }],
-      totalPrice: 1249,
-      orderStatus: "Delivered",
-    },
-    {
-      _id: "ORD-10006",
-      orderItems: [
-        { name: "Dell XPS 13" },
-        { name: "Logitech MX Master 3S Mouse" },
-      ],
-      totalPrice: 1690,
-      orderStatus: "Processing",
-    },
-    {
-      _id: "ORD-10007",
-      orderItems: [{ name: "Sony WH-1000XM5 Headphones" }],
-      totalPrice: 399,
-      orderStatus: "Shipped",
-    },
-    {
-      _id: "ORD-10008",
-      orderItems: [{ name: "iPad Pro 12.9-inch" }, { name: "Apple Pencil 2" }],
-      totalPrice: 1449,
-      orderStatus: "Delivered",
-    },
-    {
-      _id: "ORD-10009",
-      orderItems: [
-        { name: "ASUS ROG Gaming Laptop" },
-        { name: "Mechanical Keyboard" },
-        { name: "Gaming Mouse" },
-      ],
-      totalPrice: 2099,
-      orderStatus: "Processing",
-    },
-    {
-      _id: "ORD-10010",
-      orderItems: [{ name: "OnePlus 12" }],
-      totalPrice: 899,
-      orderStatus: "Delivered",
-    },
-  ];
+  const dispatch = useDispatch();
+  const {orders , isloading} = useSelector((state) => state.orders);
+  const {user} = useSelector((state) => state.user);
+
+  useEffect(() => {
+    allOrdersLoad(dispatch,user._id);
+  } , [])
+
+  const refundOrders = orders && orders.filter((item) => item.status === "Processing Refund" );
+
 
   const columns = [
     { field: "id", headerName: "Order ID", minWidth: 150, flex: 0.7 },
@@ -475,7 +440,7 @@ const RefundOrderGrid = () => {
       renderCell: (params) => {
         return (
           <>
-            <Link to={`/order/${params.id}`}>
+            <Link to={`/user/order/${params.id}`}>
               <Button>
                 <AiOutlineArrowRight size={20} color="black" />
               </Button>
@@ -488,16 +453,15 @@ const RefundOrderGrid = () => {
 
   const row = [];
 
-  orders &&
-    orders.forEach((item) => {
+  refundOrders &&
+    refundOrders.forEach((item) => {
       row.push({
         id: item._id,
-        itemsQty: item.orderItems.length,
+        itemsQty: item.cart.length,
         total: "US$ " + item.totalPrice,
-        status: item.orderStatus,
+        status: item.status,
       });
     });
-
   return (
     <>
       <div className="pl-7 pt-1">
@@ -513,57 +477,14 @@ const RefundOrderGrid = () => {
   );
 };
 const TrackOrderChanges = () => {
-  const orders = [
-    {
-      _id: "ORD-10004",
-      orderItems: [{ name: "Samsung Galaxy S24 Ultra" }],
-      totalPrice: 1399,
-      orderStatus: "Cancelled",
-    },
-    {
-      _id: "ORD-10005",
-      orderItems: [{ name: "Google Pixel 8 Pro" }, { name: "Pixel Buds Pro" }],
-      totalPrice: 1249,
-      orderStatus: "Delivered",
-    },
-    {
-      _id: "ORD-10006",
-      orderItems: [
-        { name: "Dell XPS 13" },
-        { name: "Logitech MX Master 3S Mouse" },
-      ],
-      totalPrice: 1690,
-      orderStatus: "Processing",
-    },
-    {
-      _id: "ORD-10007",
-      orderItems: [{ name: "Sony WH-1000XM5 Headphones" }],
-      totalPrice: 399,
-      orderStatus: "Shipped",
-    },
-    {
-      _id: "ORD-10008",
-      orderItems: [{ name: "iPad Pro 12.9-inch" }, { name: "Apple Pencil 2" }],
-      totalPrice: 1449,
-      orderStatus: "Delivered",
-    },
-    {
-      _id: "ORD-10009",
-      orderItems: [
-        { name: "ASUS ROG Gaming Laptop" },
-        { name: "Mechanical Keyboard" },
-        { name: "Gaming Mouse" },
-      ],
-      totalPrice: 2099,
-      orderStatus: "Processing",
-    },
-    {
-      _id: "ORD-10010",
-      orderItems: [{ name: "OnePlus 12" }],
-      totalPrice: 899,
-      orderStatus: "Delivered",
-    },
-  ];
+ const dispatch = useDispatch();
+  const {orders , isloading} = useSelector((state) => state.orders);
+  const {user} = useSelector((state) => state.user);
+
+  useEffect(() => {
+    allOrdersLoad(dispatch,user._id);
+  } , [])
+
 
   const columns = [
     { field: "id", headerName: "Order ID", minWidth: 150, flex: 0.7 },
@@ -606,7 +527,7 @@ const TrackOrderChanges = () => {
       renderCell: (params) => {
         return (
           <>
-            <Link to={`/order/${params.id}`}>
+            <Link to={`/user/track/order/${params.id}`}>
               <Button>
                 <MdTrackChanges size={20} color="black" />
               </Button>
@@ -623,12 +544,11 @@ const TrackOrderChanges = () => {
     orders.forEach((item) => {
       row.push({
         id: item._id,
-        itemsQty: item.orderItems.length,
+        itemsQty: item.cart.length,
         total: "US$ " + item.totalPrice,
-        status: item.orderStatus,
+        status: item.status,
       });
     });
-
   return (
     <>
       <div className="pl-7 pt-1">

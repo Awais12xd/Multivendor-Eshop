@@ -3,6 +3,7 @@ import Header from '../../components/layout/Header.jsx'
 import EventCard from '../../components/layout/EventCard.jsx'
 import styles from '../../style/style.js'
 import Footer from '../../components/layout/Footer.jsx'
+import Events from '../../components/layout/Events.jsx'
 
 const EventsPage = () => {
   return (
@@ -11,6 +12,7 @@ const EventsPage = () => {
       <div className={`${styles.section} flex flex-col gap-7 my-5`}>
         <EventCard />
       <EventCard />
+      <Events />
       </div>
       <Footer />
     </div>

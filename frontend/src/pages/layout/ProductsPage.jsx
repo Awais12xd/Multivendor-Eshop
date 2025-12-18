@@ -12,25 +12,19 @@ const ProductsPage = () => {
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
   const categoriyData = searchParams.get("category");
-  console.log(categoriyData);
   const [data, setData] = useState([]);
   const { allProducts } = useSelector((state) => state.allProducts);
 
   useEffect(() => {
-    console.log("yes")
     if (categoriyData) {
-       console.log(categoriyData)
       const products = allProducts?.filter(
         (product) => product.category == categoriyData
       );
-      console.log(products)
       setData(products);
     } else {
-      console.log("object")
         const allProductsData = allProducts ? [...allProducts] : [];
     const sortedData = allProductsData;
       setData(sortedData);
-      console.log("Checking" , sortedData)
     }
      window.scrollTo(0, 0)
 

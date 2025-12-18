@@ -11,7 +11,6 @@ const eventsLoad = async(dispatch,id) => {
         withCredentials:true
       }).then((res) => {
         dispatch(loadEventsSuccess(res.data.data));
-        console.log("Events loaded Successfully!" , res)
       }).catch(err => {
         dispatch(loadEventsFail(err.response.data))
         console.log("Error while loading the Events" , err)
@@ -30,7 +29,6 @@ const eventDelete = async(dispatch,id) => {
         withCredentials:true
       }).then((res) => {
         dispatch(deleteSuccess(res.data.data));
-        console.log("Product Delete Successfully!" , res)
       }).catch(err => {
         dispatch(deleteFail(err.response.data))
         console.log("Error while deleting the product" , err)

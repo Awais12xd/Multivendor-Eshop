@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
-import DashboardCreateEvent from '../../components/Dashboard/DashboardCreateEvent'
-import DashboardSideBar from '../../components/Dashboard/DashboardSideBar';
-import DashboardHeader from '../../components/Dashboard/DashboardHeader';
+import DashboardCreateEvent from '../../components/Dashboard/DashboardCreateEvent.jsx'
+import DashboardSideBar from '../../components/Dashboard/DashboardSideBar.jsx';
+import DashboardHeader from '../../components/Dashboard/DashboardHeader.jsx';
 
 const DashboardCreateEventPage = () => {
   const [active , setActive] = useState(4);
