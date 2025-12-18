@@ -6,7 +6,6 @@ import { useDispatch, useSelector } from "react-redux";
 import styles from "../../style/style.js";
 import { allOrdersLoad } from "../../redux/actions/allOrdersLoad.js";
 import { AiFillStar, AiOutlineStar } from "react-icons/ai";
-import { Product } from "../../../../backend/models/product.model.js";
 import axios from "axios";
 import { toast } from "react-toastify";
 
