@@ -45,5 +45,3 @@ backend/node_modules/
 *.env.production.local
 
 # Optional: Ignore uploads or static files (customize as needed)
-
-static/
