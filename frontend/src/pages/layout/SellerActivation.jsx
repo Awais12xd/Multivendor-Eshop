@@ -23,7 +23,7 @@ const SellerActivation = () => {
       setErrorMsg("");
       try {
         const res = await axios.post(
-          "http://localhost:8000/api/shop/seller/activation",
+          `${import.meta.env.VITE_SERVER_URL}/shop/seller/activation`,
           { activation_token: url }
         );
         if (!isCancelled) {

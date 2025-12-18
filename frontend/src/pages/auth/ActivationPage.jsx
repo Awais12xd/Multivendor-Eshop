@@ -11,7 +11,7 @@ const ActivationPage = () => {
         if(url){
              const sendRequest = async () => {
         try {
-            const res =  await fetch("http://localhost:8000/api/auth/activation",{
+            const res =  await fetch(`${import.meta.env.VITE_SERVER_URL}/auth/activation`,{
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

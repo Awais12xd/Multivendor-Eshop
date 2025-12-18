@@ -60,7 +60,7 @@ const ProfileContent = ({ active }) => {
 
     try {
       const res = await axios.put(
-        `http://localhost:8000/api/user/change-avatar`,
+        `${import.meta.env.VITE_SERVER_URL}/user/change-avatar`,
         formData,
         {
           headers: {
