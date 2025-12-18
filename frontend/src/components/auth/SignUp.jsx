@@ -29,7 +29,7 @@ const handleSubmit = async(e) => {
 
   try {
     
-    const res = await axios.post(`http://localhost:8000/api/auth/sign-up`, formData, {
+    const res = await axios.post(`${import.meta.env.VITE_SERVER_URL}/auth/sign-up`, formData, {
       headers: {
         "Content-Type": "multipart/form-data",
       }

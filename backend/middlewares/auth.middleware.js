@@ -11,7 +11,9 @@ const verifyToken = catchAsyncError(async(req,res,next) => {
         return next(new errorHandler("You are not logged in", 400));
     }
     const decoded = jwt.verify(token, process.env.JWT_SECRET_KEY);
+    console.log("first stage ok")
     const user = await User.findById(decoded.id);
+    console.log("second stage ok")
     if (!user) {
         return next(new errorHandler("User not found yesah", 404));
     }
