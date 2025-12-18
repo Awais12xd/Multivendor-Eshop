@@ -10,7 +10,8 @@ import { FaArrowRight } from "react-icons/fa";
 import { GrGallery } from "react-icons/gr";
 import { AiOutlineSend } from "react-icons/ai";
 
-const SOCKET_URL = "http://localhost:4000";
+// const SOCKET_URL = "http://localhost:4000";
+const SOCKET_URL = import.meta.env.VITE_SOCKET_URL;
 
 const UserInbox = () => {
   const { user } = useSelector((state) => state.user);

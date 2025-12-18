@@ -11,7 +11,8 @@ import styles from "../../style/style";
 import io from "socket.io-client";
 import { format } from "timeago.js";
 
-const SOCKET_URL = "http://localhost:4000";
+// const SOCKET_URL = "http://localhost:4000";
+const SOCKET_URL = import.meta.env.VITE_SOCKET_URL;
 
 const DashboardMessages = () => {
   const { seller } = useSelector((state) => state.seller);
