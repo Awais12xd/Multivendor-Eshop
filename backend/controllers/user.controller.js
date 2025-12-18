@@ -55,16 +55,12 @@ const updateUser = async (req, res, next) => {
 
 const changeAvatar = async (req, res, next) => {
   try {
-    console.log("req is hitting");
-
     const id = req.user.id;
-    console.log(id);
 
     const userFound = await User.findById(id);
     if (!userFound) {
       return next(new errorHandler("User not found ", 404));
     }
-    console.log("user found");
     const filePath = `uploads/${userFound.avatar.url}`;
     //   const filePath = path.join(process.cwd(), "uploads", userFound.avatar.url);
     fs.unlink(filePath, (err) => {
@@ -74,13 +70,11 @@ const changeAvatar = async (req, res, next) => {
     });
     const filename = req.file.filename;
     const fileUrl = path.join(filename);
-    console.log(fileUrl);
     const updatedUser = await User.findByIdAndUpdate(
       req.user.id,
       { "avatar.url": fileUrl },
       { new: true }
     );
-    console.log(updatedUser);
 
     res
       .status(200)
