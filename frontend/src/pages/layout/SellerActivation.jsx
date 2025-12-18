@@ -1,12 +1,13 @@
 import axios from "axios";
 import React, { useEffect, useRef, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 
 const SellerActivation = () => {
   const { url } = useParams();
   const [error, setError] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
+  const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
 
   const hasActivatedRef = useRef(false);
@@ -29,6 +30,7 @@ const SellerActivation = () => {
         if (!isCancelled) {
           setLoading(false);
           toast.success(res.data.message || "Activation successful!");
+          navigate("/shop-login")
         }
       } catch (err) {
         if (!isCancelled) {

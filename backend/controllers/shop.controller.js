@@ -107,13 +107,13 @@ const activateSeller = async (req, res, next) => {
     }
 
     const { name, email, password, phoneNumber, zipCode, address, avatar } =
-      newUser;  
+      newUser;
     console.log("ACTIVATION HIT — 1", Date.now());
     let shop = await Shop.findOne({ email });
     console.log("ACTIVATION HIT — 2", Date.now());
-     if (shop && shop.activated) {
-        return next(new errorHandler("User already activated", 400));
-      }
+    if (shop && shop.activated) {
+      return next(new errorHandler("User already activated", 400));
+    }
     console.log("ACTIVATION HIT — 3", Date.now());
     shop = await Shop.create({
       name,
@@ -129,10 +129,13 @@ const activateSeller = async (req, res, next) => {
     sendSellerToken(shop, 200, res);
   } catch (error) {
     console.error("Activation error:", error);
-     if (error.code === 11000) { // Duplicate key error
-    // Optionally: Check if the user is already activated
-    return res.status(409).json({ message: "Account already activated or duplicate request." });
-  }
+    if (error.code === 11000) {
+      // Duplicate key error
+      // Optionally: Check if the user is already activated
+      return res
+        .status(409)
+        .json({ message: "Account already activated or duplicate request." });
+    }
     return next(
       new errorHandler(`Error activating seller: ${error.message}`, 500)
     );
@@ -160,42 +163,35 @@ const loginSeller = async (req, res, next) => {
   }
 };
 
-const getSeller = async(req , res , next) => {
-    try {
-        const userId = req.seller.id;
-        const seller = await Shop.findById(userId);
-        if (!seller) {
-            return next(new errorHandler("User not found while verifying token", 404));
-            }
-
-            res.
-            status(200).
-            json(new apiResponse(true , "User found" , seller));
-        
-    } catch (error) {
-        
+const getSeller = async (req, res, next) => {
+  try {
+    const userId = req.seller.id;
+    const seller = await Shop.findById(userId);
+    if (!seller) {
+      return next(
+        new errorHandler("User not found while verifying token", 404)
+      );
     }
-}
-const getSellerInfo = async(req , res , next) => {
-    try {
-        const userId = req.params.id;
-        const seller = await Shop.findById(userId);
-        if (!seller) {
-            return next(new errorHandler("Seller not found.", 404));
-            }
 
-            res.
-            status(200).
-            json(new apiResponse(true , "Seller found" , seller));
-        
-    } catch (error) {
-        return next(new errorHandler("Error while getting seller info." , 500))
+    res.status(200).json(new apiResponse(true, "User found", seller));
+  } catch (error) {}
+};
+const getSellerInfo = async (req, res, next) => {
+  try {
+    const userId = req.params.id;
+    const seller = await Shop.findById(userId);
+    if (!seller) {
+      return next(new errorHandler("Seller not found.", 404));
     }
-}
+
+    res.status(200).json(new apiResponse(true, "Seller found", seller));
+  } catch (error) {
+    return next(new errorHandler("Error while getting seller info.", 500));
+  }
+};
 
 const changeShopAvatar = async (req, res, next) => {
   try {
-
     const id = req.seller.id;
 
     const userFound = await Shop.findById(id);
@@ -214,12 +210,14 @@ const changeShopAvatar = async (req, res, next) => {
     const updatedUser = await Shop.findByIdAndUpdate(
       req.seller.id,
       { "avatar.url": fileUrl },
-      { new: true } 
+      { new: true }
     );
 
     res
       .status(200)
-      .json(new apiResponse(200, "Shop Avatar updated successfully", updatedUser));
+      .json(
+        new apiResponse(200, "Shop Avatar updated successfully", updatedUser)
+      );
   } catch (error) {
     return next(new errorHandler("Error while changing the shop avatar ", 500));
   }
@@ -227,17 +225,16 @@ const changeShopAvatar = async (req, res, next) => {
 
 const updateShopInfo = async (req, res, next) => {
   try {
-    const { name, description, address, phoneNumber , zipCode } = req.body;
+    const { name, description, address, phoneNumber, zipCode } = req.body;
     // console.log(name, description, address, phoneNumber , zipCode)
 
     // if (!name || !description || !address || !phoneNumber || zipCode) {
     //   return next(new errorHandler("All fields are required!", 400));
     // }
-    const shop = await Shop.findById(req.seller._id)
+    const shop = await Shop.findById(req.seller._id);
     if (!shop) {
       return next(new errorHandler("shop not found", 404));
     }
-   
 
     shop.name = name;
     shop.description = description;
@@ -260,6 +257,8 @@ const logoutSeller = async (req, res, next) => {
     const options = {
       expires: new Date(Date.now() + 90 * 24 * 60 * 60 * 1000),
       httpOnly: true,
+      secure: true, // send only over HTTPS
+      sameSite: "none", // allow cross-site cookie
     };
     res
       .status(201)

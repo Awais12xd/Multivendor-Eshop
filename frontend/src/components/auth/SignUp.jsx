@@ -66,7 +66,7 @@ const handleSubmit = async(e) => {
           <form onSubmit={handleSubmit} className="space-y-6">
             <div className="">
               <label
-                htmlFor="email"
+                htmlFor="username"
                 className="block text-sm font-medium text-gray-700"
               >
                 Username

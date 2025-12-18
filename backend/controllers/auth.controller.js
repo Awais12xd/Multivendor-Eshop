@@ -116,43 +116,41 @@ const activateUser = async (req, res, next) => {
   }
 };
 
-const loginUser = async(req,res,next) => {
-    try {
-
-      const {email,password} = req.body;
-      if(!email || !password){
-        return next(new errorHandler("Please provide email and password",400));
-      }
-      const user = await User.findOne({email}).select("+password");;
-      if(!user){
-        return next(new errorHandler("Invalid email! User does not exist.",400));
-        }
-      const isMatch = await user.comparePassword(password)
-      if(!isMatch){
-        return next(new errorHandler("Invalid password!",400));
-      }
-      sendToken(user,200,res);
-
-      
-    } catch (error) {
-      return next(new errorHandler(` error catch${error.message}`, 500));
-    }
-}
-
-const logout = async(req,res,next) => {
+const loginUser = async (req, res, next) => {
   try {
-     const options = {
-        expires: new Date(Date.now() + 90 * 24 * 60 * 60 * 1000),
-        httpOnly: true,
+    const { email, password } = req.body;
+    if (!email || !password) {
+      return next(new errorHandler("Please provide email and password", 400));
     }
-    res
-    .status(201)
-    .cookie('token', null, options)
-    .json(new apiResponse(201, 'Logout Successfully'))
+    const user = await User.findOne({ email }).select("+password");
+    if (!user) {
+      return next(new errorHandler("Invalid email! User does not exist.", 400));
+    }
+    const isMatch = await user.comparePassword(password);
+    if (!isMatch) {
+      return next(new errorHandler("Invalid password!", 400));
+    }
+    sendToken(user, 200, res);
   } catch (error) {
-      return next(new errorHandler(` error catch ${error.message}`, 500));
+    return next(new errorHandler(` error catch${error.message}`, 500));
   }
-}
+};
 
+const logout = async (req, res, next) => {
+  try {
+    const options = {
+      expires: new Date(Date.now() + 90 * 24 * 60 * 60 * 1000),
+      httpOnly: true,
+      secure: true, // send only over HTTPS
+      sameSite: "none", // allow cross-site cookie
+    };
+    res
+      .status(201)
+      .cookie("token", null, options)
+      .json(new apiResponse(201, "Logout Successfully"));
+  } catch (error) {
+    return next(new errorHandler(` error catch ${error.message}`, 500));
+  }
+};
 
-export { createUser, generateActivationToken, activateUser , loginUser , logout };
+export { createUser, generateActivationToken, activateUser, loginUser, logout };
