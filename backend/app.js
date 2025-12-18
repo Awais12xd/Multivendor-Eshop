@@ -25,9 +25,10 @@ if(process.env.NODE_ENV !== "PRODUCTION"){
 })
 }
 
+
 //cors config
 const corsOptions = {
-    origin: "http://localhost:5173" || "*",
+    origin: "http://localhost:5173/" || "*",
     credentials: true,
     methods:["GET","PUT","DELETE","UPDATE"],
     allowHeaders:[" Content-Type","Authorization"]
