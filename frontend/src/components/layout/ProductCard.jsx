@@ -70,7 +70,7 @@ const ProductCard = ({ product, eventData }) => {
             className="w-full flex justify-center"
           >
             <img
-              src={`${import.meta.env.VITE_BACKEND_URL}/${product?.images[0]}`}
+              src={`${product?.images[0]?.url}`}
               alt="Product"
               className="h-[220px] md:h-[170px] object-contain w-[80%]"
             />

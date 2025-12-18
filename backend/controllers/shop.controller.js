@@ -7,6 +7,7 @@ import { sendMail } from "../utils/sendMail.js";
 import { sendToken } from "../utils/sendToken.js";
 import { Shop } from "../models/shop.model.js";
 import { sendSellerToken } from "../utils/sendSellerToken.js";
+import { uploadToCloudinary } from "../utils/cloudinaryUpload.js";
 
 const generateActivationToken = (shop) => {
   return jwt.sign(shop, process.env.ACTIVATION_TOKEN_SECRET, {
@@ -29,28 +30,25 @@ const createShop = async (req, res, next) => {
     }
     const existingUser = await Shop.findOne({ email });
     if (existingUser) {
-      // Delete the uploaded file if user already exists
-      if (req.file && req.file.filename) {
-        const filePath = path.join(process.cwd(), "uploads", req.file.filename);
-        fs.unlink(filePath, (err) => {
-          if (err) {
-            return next(new errorHandler("Error deleting file", 500));
-          } else {
-            return next(new errorHandler("User already exists", 400));
-          }
-        });
-      } else {
-        return next(new errorHandler("Seller already exists", 400));
+      if (req.file) {
+        fs.unlinkSync(req.file.path);
       }
-      return;
+      return next(new errorHandler("Seller already exists", 400));
     }
-    const filename = req.file.filename;
-    const findUrl = path.join(filename);
+    let avatar = { public_id:  "", url: "" };
+    if (req.file) {
+      const cloudinaryResult = await uploadToCloudinary(req.file);
+      avatar = {
+        public_id: cloudinaryResult.public_id,
+        url: cloudinaryResult.url,
+      };
+    }
+
     const shop = {
       name: username,
       email,
       password,
-      avatar: { public_id: 123, url: findUrl },
+      avatar: avatar,
       address,
       zipCode,
       phoneNumber,
@@ -87,6 +85,9 @@ const createShop = async (req, res, next) => {
       );
     }
   } catch (error) {
+     if (req.file) {
+      fs.unlinkSync(req.file.path);
+    }
     return next(new errorHandler("Error creating seller", 500));
   }
 };

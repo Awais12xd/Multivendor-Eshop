@@ -128,7 +128,7 @@ const SingleCartBox = ({
           </div>
           <div className="image w-[160px] h-min ">
             <img
-              src={`${import.meta.env.VITE_BACKEND_URL}/${data.images[0]}`}
+              src={`${data.images[0]?.url}`}
               className="w-[160px]  h-min object-contain "
               alt="product"
             />

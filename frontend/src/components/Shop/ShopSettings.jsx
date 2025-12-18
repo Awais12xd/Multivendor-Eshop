@@ -86,7 +86,7 @@ const ShopSettings = () => {
             <img
               className="w-[200px] h-[200px] border-3 rounded-full border-green-400 cursor-pointer object-cover"
               src={
-                avatar ? URL.createObjectURL(avatar) : `${import.meta.env.VITE_BACKEND_URL}/${seller?.avatar.url}`
+                avatar ? URL.createObjectURL(avatar) : `${seller?.avatar.url}`
               }
               alt=""
             />

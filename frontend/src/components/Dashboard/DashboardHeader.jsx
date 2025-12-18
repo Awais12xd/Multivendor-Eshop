@@ -54,7 +54,7 @@ const DashboardHeader = () => {
            <Link to={`/shop/${seller?._id}`}>
             <img 
             className='w-12 h-12 rounded-full object-cover '
-            src={`${import.meta.env.VITE_BACKEND_URL}/${seller.avatar.url }`}
+            src={`${seller.avatar.url }`}
              alt="Shop" />
            </Link>
           </div>

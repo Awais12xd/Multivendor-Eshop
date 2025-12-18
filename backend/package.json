@@ -5,13 +5,14 @@
   "type": "module",
   "scripts": {
     "start": "node server.js",
-     "dev": "nodemon server.js"
+    "dev": "nodemon server.js"
   },
   "author": "",
   "license": "ISC",
   "description": "",
   "dependencies": {
     "bcryptjs": "^3.0.2",
+    "cloudinary": "^2.8.0",
     "cookie-parser": "^1.4.7",
     "cors": "^2.8.5",
     "dotenv": "^16.4.7",
@@ -22,6 +23,7 @@
     "mongodb": "^6.15.0",
     "mongoose": "^8.13.2",
     "multer": "^1.4.5-lts.2",
+    "next-cloudinary": "^6.17.5",
     "nodemailer": "^7.0.4",
     "nodemon": "^3.1.9",
     "stripe": "^18.3.0"

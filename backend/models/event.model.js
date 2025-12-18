@@ -59,10 +59,15 @@ const eventSchema = new Schema({
         required: [true, "Please add the shop details"],
     },
     images: [
-        {
-            type: String,
-            required: [true, "Please add at least one product image"],
-        },
+      { 
+        public_id: {
+        type: String,
+        required: [true, "Please add at least one product image"],
+      },
+      url: {
+        type: String,
+      }
+    }
     ],
     start_date:{
         type: Date,

@@ -27,7 +27,7 @@ const EventCard = ({data}) => {
            <div className='w-full block bg-white rounded-lg lg:flex gap-5 p-4 md:p-7'>
      <div className="lg:w-[50%] w-full m-auto flex justify-center">
   
-        <img src={`${import.meta.env.VITE_BACKEND_URL}/${data.images[0]}`} alt="Product"
+        <img src={`${data.images[0]?.url}`} alt="Product"
         className=''
         />
      </div>

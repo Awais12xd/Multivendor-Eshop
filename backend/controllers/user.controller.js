@@ -3,6 +3,7 @@ import { User } from "../models/user.model.js";
 import { apiResponse } from "../utils/apiResponse.js";
 import { errorHandler } from "../utils/errorHandler.js";
 import fs from "fs";
+import { deleteFromCloudinary } from "../utils/cloudinaryUpload.js";
 
 const getUser = async (req, res, next) => {
   try {
@@ -61,18 +62,24 @@ const changeAvatar = async (req, res, next) => {
     if (!userFound) {
       return next(new errorHandler("User not found ", 404));
     }
-    const filePath = `uploads/${userFound.avatar.url}`;
-    //   const filePath = path.join(process.cwd(), "uploads", userFound.avatar.url);
-    fs.unlink(filePath, (err) => {
-      if (err) {
-        console.log(err);
+    // ✅ Delete old image from Cloudinary
+    if (userFound.avatar.public_id) {
+      try {
+        await deleteFromCloudinary(userFound.avatar.public_id);
+      } catch (error) {
+        console.log("Error deleting old avatar:", error);
       }
-    });
-    const filename = req.file.filename;
-    const fileUrl = path.join(filename);
+    }
+
+    // ✅ Upload new image to Cloudinary
+    const cloudinaryResult = await uploadToCloudinary(req.file);
+
     const updatedUser = await User.findByIdAndUpdate(
       req.user.id,
-      { "avatar.url": fileUrl },
+      {
+        "avatar.public_id": cloudinaryResult.public_id,
+        "avatar.url": cloudinaryResult.url,
+      },
       { new: true }
     );
 

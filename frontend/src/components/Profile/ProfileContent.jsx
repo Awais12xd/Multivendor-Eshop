@@ -89,7 +89,7 @@ const ProfileContent = ({ active }) => {
           <div className="flex justify-center w-full">
             <div className="relative">
               <img
-                src={`${import.meta.env.VITE_BACKEND_URL}/${user?.avatar.url}`}
+                src={`${user?.avatar.url}`}
                 className="w-[150px] h-[150px] object-cover border-3 rounded-full border-green-400"
                 alt=""
               />

@@ -33,7 +33,7 @@ const ShopProfileData = ({ IsShopOwner }) => {
 
   const allReviews =
     productData && productData.map((product) => product.reviews).flat();
-  console.log(allReviews);
+  
   return (
     <div className="w-full mb-5">
       <div className="flex w-full items-center justify-between border-b border-gray-300  mb-8">
@@ -104,7 +104,7 @@ const ShopProfileData = ({ IsShopOwner }) => {
               ""
             ); // strip trailing slash
             const avatarPath = String(rawAvatar).replace(/^\/+/, ""); // strip leading slash
-            const avatarSrc = `${backend}/${avatarPath}`;
+            const avatarSrc = `${avatarPath}`;
 
             return (
               <div key={id} className="w-full flex my-5">

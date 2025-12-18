@@ -6,6 +6,8 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import {useNavigate} from "react-router-dom"
 
+
+
 const CheckoutContent = () => {
   const { user } = useSelector((state) => state.user);
   const { cart } = useSelector((state) => state.cart);

@@ -120,8 +120,8 @@ const ProductDetails = ({ product }) => {
             <div className="flex flex-col  md:flex-row w-full md:gap-4 gap-8">
               <div className="w-full md:w-[50%] justify-center">
                 <img
-                  src={`${import.meta.env.VITE_BACKEND_URL}/${
-                    product.images && product.images[select]
+                  src={`${
+                    product.images && product.images[select]?.url
                   }`}
                   alt=""
                   className="w-[80%] object-contain mb-4 h-70"
@@ -136,8 +136,8 @@ const ProductDetails = ({ product }) => {
                       } border-gray-300 cursor-pointer w-[49%]`}
                     >
                       <img
-                        src={`${import.meta.env.VITE_BACKEND_URL}/${
-                          product.images && product.images[index]
+                        src={`${
+                          product.images && product.images[index]?.url
                         }`}
                         className=" object-contain w-full h-[180px]"
                         alt=""
@@ -207,7 +207,7 @@ const ProductDetails = ({ product }) => {
                 <div className="flex gap-8 items-center mt-10">
                   <Link to={`/shop/${product.shopId}`} className="flex">
                     <img
-                      src={`${import.meta.env.VITE_BACKEND_URL}/${
+                      src={`${
                         product.shop.avatar.url
                       }`}
                       className="w-[50px] h-[50px] rounded-full mr-2"
@@ -299,7 +299,7 @@ const ProductDetailInfo = ({ product, info }) => {
               <div className="w-full flex my-2">
                 <img
                   className="h-[50px] w-[50px] object-cover rounded-full"
-                  src={`${import.meta.env.VITE_BACKEND_URL}/${
+                  src={`${
                     item?.user.avatar.url
                   }`}
                   alt=""
@@ -325,7 +325,7 @@ const ProductDetailInfo = ({ product, info }) => {
           <div className="w-full md:w-[70%] mb-6 md:mb-0">
             <Link to={`/shop/${product.shopId}`} className="flex">
               <img
-                src={`${import.meta.env.VITE_BACKEND_URL}/${product?.shop?.avatar?.url}`}
+                src={`${product?.shop?.avatar?.url}`}
                 
                 // ${
                 //   product?.shop?.avatar?.url

@@ -4,6 +4,7 @@ import { Product } from "../models/product.model.js";
 import { Order } from "../models/order.model.js";
 import { Shop } from "../models/shop.model.js";
 import fs from "fs";
+import { deleteFromCloudinary, uploadMultipleToCloudinary } from "../utils/cloudinaryUpload.js";
 
 const createProduct = async (req, res, next) => {
   try {
@@ -16,11 +17,16 @@ const createProduct = async (req, res, next) => {
       return next(new errorHandler("Shop not found", 400));
     }
     const files = req.files;
-    if (!files || files.lenght === 0) {
+    if (!files || files.length === 0) {
       return next(new errorHandler("Please upload at least one image", 400));
     }
-    const images = files.map((file) => file.filename);
-    console.log(images);
+
+    // ✅ Upload multiple images to Cloudinary
+    const cloudinaryResults = await uploadMultipleToCloudinary(files);
+    const images = cloudinaryResults.map(result => ({
+      public_id: result. public_id,
+      url:  result.url,
+    }));
 
     const {
       name,
@@ -31,6 +37,7 @@ const createProduct = async (req, res, next) => {
       tags,
       stock,
     } = req.body;
+
     const product = await Product.create({
       name,
       description,
@@ -94,14 +101,20 @@ const deleteProduct = async (req, res, next) => {
     if (!productData) {
       return next(new errorHandler("Product not found", 404));
     }
-    productData.images.forEach((image) => {
-      const path = `uploads/${image}`;
-      fs.unlinkSync(path, (err) => {
-        if (err) {
-          console.log(err, "Error while deleting the image");
+    
+    
+    // ✅ Delete images from Cloudinary
+    if (productData.images && productData.images.length > 0) {
+      for (const image of productData.images) {
+        try {
+          await deleteFromCloudinary(image.public_id);
+        } catch (error) {
+          console.log("Error deleting image:", error);
         }
-      });
-    });
+      }
+    }
+
+
     const product = await Product.findByIdAndDelete(productId);
     if (!product) {
       return next(new errorHandler("Product not found", 404));

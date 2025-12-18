@@ -6,6 +6,7 @@ import { apiResponse } from "../utils/apiResponse.js";
 import jwt from "jsonwebtoken";
 import { sendMail } from "../utils/sendMail.js";
 import { sendToken } from "../utils/sendToken.js";
+import { uploadToCloudinary } from "../utils/cloudinaryUpload.js";
 
 const generateActivationToken = (user) => {
   return jwt.sign(user, process.env.ACTIVATION_TOKEN_SECRET, {
@@ -20,30 +21,32 @@ const createUser = async (req, res, next) => {
       return next(new errorHandler("Please fill all the fields", 400));
     }
     const existingUser = await User.findOne({ email });
-    if (existingUser) {
-      // Delete the uploaded file if user already exists
-      if (req.file && req.file.filename) {
-        const filePath = path.join(process.cwd(), "uploads", req.file.filename);
-        fs.unlink(filePath, (err) => {
-          if (err) {
-            return next(new errorHandler("Error deleting file", 500));
-          } else {
-            return next(new errorHandler("User already exists", 400));
-          }
-        });
-      } else {
-        return next(new errorHandler("User already exists", 400));
+
+     if (existingUser) {
+      // Delete the uploaded temp file if user already exists
+      if (req.file) {
+        fs.unlinkSync(req.file. path);
       }
-      return;
+      return next(new errorHandler("User already exists", 400));
     }
-    const filename = req.file.filename;
-    const findUrl = path.join(filename);
+    // const filename = req.file.filename;
+    // const findUrl = path.join(filename);
+     // ✅ Upload to Cloudinary
+    let avatar = { public_id: "", url: "" };
+    if (req.file) {
+      const cloudinaryResult = await uploadToCloudinary(req.file);
+      avatar = {
+        public_id: cloudinaryResult.public_id,
+        url: cloudinaryResult.url,
+      };
+    }
     const user = {
       name: username,
       email,
       password,
-      avatar: { public_id: 123, url: findUrl },
+      avatar: avatar
     };
+    
     // if (!user) {
     //   return next(new errorHandler("Failed to create user", 400));
     // }
@@ -71,11 +74,15 @@ const createUser = async (req, res, next) => {
           )
         );
     } catch (error) {
+
       return next(
         new errorHandler(`Error sending email and ${error.message}`, 500)
       );
     }
   } catch (error) {
+     if (req.file) {
+      fs.unlinkSync(req.file.path);
+    }
     return next(new errorHandler("Error creating user", 500));
   }
 };

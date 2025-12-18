@@ -97,7 +97,7 @@ const ShopInfo = ({ IsShopOwner }) => {
         <div className="w-full flex items-center justify-center">
           <img
             className="w-[150px] h-[150px] object-cover rounded-full"
-            src={`${import.meta.env.VITE_BACKEND_URL}/${
+            src={`${
               sellerData?.avatar.url
             }`}
             alt="Shop Avatar"

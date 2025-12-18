@@ -293,7 +293,7 @@ const ChatList = ({
     >
       <div className="relative">
         <img
-          src={`${import.meta.env.VITE_BACKEND_URL}/${user?.avatar?.url ?? ""}`}
+          src={`${user?.avatar?.url ?? ""}`}
           alt=""
           className="rounded-full w-[60px] h-[60px] object-cover"
         />
@@ -334,7 +334,7 @@ const UserChat = ({
       <div className="flex p-3 items-center justify-between bg-[#ffffe9] shadow-md">
         <div className="flex items-center">
           <img
-            src={`${import.meta.env.VITE_BACKEND_URL}/${userData?.avatar?.url ?? ""}`}
+            src={`${userData?.avatar?.url ?? ""}`}
             alt=""
             className="rounded-full w-[60px] h-[60px] object-cover"
           />
@@ -353,7 +353,7 @@ const UserChat = ({
         {messages.map((item) => (
           <div key={item._id ?? `${item.createdAt}-${Math.random()}`} className={`flex w-full my-2 ${item.sender === me ? "justify-end" : "justify-start"}`}>
             {item.sender !== me && (
-              <img src={`${import.meta.env.VITE_BACKEND_URL}/${userData?.avatar?.url ?? ""}`} alt="" className="rounded-full w-[40px] h-[40px] object-cover mr-2" />
+              <img src={`${userData?.avatar?.url ?? ""}`} alt="" className="rounded-full w-[40px] h-[40px] object-cover mr-2" />
             )}
             <div className={`flex flex-col ${item.sender === me ? "items-end" : "items-start"} py-1`}>
               <div className="flex w-max p-2 rounded bg-green-500 text-white h-min">

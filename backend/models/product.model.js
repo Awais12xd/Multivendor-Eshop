@@ -60,10 +60,15 @@ const productSchema = new Schema(
       required: [true, "Please add the shop details"],
     },
     images: [
-      {
+      { 
+        public_id: {
         type: String,
         required: [true, "Please add at least one product image"],
       },
+      url: {
+        type: String,
+      }
+    }
     ],
     ratings: {
       type: Number,

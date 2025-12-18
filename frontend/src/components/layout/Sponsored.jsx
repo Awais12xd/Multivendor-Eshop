@@ -2,6 +2,7 @@ import React from "react";
 import styles from "../../style/style";
 
 const Sponsored = () => {
+  
   return (
     <div
       className={`${styles.section} hidden sm:block bg-white py-10 px-5 cursor-pointer rounded-xl mb-12`}

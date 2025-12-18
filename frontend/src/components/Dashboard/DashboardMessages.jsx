@@ -302,7 +302,7 @@ const ChatList = ({
     >
       <div className="relative">
         <img
-          src={`${import.meta.env.VITE_BACKEND_URL}/${user?.avatar?.url ?? ""}`}
+          src={`${user?.avatar?.url ?? ""}`}
           alt=""
           className="rounded-full w-[60px] h-[60px] object-cover"
         />
@@ -336,7 +336,7 @@ const SellerInbox = ({
       <div className="flex p-3 items-center justify-between bg-[#ffffe9] shadow-md">
         <div className="flex items-center">
           <img
-            src={`${import.meta.env.VITE_BACKEND_URL}/${userData?.avatar?.url ?? ""}`}
+            src={`${userData?.avatar?.url ?? ""}`}
             alt=""
             className="rounded-full w-[60px] h-[60px] object-cover"
           />
@@ -356,7 +356,7 @@ const SellerInbox = ({
           <div key={item._id ?? `${item.createdAt}-${Math.random()}`} className={`flex w-full my-2 ${item.sender === sellerId ? "justify-end" : "justify-start"}`}>
             {item.sender !== sellerId && (
               <img
-                src={`${import.meta.env.VITE_BACKEND_URL}/${userData?.avatar?.url ?? ""}`}
+                src={`${userData?.avatar?.url ?? ""}`}
                 alt=""
                 className="rounded-full w-[40px] h-[40px] object-cover mr-2"
               />

@@ -13,6 +13,8 @@ import orderRoutes from "./routes/order.routes.js"
 import conversationRoutes from "./routes/conversation.routes.js"
 import messageRoutes from "./routes/message.routes.js"
 import { errorMiddle } from "./middlewares/error.middleware.js"
+import {fileURLToPath} from "url"
+import path from "path"
 
 // Get absolute path
 const __filename = fileURLToPath(import.meta.url);

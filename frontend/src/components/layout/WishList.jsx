@@ -93,7 +93,7 @@ const SingleWishBox = ({ wish , handleRemoveFromCart , addToCartHandler   }) => 
           </div>
           <div className="image">
             <img
-              src={`${import.meta.env.VITE_BACKEND_URL}/${wish.images[0]}`}
+              src={`${wish.images[0]?.url}`}
               className="w-[160px] h-min object-contain  "
               alt="product"
             />

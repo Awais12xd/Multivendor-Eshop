@@ -96,8 +96,8 @@ const Header = ({ activeHeading }) => {
                         <div className="w-full flex items-center py-3 ">
                           <img
                             loading="lazy"
-                            src={`${import.meta.env.VITE_BACKEND_URL}/${
-                              data?.images[0]
+                            src={`${
+                              data?.images[0]?.url
                             }`}
                             alt="product"
                             className="w-[40px] object-cover h-[40] mr-[10px]"
@@ -175,8 +175,8 @@ const Header = ({ activeHeading }) => {
                   className="overflow-hidden rounded-full w-10 h-10"
                 >
                   <img
-                    src={`${import.meta.env.VITE_BACKEND_URL}/${
-                      user.avatar.url
+                    src={`${
+                      user.avatar?.url
                     }`}
                     alt="Profile"
                     className="w-10 h-10 rounded-full object-cover "
@@ -256,9 +256,7 @@ const Header = ({ activeHeading }) => {
                                   <div className="w-full flex items-center py-3 ">
                                     <img
                                       loading="lazy"
-                                      src={`${
-                                        import.meta.env.VITE_BACKEND_URL
-                                      }/${data?.images[0]}`}
+                                      src={`${data?.images[0]?.url}`}
                                       alt="product"
                                       className="w-[40px] object-cover h-[40px] mr-[10px]"
                                     />
@@ -290,8 +288,8 @@ const Header = ({ activeHeading }) => {
                             className="overflow-hidden rounded-full w-10 h-10"
                           >
                             <img
-                              src={`${import.meta.env.VITE_BACKEND_URL}/${
-                                user.avatar.url
+                              src={`${
+                                user.avatar?.url
                               }`}
                               alt="Profile"
                               className="w-12 h-12 rounded-full object-cover border-2 border-green-400"

@@ -80,13 +80,13 @@ const QuickProductView = ({ setOpen, data }) => {
             <div className="w-full lg:flex block">
               <div className="w-full lg:w-[50%]">
                 <img
-                  src={`${import.meta.env.VITE_BACKEND_URL}/${data.images[0]}`}
+                  src={`${data.images[0]?.url}`}
                   alt=""
                 />
                 <Link to={`/shop/${data.shopId}`} className="flex">
                   <img
-                    src={`${import.meta.env.VITE_BACKEND_URL}/${
-                      data.shop.avatar.url
+                    src={`${
+                      data.shop.avatar?.url
                     }`}
                     className="w-[50px] h-[50px] rounded-full mr-2"
                     alt="Shop"
