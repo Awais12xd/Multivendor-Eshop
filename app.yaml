@@ -1,0 +1,67 @@
+name: multivendor-eshop
+services:
+- name: backend
+  github: 
+    repo: Awais12xd/Multivendor-Eshop
+    branch: main
+    deploy_on_push: true
+  build_command: npm install
+  run_command: npm start
+  source_dir: backend
+  envs:
+  - key: NODE_ENV
+    value:  "PRODUCTION"
+  - key: PORT
+    value: "4000"
+  - key: DATABASE_URL
+    value: ${db. connection_string}
+  - key:  JWT_SECRET
+    scope: RUN_AND_BUILD_TIME
+    value: your_jwt_secret_here
+  - key: JWT_EXPIRE
+    value: "7d"
+  - key: COOKIE_EXPIRE
+    value: "7"
+  - key: SMTP_USER
+    scope: RUN_AND_BUILD_TIME
+    value: your_smtp_user
+  - key: SMTP_PASSWORD
+    scope: RUN_AND_BUILD_TIME
+    value:  your_smtp_password
+  - key: SMTP_FROM_EMAIL
+    scope: RUN_AND_BUILD_TIME
+    value: your_email
+  - key: STRIPE_API_KEY
+    scope: RUN_AND_BUILD_TIME
+    value: your_stripe_key
+  - key: STRIPE_STRIPE_SECRET_KEY
+    scope: RUN_AND_BUILD_TIME
+    value: your_stripe_secret
+  http_port: 4000
+  # ✅ PERSISTENT VOLUME CONFIGURATION
+  volumes: 
+  - name: uploads
+    mount_path: /app/uploads
+    filesystem_type: ext4
+    size_gb: 10
+
+- name: frontend
+  github: 
+    repo: Awais12xd/Multivendor-Eshop
+    branch: main
+    deploy_on_push:  true
+  build_command: npm install && npm run build
+  run_command: npm run preview
+  source_dir: frontend
+  envs:
+  - key: VITE_SERVER_URL
+    value: https://backend-${APP_DOMAIN}
+  - key: VITE_API_URL
+    value: https://backend-${APP_DOMAIN}/api
+  http_port: 4173
+
+databases:
+- name: db
+  engine:  MONGODB
+  version: "6"
+  production: true
