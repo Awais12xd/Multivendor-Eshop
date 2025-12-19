@@ -70,7 +70,8 @@ const UserInbox = () => {
 
   /* ------------------ append incoming message only if it belongs to current chat ------------------ */
 useEffect(() => {
-  if (!arrivalMessage || !currentChat || !arrivalMessage.conversationId) return;
+  // if (!arrivalMessage || !currentChat || !arrivalMessage.conversationId) return;
+  if (!arrivalMessage ) return;
 
   // --- Option A: ignore server echo for messages we sent ourselves ---
   // prevents duplicates when we already appended the message locally
@@ -94,7 +95,7 @@ useEffect(() => {
       )
     );
   }
-}, [arrivalMessage, currentChat, user?._id, messages]);
+}, [arrivalMessage, currentChat, user?._id]);
 
 
   /* ------------------ fetch conversations once when user is available ------------------ */
