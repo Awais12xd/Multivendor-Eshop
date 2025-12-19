@@ -30,7 +30,7 @@ const ProfileSideBar = ({active , setActive}) => {
     }
 
   return (
-    <div className='bg-white w-full pt-8 p-4 shadow-sm rounded-lg'>
+    <div className='bg-white w-full pt-8 p-4 shadow-sm rounded-lg '>
        <div
        onClick={() => setActive(1)}
        className="flex  cursor-pointer w-full mb-8">

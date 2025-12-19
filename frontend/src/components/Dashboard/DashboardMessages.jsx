@@ -224,11 +224,11 @@ useEffect(() => {
   };
 
   return (
-    <div className="w-[90%] bg-white m-5 h-[85vh] rounded">
+    <div className="w-[90%] bg-white md:m-5 md:h-[85vh]  rounded">
       {/* All messages list */}
       {!open && (
         <>
-          <h1 className="text-center text-[30px] py-3 font-[500]">All Messages</h1>
+          <h1 className="text-center text-[22px] md:text-[30px] py-3 font-[500]">All Messages</h1>
 
           {conversations.map((item) => (
             <ChatList
@@ -311,13 +311,13 @@ const ChatList = ({
         <img
           src={`${user?.avatar?.url ?? ""}`}
           alt=""
-          className="rounded-full w-[60px] h-[60px] object-cover"
+          className="rounded-full md:w-[60px] md:h-[60px] w-[40px] h-[40px] object-cover"
         />
-        <div className={`active w-[14px] h-[14px] absolute rounded-full right-0 top-1 ${online ? "bg-green-500" : "bg-gray-500"}`}></div>
+        <div className={`active w-[14px] h-[14px] absolute rounded-full right-0 top-0 md:top-1 ${online ? "bg-green-500" : "bg-gray-500"}`}></div>
       </div>
-      <div className="pl-3">
-        <h1 className="text-[18px]">{user?.name ?? "Loading..."}</h1>
-        <p className="text-[16px] pt-1 text-gray-800 line-clamp-1">
+      <div className="md:pl-3 pl-2">
+        <h1 className="md:text-[18px] text-[15px]">{user?.name ?? "Loading..."}</h1>
+        <p className="md:text-[16px] text-[14px] pt-1 text-gray-800 line-clamp-1">
           {item?.lastMessageId !== user?._id ? "You:" : `${user?.name?.split(" ")[0] ?? ""}: `} {item?.lastMessage}
         </p>
       </div>
@@ -345,15 +345,16 @@ const SellerInbox = ({
           <img
             src={`${userData?.avatar?.url ?? ""}`}
             alt=""
-            className="rounded-full w-[60px] h-[60px] object-cover"
+            className="rounded-full md:w-[60px] md:h-[60px] w-[40px] h-[40px] object-cover"
           />
           <div className="pl-3">
-            <h1 className="text-[22px] font-semibold">{userData?.name ?? "Conversation"}</h1>
-            <h2 className="text-[19px] text-gray-600">{activeStatus ? "Active Now" : ""}</h2>
+            <h1 className="md:text-[22px] text-[16px] font-semibold">{userData?.name ?? "Conversation"}</h1>
+            <h2 className="text-[14px] md:text-[19px] text-gray-600">{activeStatus ? "Active Now" : ""}</h2>
           </div>
         </div>
         <div>
-          <FaArrowRight size={20} className="cursor-pointer" onClick={() => setOpen(false)} />
+          <FaArrowRight size={20} className="cursor-pointer hidden" onClick={() => setOpen(false)} />
+          <FaArrowRight size={15} className="cursor-pointer md:hidden" onClick={() => setOpen(false)} />
         </div>
       </div>
 
@@ -365,14 +366,14 @@ const SellerInbox = ({
               <img
                 src={`${userData?.avatar?.url ?? ""}`}
                 alt=""
-                className="rounded-full w-[40px] h-[40px] object-cover mr-2"
+                className="rounded-full md:w-[40px] md:h-[40px] w-[30px] h-[30px] object-cover md:mr-2 mr-1"
               />
             )}
             <div className={`flex flex-col ${item.sender === sellerId ? "items-end" : "items-start"} py-1`}>
               <div className="flex w-max p-2 rounded bg-green-500 text-white h-min">
-                <p>{item.text}</p>
+                <p className="md:text-base text-xs">{item.text}</p>
               </div>
-              <p className="text-gray-600 pt-1 text-[11px]">{format(item.createdAt)}</p>
+              <p className="text-gray-600 pt-1 md:text-[11px] text-[9px]">{format(item.createdAt)}</p>
             </div>
           </div>
         ))}
@@ -381,14 +382,16 @@ const SellerInbox = ({
 
       {/* Sending input */}
       <form onSubmit={sendMesasageHandler} aria-required={true} className="relative w-full flex items-center justify-between shadow-md bg-[#ffffe9]">
-        <div className="w-[3%] flex justify-center">
+        {/* <div className="w-[3%] flex justify-center">
           <GrGallery size={25} className="cursor-pointer text-gray-700" />
-        </div>
-        <div className="w-[97%]">
+        </div> */}
+        <div className="w-full">
           <input type="text" placeholder="Enter your message..." className={`w-full py-3 pl-2 md:pl-4 md:text-lg bg-transparent h-16`} value={newMessage} onChange={(e) => setNewMessage(e.target.value)} />
           <input type="submit" value="Send" className="hidden" id="send" />
           <label htmlFor="send">
-            <AiOutlineSend size={30} className="absolute right-5 cursor-pointer top-2/7 text-gray-700" />
+            <AiOutlineSend size={30} className="absolute md:block  hidden right-5 cursor-pointer top-2/7 text-gray-700" />
+            <AiOutlineSend size={20} className="absolute md:hidden right-5 cursor-pointer top-2/6 text-gray-700" />
+           
           </label>
         </div>
       </form>

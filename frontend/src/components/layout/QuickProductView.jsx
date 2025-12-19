@@ -7,7 +7,7 @@ import {
   AiOutlineMessage,
   AiOutlineShoppingCart,
 } from "react-icons/ai";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import { addToCartAction } from "../../redux/actions/cart.js";
@@ -15,13 +15,18 @@ import {
   addToWishlistAction,
   removeFromWishlistAction,
 } from "../../redux/actions/wishlist.js";
+import axios from "axios";
 
 const QuickProductView = ({ setOpen, data }) => {
   const { cart } = useSelector((state) => state.cart);
+  const { user , isAuth} = useSelector((state) => state.user);
   const [count, setCount] = useState(1);
   const [click, setClick] = useState(false);
   const [select, setSelect] = useState(false);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+
 
   const { wishlist } = useSelector((state) => state.wishlist);
 
@@ -43,7 +48,38 @@ const QuickProductView = ({ setOpen, data }) => {
     dispatch(removeFromWishlistAction(data));
   };
 
-  const handleMessageClick = () => {};
+  const handleMessageClick = async (product) => {
+     if (isAuth) {
+       const groupTitle = product._id + user._id;
+       const userId = user._id;
+       const sellerId = product.shop._id;
+ 
+       try {
+         const res = await axios.post(
+           `${import.meta.env.VITE_SERVER_URL}/conversation/create-conversation`,
+          { groupTitle,userId,sellerId}
+         );
+         if (res.data.success) {
+           navigate(`/user-inbox?${res.data.data._id}`)
+           toast.success(res.data.message);
+         }
+         if (res.data.success === false) {
+           setError(res.data.message);
+           toast.error(res.data.message);
+         }
+       } catch (err) {
+         if (err.response) {
+           console.log("Error response:", err.response.data);
+           toast.error(err.response.data.message);
+         } else {
+           console.log("Error:", err.message);
+           toast.error(err.message);
+         }
+       }
+     } else {
+       toast.error("Login to create a conversation with seller !");
+     }
+   };
 
   const increamentCount = () => {
     setCount(count + 1);
@@ -93,12 +129,12 @@ const QuickProductView = ({ setOpen, data }) => {
                   />
                   <div className="">
                     <h3 className={`${styles.shop_name}`}>{data.shop.name}</h3>
-                    <h5 className="pb-3 text-[15px]">4/5 Ratings</h5>
+                    <h5 className="pb-3 text-[15px]">{data.shop?.ratings || 0}/5 Ratings</h5>
                   </div>
                 </Link>
                 <div
                   className={`${styles.button} bg-black mt-4 rounded-[4px] h-11`}
-                  onClick={handleMessageClick}
+                  onClick={() => handleMessageClick(data)}
                 >
                   <span className="flex text-white items-center rounded-[4px]">
                     Send Message <AiOutlineMessage className="ml-2" size={23} />

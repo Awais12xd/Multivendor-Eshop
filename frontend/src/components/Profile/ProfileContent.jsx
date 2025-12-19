@@ -83,7 +83,7 @@ const ProfileContent = ({ active }) => {
   };
 
   return (
-    <div className="w-full">
+    <div className="w-full ">
       {active === 1 && (
         <>
           <div className="flex justify-center w-full">
@@ -108,7 +108,7 @@ const ProfileContent = ({ active }) => {
           </div>
           <br />
           <br />
-          <div className="w-full px-5">
+          <div className="w-full px-2 sm:px-3 md:px-5">
             <form onSubmit={handleSubmit} aria-required={true}>
               <div className="md:flex block w-full md:pb-3">
                 <div className="mb-3 md:w-[50%] w-full">
@@ -177,7 +177,7 @@ const ProfileContent = ({ active }) => {
               </div>
               <input
                 type="submit"
-                className="w-[250px] text-blue-600 text-center cursor-pointer border border-blue-600 rounded-[3px] mt-8 h-[40px]"
+                className="md:w-[250px] w-full text-blue-600 text-center cursor-pointer border border-blue-600 rounded-[3px] mt-8 h-[40px]"
                 required
                 value={"Update"}
               />
@@ -373,7 +373,7 @@ const OrderGrid = () => {
         isloading ? (
             <Loader />
         ) : (
-            <div className="pl-7 pt-1">
+            <div className=" pl-3 md:pl-7 pt-1">
             <DataGrid
               rows={row}
               columns={columns}
