@@ -87,17 +87,17 @@ const UserOrderDetail = () => {
             <img
               src={`${item?.images[0]?.url}`}
               alt=""
-              className="w-[80x] h-[80px]"
+              className="md:w-[80x] md:h-[80px] h-[60px] w-[60px]"
             />
             <div className="w-full">
-              <h5 className="pl-3 text-[20px]">{item.name}</h5>
-              <h5 className="pl-3 text-[20px] text-[#00000091]">
+              <h5 className="pl-3 text-[14px] md:text-[20px]">{item.name}</h5>
+              <h5 className="pl-3 text-[14px] md:text-[20px] text-[#00000091]">
                 US${item.discountPrice} x {item.qty}
               </h5>
             </div>
             {data?.status === "Delivered" && !item?.isReviewed && (
               <div
-                className={`${styles.button} text-white`}
+                className={`bg-black rounded text-white text-xs md:text-base p-2 md:whitespace-nowrap cursor-pointer`}
                 onClick={() => setOpen(true) || setSelectedItem(item)}
               >
                 Write a review
@@ -109,7 +109,7 @@ const UserOrderDetail = () => {
       {/* Review Popup */}
       {open && (
         <div className="w-full h-screen fixed top-0 left-0 bg-[#00000067] flex justify-center items-center">
-          <div className="w-[50%] h-[80vh] bg-white p-3 shadow rounded-md">
+          <div className="md:w-[50%] w-[90%] h-[80vh] bg-white p-3 shadow rounded-md">
             <div className="flex justify-end p-3 w-full">
               <RxCross1
                 size={30}
@@ -127,13 +127,13 @@ const UserOrderDetail = () => {
                   selectedItem.images[0]?.url
                 }`}
                 alt=""
-                className="h-[80px] w-[80px] object-cover"
+                className="md:h-[80px] md:w-[80px] h-[60px] w-[60px] object-contain"
               />
               <div className="flex flex-col">
-                <div className="text-[20px] pl-3 font-semibold mb-2">
+                <div className="md:text-[20px] pl-3 font-semibold mb-2">
                   {selectedItem.name}
                 </div>
-                <div className="text-[20px] pl-3">
+                <div className="md:text-[20px] pl-3">
                   $US{selectedItem.discountPrice} * {selectedItem.qty}
                 </div>
               </div>
@@ -141,7 +141,7 @@ const UserOrderDetail = () => {
             <br />
             <br />
             {/* Ratings */}
-            <div className="text-[20px] pl-3 font-[500]">
+            <div className="md:text-[20px] pl-3 font-[500]">
               Give a rating <span className="text-red-500">*</span>
               <div className="flex">
                 {[1, 2, 3, 4, 5].map((i) =>
@@ -201,14 +201,14 @@ const UserOrderDetail = () => {
       <div className="w-full md:flex items-center">
         <div className="w-full md:w-[60%]">
           <h4 className="pt-3 text-[20px] font-[600]">Shipping Address:</h4>
-          <h4 className="pt-3 text-[20px]">
+          <h4 className="pt-3 md:text-[20px]">
             {data?.shippingAddress.address1 +
               " " +
               data?.shippingAddress.address2}
           </h4>
-          <h4 className=" text-[20px]">{data?.shippingAddress.country}</h4>
-          <h4 className=" text-[20px]">{data?.shippingAddress.city}</h4>
-          <h4 className=" text-[20px]">{data?.user?.phoneNumber}</h4>
+          <h4 className=" md:text-[20px]">{data?.shippingAddress.country}</h4>
+          <h4 className=" md:text-[20px]">{data?.shippingAddress.city}</h4>
+          <h4 className=" md:text-[20px]">{data?.user?.phoneNumber}</h4>
         </div>
         <div className="w-full md:w-[40%]">
           <h4 className="pt-3 text-[20px] font-semibold">Payment Info:</h4>
@@ -226,10 +226,7 @@ const UserOrderDetail = () => {
         </div>
       </div>
       <br />
-      <Link to="/">
-        <div className={`${styles.button} text-white`}>Send Message</div>
-      </Link>
-      <br />
+      
     </div>
   );
 };
