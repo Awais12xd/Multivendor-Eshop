@@ -121,9 +121,7 @@ const Header = ({ activeHeading }) => {
         </div>
       </div>
       <div
-        className={`${
-          active ? "shadow-sm fixed top-0 left-0 z-10" : null
-        } transition hidden md:flex justify-between items-center w-full bg-blue-600 h-[70px] `}
+        className={` transition hidden md:flex justify-between items-center w-full bg-blue-600 h-[70px] `}
       >
         <div
           className={`${styles.section} relative flex items-center justify-between`}
