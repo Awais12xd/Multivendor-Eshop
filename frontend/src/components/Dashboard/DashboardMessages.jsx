@@ -68,28 +68,35 @@ const DashboardMessages = () => {
     socketRef.current.emit("addUser", seller._id);
   }, [seller?._id]);
 
-  /* ------------------- Handle incoming socket message ------------------- */
-  useEffect(() => {
-    if (!arrivalMessage) return;
+ /* ------------------- Handle incoming socket message ------------------- */
+useEffect(() => {
+  if (!arrivalMessage) return;
 
-    // if the message belongs to currently open chat, append to messages
-    if (currentChat && arrivalMessage.conversationId === currentChat._id) {
-      setMessages((prev) => [...prev, arrivalMessage]);
-    } else {
-      // update the conversations preview (lastMessage) when other conversation receives a message
-      setConversations((prev) =>
-        prev.map((conv) =>
-          conv._id === arrivalMessage.conversationId
-            ? {
-                ...conv,
-                lastMessage: arrivalMessage.text,
-                lastMessageId: arrivalMessage.sender,
-              }
-            : conv
-        )
-      );
-    }
-  }, [arrivalMessage, currentChat]);
+  // Ignore server echo of messages we sent ourselves to avoid duplicates.
+  // The backend commonly broadcasts the message to both parties, including the sender.
+  if (arrivalMessage.sender === seller?._id) {
+    return;
+  }
+
+  // If the message belongs to the currently opened chat, append it to messages
+  if (currentChat && arrivalMessage.conversationId === currentChat._id) {
+    setMessages((prev) => [...prev, arrivalMessage]);
+  } else {
+    // Otherwise update the conversations preview (lastMessage)
+    setConversations((prev) =>
+      prev.map((conv) =>
+        conv._id === arrivalMessage.conversationId
+          ? {
+              ...conv,
+              lastMessage: arrivalMessage.text,
+              lastMessageId: arrivalMessage.sender,
+            }
+          : conv
+      )
+    );
+  }
+}, [arrivalMessage, currentChat, seller?._id]);
+
 
   /* ------------------- Fetch conversations (once seller available) ------------------- */
   useEffect(() => {
