@@ -353,10 +353,11 @@ const SellerInbox = ({
           </div>
         </div>
         <div>
-          <FaArrowRight size={20} className="cursor-pointer hidden" onClick={() => setOpen(false)} />
-          <FaArrowRight size={15} className="cursor-pointer md:hidden" onClick={() => setOpen(false)} />
+          <FaArrowRight size={20} className="cursor-pointer hidden md:block" onClick={() => setOpen(false)} />
+          <FaArrowRight size={15} className="cursor-pointer block md:hidden" onClick={() => setOpen(false)} />
         </div>
       </div>
+      
 
       {/* Messages */}
       <div className="px-3 h-[67vh] py-3 overflow-y-scroll">
