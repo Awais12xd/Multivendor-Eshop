@@ -32,10 +32,11 @@ const UserInbox = () => {
     // create socket once
     socketRef.current = io(SOCKET_URL, { withCredentials: true });
 
-    // handler for incoming messages
+    // inside the socket setup useEffect
     const incomingHandler = (data) => {
-      // expect data to include: senderId, text, conversationId, createdAt (server should attach)
+      // server might send saved message id in data._id or data.messageId
       setArrivalMessage({
+        _id: data._id ?? data.messageId ?? null,
         sender: data.senderId ?? data.sender,
         text: data.text,
         conversationId: data.conversationId,
@@ -68,30 +69,33 @@ const UserInbox = () => {
   }, [user?._id]);
 
   /* ------------------ append incoming message only if it belongs to current chat ------------------ */
-  useEffect(() => {
-    if (
-      !arrivalMessage ||
-      !currentChat ||
-      !arrivalMessage.conversationId
-    ) {
-      return;
-    }
+useEffect(() => {
+  if (!arrivalMessage || !currentChat || !arrivalMessage.conversationId) return;
 
-    if (arrivalMessage.conversationId === currentChat._id) {
-      // message belongs to the open chat → append
-      setMessages((prev) => [...prev, arrivalMessage]);
-    } else {
-      // message belongs to some other conversation: you can mark unread or update conversation preview
-      // Example: update conversations list lastMessage if desired (non-destructive)
-      setConversations((prev) =>
-        prev.map((conv) =>
-          conv._id === arrivalMessage.conversationId
-            ? { ...conv, lastMessage: arrivalMessage.text, lastMessageId: arrivalMessage.sender }
-            : conv
-        )
-      );
-    }
-  }, [arrivalMessage, currentChat]);
+  // --- Option A: ignore server echo for messages we sent ourselves ---
+  // prevents duplicates when we already appended the message locally
+  if (arrivalMessage.sender === user?._id) {
+    return;
+  }
+
+  // --- Option B: extra dedupe if server provides an _id ---
+  if (arrivalMessage._id && messages.some((m) => m._id === arrivalMessage._id)) {
+    return;
+  }
+
+  if (arrivalMessage.conversationId === currentChat._id) {
+    setMessages((prev) => [...prev, arrivalMessage]);
+  } else {
+    setConversations((prev) =>
+      prev.map((conv) =>
+        conv._id === arrivalMessage.conversationId
+          ? { ...conv, lastMessage: arrivalMessage.text, lastMessageId: arrivalMessage.sender }
+          : conv
+      )
+    );
+  }
+}, [arrivalMessage, currentChat, user?._id, messages]);
+
 
   /* ------------------ fetch conversations once when user is available ------------------ */
   useEffect(() => {
@@ -99,7 +103,9 @@ const UserInbox = () => {
     const fetchConversations = async () => {
       try {
         const res = await axios.get(
-          `${import.meta.env.VITE_SERVER_URL}/conversation/get-user-conversations/${user._id}`,
+          `${
+            import.meta.env.VITE_SERVER_URL
+          }/conversation/get-user-conversations/${user._id}`,
           { withCredentials: true }
         );
         if (res.data.success) {
@@ -134,7 +140,9 @@ const UserInbox = () => {
     const fetchMessages = async () => {
       try {
         const res = await axios.get(
-          `${import.meta.env.VITE_SERVER_URL}/message/get-all-messages/${currentChat._id}`
+          `${import.meta.env.VITE_SERVER_URL}/message/get-all-messages/${
+            currentChat._id
+          }`
         );
         if (res.data.success) {
           setMessages(res.data.data || []);
@@ -182,7 +190,9 @@ const UserInbox = () => {
         // update last message in conversation on server
         try {
           await axios.put(
-            `${import.meta.env.VITE_SERVER_URL}/conversation/update-last-message/${currentChat._id}`,
+            `${
+              import.meta.env.VITE_SERVER_URL
+            }/conversation/update-last-message/${currentChat._id}`,
             {
               lastMessage: newMessage,
               lastMessageId: user._id,
@@ -213,7 +223,9 @@ const UserInbox = () => {
       <Header />
       {!open && (
         <>
-          <h1 className="text-center text-[30px] py-3 font-[500]">All Messages</h1>
+          <h1 className="text-center text-[30px] py-3 font-[500]">
+            All Messages
+          </h1>
 
           {conversations.map((item) => (
             <ChatList
@@ -288,7 +300,9 @@ const ChatList = ({
 
   return (
     <div
-      className={`flex w-full p-3 ${isActive ? "bg-yellow-400" : "bg-gray-200"} cursor-pointer items-center`}
+      className={`flex w-full p-3 ${
+        isActive ? "bg-yellow-400" : "bg-gray-200"
+      } cursor-pointer items-center`}
       onClick={handleClick}
     >
       <div className="relative">
@@ -297,13 +311,20 @@ const ChatList = ({
           alt=""
           className="rounded-full w-[60px] h-[60px] object-cover"
         />
-        <div className={`active w-[14px] h-[14px] absolute rounded-full right-0 top-1 ${online ? "bg-green-500" : "bg-gray-500"}`}></div>
+        <div
+          className={`active w-[14px] h-[14px] absolute rounded-full right-0 top-1 ${
+            online ? "bg-green-500" : "bg-gray-500"
+          }`}
+        ></div>
       </div>
 
       <div className="pl-3">
         <h1 className="text-[18px]">{user?.name ?? "Loading..."}</h1>
         <p className="text-[16px] pt-1 text-gray-800 line-clamp-1">
-          {item?.lastMessageId !== user?._id ? "You:" : `${user?.name?.split(" ")[0] ?? ""}: `} {item?.lastMessage}
+          {item?.lastMessageId !== user?._id
+            ? "You:"
+            : `${user?.name?.split(" ")[0] ?? ""}: `}{" "}
+          {item?.lastMessage}
         </p>
       </div>
     </div>
@@ -339,27 +360,50 @@ const UserChat = ({
             className="rounded-full w-[60px] h-[60px] object-cover"
           />
           <div className="pl-3">
-            <h1 className="text-[22px] font-semibold">{userData?.name ?? "Conversation"}</h1>
-            <h2 className="text-[19px] text-gray-600">{activeStatus ? "Active Now" : ""}</h2>
+            <h1 className="text-[22px] font-semibold">
+              {userData?.name ?? "Conversation"}
+            </h1>
+            <h2 className="text-[19px] text-gray-600">
+              {activeStatus ? "Active Now" : ""}
+            </h2>
           </div>
         </div>
         <div className="">
-          <FaArrowRight size={20} className="cursor-pointer" onClick={() => setOpen(false)} />
+          <FaArrowRight
+            size={20}
+            className="cursor-pointer"
+            onClick={() => setOpen(false)}
+          />
         </div>
       </div>
 
       {/* Messages */}
       <div className="px-3 h-[67vh] py-3 overflow-y-scroll">
         {messages.map((item) => (
-          <div key={item._id ?? `${item.createdAt}-${Math.random()}`} className={`flex w-full my-2 ${item.sender === me ? "justify-end" : "justify-start"}`}>
+          <div
+            key={item._id ?? `${item.createdAt}-${Math.random()}`}
+            className={`flex w-full my-2 ${
+              item.sender === me ? "justify-end" : "justify-start"
+            }`}
+          >
             {item.sender !== me && (
-              <img src={`${userData?.avatar?.url ?? ""}`} alt="" className="rounded-full w-[40px] h-[40px] object-cover mr-2" />
+              <img
+                src={`${userData?.avatar?.url ?? ""}`}
+                alt=""
+                className="rounded-full w-[40px] h-[40px] object-cover mr-2"
+              />
             )}
-            <div className={`flex flex-col ${item.sender === me ? "items-end" : "items-start"} py-1`}>
+            <div
+              className={`flex flex-col ${
+                item.sender === me ? "items-end" : "items-start"
+              } py-1`}
+            >
               <div className="flex w-max p-2 rounded bg-green-500 text-white h-min">
                 <p>{item.text}</p>
               </div>
-              <p className="text-gray-600 pt-1 text-[11px]">{format(item.createdAt)}</p>
+              <p className="text-gray-600 pt-1 text-[11px]">
+                {format(item.createdAt)}
+              </p>
             </div>
           </div>
         ))}
@@ -367,15 +411,28 @@ const UserChat = ({
       </div>
 
       {/* Sending input */}
-      <form onSubmit={sendMesasageHandler} aria-required={true} className=" relative w-full flex items-center justify-between shadow-md bg-[#ffffe9]">
+      <form
+        onSubmit={sendMesasageHandler}
+        aria-required={true}
+        className=" relative w-full flex items-center justify-between shadow-md bg-[#ffffe9]"
+      >
         <div className="w-[3%]  flex justify-center">
           <GrGallery size={25} className="cursor-pointer  text-gray-700" />
         </div>
         <div className="w-[97%]">
-          <input type="text" placeholder="Enter your message..." className={`w-full  py-3 pl-2 md:pl-4  md:text-lg  bg-transparent h-16`} value={newMessage} onChange={(e) => setNewMessage(e.target.value)} />
+          <input
+            type="text"
+            placeholder="Enter your message..."
+            className={`w-full  py-3 pl-2 md:pl-4  md:text-lg  bg-transparent h-16`}
+            value={newMessage}
+            onChange={(e) => setNewMessage(e.target.value)}
+          />
           <input type="submit" value="Send" className="hidden" id="send" />
           <label htmlFor="send">
-            <AiOutlineSend size={30} className="absolute right-5 cursor-pointer top-2/7 text-gray-700" />
+            <AiOutlineSend
+              size={30}
+              className="absolute right-5 cursor-pointer top-2/7 text-gray-700"
+            />
           </label>
         </div>
       </form>
