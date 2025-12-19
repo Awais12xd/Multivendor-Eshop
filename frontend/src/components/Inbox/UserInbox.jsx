@@ -383,7 +383,7 @@ const UserChat = ({
       </div>
 
       {/* Messages */}
-      <div className="px-3 h-[67vh] py-3 overflow-y-scroll">
+      <div className="px-3 h-[75vh] md:h-[67%] py-3 overflow-y-scroll">
         {messages.map((item) => (
           <div
             key={item._id ?? `${item.createdAt}-${Math.random()}`}
